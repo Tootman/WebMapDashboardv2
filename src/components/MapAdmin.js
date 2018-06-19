@@ -1,6 +1,7 @@
 import React from "react";
 import AuthUserContext from "./Session/AuthUserContext";
 import withAuthorization from "./Session/withAuthorization";
+import ReactJson from "react-json-view";
 import {
 	TabContent,
 	TabPane,
@@ -14,7 +15,10 @@ import {
 	Row,
 	Col
 } from "reactstrap";
-import classnames from 'classnames';
+import classnames from "classnames";
+import testGeoJson from "./testGeoJson";
+
+// import { slide as Menu } from "react-burger-menu";
 
 class MapAdmin extends React.Component {
 	constructor(props) {
@@ -22,7 +26,8 @@ class MapAdmin extends React.Component {
 
 		this.toggle = this.toggle.bind(this);
 		this.state = {
-			activeTab: "1"
+			activeTab: "1",
+			geoJson: testGeoJson
 		};
 	}
 
@@ -38,6 +43,7 @@ class MapAdmin extends React.Component {
 		return (
 			<div>
 				<h1>Map Admin page</h1>
+
 				<Nav tabs>
 					<NavItem>
 						<NavLink
@@ -87,16 +93,7 @@ class MapAdmin extends React.Component {
 					<TabPane tabId="2">
 						<Row>
 							<Col sm="12">
-								<Card body>
-									<CardTitle>
-										Data inspector
-									</CardTitle>
-									<CardText>
-										This will show collapsable tree View of Assets/Attributes.
-										Bellow it (or on sep tab - will be related Data)
-									</CardText>
-									<Button>Go somewhere</Button>
-								</Card>
+								<ReactJson src={this.state.geoJson} />
 							</Col>
 						</Row>
 					</TabPane>
@@ -104,13 +101,10 @@ class MapAdmin extends React.Component {
 						<Row>
 							<Col sm="12">
 								<Card body>
-									<CardTitle>
-										Map view
-									</CardTitle>
+									<CardTitle>Map view</CardTitle>
 									<CardText>
 										this will display the leaflet map
 									</CardText>
-									<Button>Go somewhere</Button>
 								</Card>
 							</Col>
 						</Row>

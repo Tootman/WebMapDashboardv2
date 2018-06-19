@@ -55,13 +55,19 @@ class NavigationAuth extends React.Component {
   render() {
     return (
       <Navbar color="light" light expand="md">
-        <NavbarBrand href={process.env.PUBLIC_URL + "/"}>WebMap</NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
+        <NavbarBrand href={process.env.PUBLIC_URL + "/"}>WebMap</NavbarBrand>
+
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
               <NavLink href={process.env.PUBLIC_URL + "/MapAdmin"}>
-               Map Admin
+                Map Admin
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href={process.env.PUBLIC_URL + "/Account"}>
+                Account
               </NavLink>
             </NavItem>
             <NavItem>
@@ -105,21 +111,25 @@ class NavigationAuth extends React.Component {
   }
 }
 
-const NavigationNonAuth = () => (
-  <ul>
-    <li>
-      <Link to={routes.LANDING}>Landing</Link>
-    </li>
-    <li>
-      <Link to={routes.SIGN_IN}>Sign In</Link>
-    </li>
-    <li>
-      <Link to={routes.DJSPAGE}>DJS page</Link>
-    </li>
-    <li>
-      <Link to={routes.MAPADMIN}>MapAdmin</Link>
-    </li>
-  </ul>
-);
+class NavigationNonAuth extends React.Component {
+  render() {
+    return (
+      <ul>
+        <li>
+          <Link to={routes.LANDING}>Landing</Link>
+        </li>
+        <li>
+          <Link to={routes.SIGN_IN}>Sign In</Link>
+        </li>
+        <li>
+          <Link to={routes.DJSPAGE}>DJS page</Link>
+        </li>
+        <li>
+          <Link to={routes.MAPADMIN}>MapAdmin</Link>
+        </li>
+      </ul>
+    );
+  }
+}
 
 export default Navigation;
