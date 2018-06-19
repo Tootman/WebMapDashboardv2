@@ -55,6 +55,7 @@ class NavigationAuth extends React.Component {
   render() {
     return (
       <Navbar color="light" light expand="md">
+
         <NavbarToggler onClick={this.toggle} />
         <NavbarBrand href={process.env.PUBLIC_URL + "/"}>WebMap</NavbarBrand>
         <Collapse isOpen={this.state.isOpen} navbar>
@@ -131,6 +132,15 @@ class NavigationNonAuth extends React.Component {
   render() {
     return (
       <Navbar color="light" light expand="md">
+       <ul>
+    <li><Link to={routes.LANDING}>Landing</Link></li>
+    <li><Link to={routes.HOME}>Home</Link></li>
+    <li><Link to={routes.ACCOUNT}>Account</Link></li>
+    <li><Link to={routes.DJSPAGE}>DJS page</Link></li>
+    <li><Link to={routes.MAPADMIN}>MapAdmin</Link></li>
+    <li><SignOutButton /></li>
+   
+  </ul>
         <NavbarToggler onClick={this.toggle} />
         <NavbarBrand href={process.env.PUBLIC_URL + "/"}>WebMap</NavbarBrand>
         <Collapse isOpen={this.state.isOpen} navbar>
