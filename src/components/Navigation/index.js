@@ -146,12 +146,12 @@ class NavigationNonAuth extends React.Component {
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href={routes.LANDING}>
+              <NavLink href={process.env.PUBLIC_URL + routes.LANDING}   >
                 Landing
               </NavLink>
             </NavItem>
              <NavItem>
-              <NavLink href={routes.SIGN_IN}>
+              <NavLink to='/Sign'>
                 SignIn
               </NavLink>
             </NavItem>
