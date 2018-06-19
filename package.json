@@ -2,7 +2,6 @@
   "name": "react-firebase-authentication",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "https://tootman.github.io",
   "dependencies": {
     "bootstrap": "^4.1.1",
     "firebase": "^5.0.4",
