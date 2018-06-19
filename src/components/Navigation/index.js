@@ -132,6 +132,8 @@ class NavigationNonAuth extends React.Component {
   render() {
     return (
       <Navbar color="light" light expand="md">
+    
+    {/*}   
        <ul>
     <li><Link to={routes.LANDING}>Landing</Link></li>
     <li><Link to={routes.HOME}>Home</Link></li>
@@ -139,21 +141,21 @@ class NavigationNonAuth extends React.Component {
     <li><Link to={routes.DJSPAGE}>DJS page</Link></li>
     <li><Link to={routes.MAPADMIN}>MapAdmin</Link></li>
     <li><SignOutButton /></li>
-   
   </ul>
+*/}
         <NavbarToggler onClick={this.toggle} />
         <NavbarBrand href={process.env.PUBLIC_URL + "/"}>WebMap</NavbarBrand>
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink to={routes.LANDING} href={routes.LANDING}  >
+              <Link to={routes.LANDING}   >
                 Landing
-              </NavLink>
+              </Link>
             </NavItem>
              <NavItem>
-              <NavLink to='/Sign'>
+              <Link to={routes.SIGN_IN}>
                 SignIn
-              </NavLink>
+              </Link>
             </NavItem>
           </Nav>
         </Collapse>
