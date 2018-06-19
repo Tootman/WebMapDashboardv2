@@ -57,7 +57,6 @@ class NavigationAuth extends React.Component {
       <Navbar color="light" light expand="md">
         <NavbarToggler onClick={this.toggle} />
         <NavbarBrand href={process.env.PUBLIC_URL + "/"}>WebMap</NavbarBrand>
-
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
@@ -104,6 +103,7 @@ class NavigationAuth extends React.Component {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
+            <li><SignOutButton /></li>
           </Nav>
         </Collapse>
       </Navbar>
@@ -120,12 +120,6 @@ class NavigationNonAuth extends React.Component {
         </li>
         <li>
           <Link to={routes.SIGN_IN}>Sign In</Link>
-        </li>
-        <li>
-          <Link to={routes.DJSPAGE}>DJS page</Link>
-        </li>
-        <li>
-          <Link to={routes.MAPADMIN}>MapAdmin</Link>
         </li>
       </ul>
     );
