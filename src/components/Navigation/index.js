@@ -146,7 +146,7 @@ class NavigationNonAuth extends React.Component {
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href={process.env.PUBLIC_URL + routes.LANDING}   >
+              <NavLink to={routes.LANDING}   >
                 Landing
               </NavLink>
             </NavItem>
