@@ -103,7 +103,9 @@ class NavigationAuth extends React.Component {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-            <li><SignOutButton /></li>
+            <li>
+              <SignOutButton />
+            </li>
           </Nav>
         </Collapse>
       </Navbar>
@@ -112,16 +114,40 @@ class NavigationAuth extends React.Component {
 }
 
 class NavigationNonAuth extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+
   render() {
     return (
-      <ul>
-        <li>
-          <Link to={routes.LANDING}>Landing</Link>
-        </li>
-        <li>
-          <Link to={routes.SIGN_IN}>Sign In</Link>
-        </li>
-      </ul>
+      <Navbar color="light" light expand="md">
+        <NavbarToggler onClick={this.toggle} />
+        <NavbarBrand href={process.env.PUBLIC_URL + "/"}>WebMap</NavbarBrand>
+        <Collapse isOpen={this.state.isOpen} navbar>
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+              <NavLink href={routes.LANDING}>
+                Landing
+              </NavLink>
+            </NavItem>
+             <NavItem>
+              <NavLink href={routes.SIGN_IN}>
+                SignIn
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Navbar>
     );
   }
 }
