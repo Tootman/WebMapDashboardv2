@@ -55,19 +55,31 @@ class DemoMap extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>Map Admin page</h1>
+				<h1>Map Admin DEMO page</h1>
 
 				<Nav tabs>
 					<NavItem>
 						<NavLink
 							className={classnames({
-								active: this.state.activeTab === "1"
+								active: this.state.activeTab === "1a"
 							})}
 							onClick={() => {
-								this.toggle("1");
+								this.toggle("1a");
 							}}
 						>
-							Import
+							Import from shp
+						</NavLink>
+					</NavItem>
+						<NavItem>
+						<NavLink
+							className={classnames({
+								active: this.state.activeTab === "1b"
+							})}
+							onClick={() => {
+								this.toggle("1b");
+							}}
+						>
+							Open from datase
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -85,13 +97,25 @@ class DemoMap extends React.Component {
 					<NavItem>
 						<NavLink
 							className={classnames({
-								active: this.state.activeTab === "3"
+								active: this.state.activeTab === "3a"
 							})}
 							onClick={() => {
-								this.toggle("3");
+								this.toggle("3a");
 							}}
 						>
-							Map
+							Map View
+						</NavLink>
+					</NavItem>
+					<NavItem>
+						<NavLink
+							className={classnames({
+								active: this.state.activeTab === "3b"
+							})}
+							onClick={() => {
+								this.toggle("3b");
+							}}
+						>
+							Meta Data
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -106,12 +130,34 @@ class DemoMap extends React.Component {
 							Export
 						</NavLink>
 					</NavItem>
+						<NavItem>
+						<NavLink
+							className={classnames({
+								active: this.state.activeTab === "5"
+							})}
+							onClick={() => {
+								this.toggle("5");
+							}}
+						>
+							Export as new map on database
+						</NavLink>
+					</NavItem>
 				</Nav>
 				<TabContent activeTab={this.state.activeTab}>
-					<TabPane tabId="1">
+					<TabPane tabId="1a">
 						<Row>
 							<Col sm="12">
-								<h4>Tab 1 Contents</h4>
+								<h4>Select shape file (or zip of set of shape files), from local drive, 
+									and import it as GeoJSON based map
+								</h4>
+							</Col>
+						</Row>
+					</TabPane>
+						<TabPane tabId="1b">
+						<Row>
+							<Col sm="12">
+								<h4>Open an existing map from the database (Not enabled on demo)
+								</h4>
 							</Col>
 						</Row>
 					</TabPane>
@@ -123,7 +169,7 @@ class DemoMap extends React.Component {
 							</Col>
 						</Row>
 					</TabPane>
-					<TabPane tabId="3">
+					<TabPane tabId="3a">
 						<Map className="map" center={this.state.center} zoom={13}>
 							<TileLayer
 								attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -141,6 +187,30 @@ class DemoMap extends React.Component {
 								<Rectangle bounds={this.state.rectangle} />
 							</FeatureGroup>
 						</Map>
+					</TabPane>
+					<TabPane tabId="3b">
+						<Row>
+							<Col sm="12">
+								<h4>Map meta data as a table (or maybe an another Tree View if contains nested data)</h4>
+								
+							</Col>
+						</Row>
+					</TabPane>
+					<TabPane tabId="4">
+						<Row>
+							<Col sm="12">
+								<h4>Export as set of ShapeFiles  to local drive</h4>
+								
+							</Col>
+						</Row>
+					</TabPane>
+					<TabPane tabId="5">
+						<Row>
+							<Col sm="12">
+								<h4>upload as new map on database (not available on DEMO)</h4>
+								
+							</Col>
+						</Row>
 					</TabPane>
 				</TabContent>
 			</div>
