@@ -153,6 +153,11 @@ class NavigationNonAuth extends React.Component {
                 Landing
               </Link>
             </NavItem>
+            <NavItem>
+              <Link to={routes.DEMOMAP}   >
+                Demo map
+              </Link>
+            </NavItem>
              <NavItem>
               <Link to={routes.SIGN_IN}>
                 SignIn

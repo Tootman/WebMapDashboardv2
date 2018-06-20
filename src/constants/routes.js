@@ -6,3 +6,4 @@ export const HOME = '/home';
 export const ACCOUNT = '/account';
 export const DJSPAGE = '/djspage';
 export const MAPADMIN = '/mapadmin';
+export const DEMOMAP = '/demomap';

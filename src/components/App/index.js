@@ -12,6 +12,7 @@ import withAuthentication from "../Session/withAuthentication";
 import * as routes from "../../constants/routes";
 import Djspage from "../Djspage";
 import MapAdmin from "../MapAdmin";
+import DemoMap from "../demomap";
 
 import "./index.css";
 
@@ -32,6 +33,7 @@ const App = () => (
       <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
       <Route exact path={routes.DJSPAGE} component={() => <Djspage/>} />
       <Route exact path={routes.MAPADMIN} component={() => <MapAdmin/>} />
+      <Route exact path={routes.DEMOMAP} component={() => <DemoMap/>} />
      
     </div>
   </Router>
