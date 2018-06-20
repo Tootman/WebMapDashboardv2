@@ -61,9 +61,10 @@ class NavigationAuth extends React.Component {
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href={process.env.PUBLIC_URL + "/MapAdmin"}>
-                Map Admin
-              </NavLink>
+              <Link to={routes.MAPADMIN}>
+              Map Admin
+              </Link>
+               
             </NavItem>
             <NavItem>
               <NavLink href={process.env.PUBLIC_URL + "/Account"}>
