@@ -52,6 +52,13 @@ class DemoMap extends React.Component {
 		}
 	}
 
+
+	componentDidUpdate(){
+        const mapRef = this.refs.map.leafletElement;
+        mapRef.invalidateSize()
+        console.log("didUpdate!")
+    }
+
 	render() {
 		return (
 			<div>
@@ -170,7 +177,7 @@ class DemoMap extends React.Component {
 						</Row>
 					</TabPane>
 					<TabPane tabId="3a">
-						<Map className="map" center={this.state.center} zoom={13}>
+						<Map className="map" ref="map" center={this.state.center} zoom={13}>
 							<TileLayer
 								attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
 								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
