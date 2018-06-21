@@ -2,7 +2,8 @@ import React from "react";
 import AuthUserContext from "./Session/AuthUserContext";
 import withAuthorization from "./Session/withAuthorization";
 import ReactJson from "react-json-view";
-import './index.css';
+import { Prompt } from "react-router";
+import "./index.css";
 import {
 	TabContent,
 	TabPane,
@@ -53,15 +54,17 @@ class DemoMap extends React.Component {
 	}
 
 
-	componentDidUpdate(){
-        const mapRef = this.refs.map.leafletElement;
-        mapRef.invalidateSize()
-        console.log("didUpdate!")
-    }
+
+	componentDidUpdate() {
+		const mapRef = this.refs.map.leafletElement;
+		mapRef.invalidateSize();
+		console.log("didUpdate!");
+	}
 
 	render() {
 		return (
 			<div>
+				<Prompt when={true} message="Are you sure you want to leave this page? - you will loose unsaved changes etc" />
 				<h1>Map Admin DEMO page</h1>
 
 				<Nav tabs>
@@ -77,7 +80,7 @@ class DemoMap extends React.Component {
 							Import from shp
 						</NavLink>
 					</NavItem>
-						<NavItem>
+					<NavItem>
 						<NavLink
 							className={classnames({
 								active: this.state.activeTab === "1b"
@@ -137,7 +140,7 @@ class DemoMap extends React.Component {
 							Export
 						</NavLink>
 					</NavItem>
-						<NavItem>
+					<NavItem>
 						<NavLink
 							className={classnames({
 								active: this.state.activeTab === "5"
@@ -154,16 +157,20 @@ class DemoMap extends React.Component {
 					<TabPane tabId="1a">
 						<Row>
 							<Col sm="12">
-								<h4>Select shape file (or zip of set of shape files), from local drive, 
-									and import it as GeoJSON based map
+								<h4>
+									Select shape file (or zip of set of shape
+									files), from local drive, and import it as
+									GeoJSON based map
 								</h4>
 							</Col>
 						</Row>
 					</TabPane>
-						<TabPane tabId="1b">
+					<TabPane tabId="1b">
 						<Row>
 							<Col sm="12">
-								<h4>Open an existing map from the database (Not enabled on demo)
+								<h4>
+									Open an existing map from the database (Not
+									enabled on demo)
 								</h4>
 							</Col>
 						</Row>
@@ -177,14 +184,21 @@ class DemoMap extends React.Component {
 						</Row>
 					</TabPane>
 					<TabPane tabId="3a">
-						<Map className="map" ref="map" center={this.state.center} zoom={13}>
+						<Map
+							className="map"
+							ref="map"
+							center={this.state.center}
+							zoom={13}
+						>
 							<TileLayer
 								attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
 								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 							/>
 
 							<LayerGroup>
-								<GeoJSON data={this.state.geoJson.testGeoJson} />
+								<GeoJSON
+									data={this.state.geoJson.testGeoJson}
+								/>
 								<LayerGroup />
 							</LayerGroup>
 
@@ -198,24 +212,29 @@ class DemoMap extends React.Component {
 					<TabPane tabId="3b">
 						<Row>
 							<Col sm="12">
-								<h4>Map meta data as a table (or maybe an another Tree View if contains nested data)</h4>
-								
+								<h4>
+									Map meta data as a table (or maybe an
+									another Tree View if contains nested data)
+								</h4>
 							</Col>
 						</Row>
 					</TabPane>
 					<TabPane tabId="4">
 						<Row>
 							<Col sm="12">
-								<h4>Export as set of ShapeFiles  to local drive</h4>
-								
+								<h4>
+									Export as set of ShapeFiles to local drive
+								</h4>
 							</Col>
 						</Row>
 					</TabPane>
 					<TabPane tabId="5">
 						<Row>
 							<Col sm="12">
-								<h4>upload as new map on database (not available on DEMO)</h4>
-								
+								<h4>
+									upload as new map on database (not available
+									on DEMO)
+								</h4>
 							</Col>
 						</Row>
 					</TabPane>

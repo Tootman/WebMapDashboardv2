@@ -59,12 +59,9 @@ class MapAdmin extends React.Component {
         console.log("didUpdate!")
     }
 
-    componentDidMount(){
-        //var mapRef = this.refs.map.leafletElement;
-        //console.log("did mount!")
-        //map.invalidateSize()
-    }
-
+   componentWillUnmount(){
+   	alert("going to leave the page?")
+   }
 
 
 
