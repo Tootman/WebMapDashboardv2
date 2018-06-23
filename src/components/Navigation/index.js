@@ -57,23 +57,23 @@ class NavigationAuth extends React.Component {
 
   render() {
     return (
-      <Navbar color="light" light expand="md">
+      <Navbar color="dark" dark expand="md">
 
         <NavbarToggler onClick={this.toggle} />
-        <NavbarBrand href={process.env.PUBLIC_URL + "/"}>WebMap</NavbarBrand>
+       <Link class="navbar-brand"  to={routes.LANDING} >WebMap</Link>
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
-            <NavItem>
-              <Link to={routes.MAPADMIN}>
+            <li class="nav-item">
+              <Link className="nav-link" to={routes.MAPADMIN}>
               Map Admin
               </Link>
 
-            </NavItem>
-            <NavItem>
-               <Link to={routes.ACCOUNT}>
+            </li>
+            <li className="nav-item">
+               <Link className="nav-link" to={routes.ACCOUNT}>
                 Account
               </Link>
-            </NavItem>
+            </li>
           
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
