@@ -52,6 +52,9 @@ class NavigationAuth extends React.Component {
     });
   }
 
+
+
+
   render() {
     return (
       <Navbar color="light" light expand="md">
@@ -64,16 +67,14 @@ class NavigationAuth extends React.Component {
               <Link to={routes.MAPADMIN}>
               Map Admin
               </Link>
-               
+
             </NavItem>
             <NavItem>
-              <NavLink href={process.env.PUBLIC_URL + "/Account"}>
+               <Link to={routes.ACCOUNT}>
                 Account
-              </NavLink>
+              </Link>
             </NavItem>
-            <NavItem>
-              <NavLink href={process.env.PUBLIC_URL + "/User"}>User</NavLink>
-            </NavItem>
+          
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Tools

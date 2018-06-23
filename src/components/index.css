@@ -3,10 +3,16 @@
 	height: 400px;
 }
 
+
 .navbar.navbar-expand-md.navbar-light.bg-light li.nav-item {
-	padding: 0.7em 1em 0.7em 1em;
+	padding: 0px;
+	margin:0px;
 }
 
+.navbar.navbar-expand-md.navbar-light.bg-light  a{
+	padding:1em;
+	margin:0px;
+}
 
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
@@ -16,9 +22,14 @@
 }
 
 
-
 .navbar.navbar-expand-md.navbar-light.bg-light li:hover,
 .nav-tabs li:hover {
-	background-color: #eeead6 !important; /* beige */
-	color: #007bff; /* bootstrap blue */
+	background-color: #eeead6 !important; 
+	color: #007bff; 
 }
+
+
+
+
+
+

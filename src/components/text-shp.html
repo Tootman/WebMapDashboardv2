@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <article>
+        <input id="files" type="file" />
+    </article>
+  
+    <script src="shp.js"></script>
+    <script>
+
+    window.onload = function() {
+
+        function fileToJSON(file) {
+            shp(file).then((geojson)=> {
+                delete geojson.fileName;
+                console.log("MyGeoL:", geojson)
+                //do something with your geojson
+            }).catch((error)=> {
+                console.log("myError:", error)
+            })
+        }
+
+        const filesInput = document.getElementById("files");
+        filesInput.addEventListener("change", (event) => {
+            const files = event.target.files; //FileList object
+            const output = document.getElementById("result");
+            const file = files[0];
+            const fileReader = new FileReader();
+            fileReader.addEventListener("load", (event) =>{
+                const textFile = event.target;
+                fileToJSON(textFile.result)
+            });
+            fileReader.readAsArrayBuffer(file)
+        });
+    }
+    </script>
+</body>
+
+</html>
