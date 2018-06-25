@@ -3,7 +3,9 @@ import AuthUserContext from "./Session/AuthUserContext";
 import withAuthorization from "./Session/withAuthorization";
 import ReactJson from "react-json-view";
 import shp from "shpjs";
+import ImportShp from "./ImportShp";
 import "./index.css";
+import testGeoJson from "./testGeoJson";
 import {
 	TabContent,
 	TabPane,
@@ -18,7 +20,6 @@ import {
 	Col
 } from "reactstrap";
 import classnames from "classnames";
-import testGeoJson from "./testGeoJson";
 import {
 	Circle,
 	FeatureGroup,
@@ -29,7 +30,7 @@ import {
 	Rectangle,
 	TileLayer
 } from "react-leaflet";
-import ReactFileReader from "react-file-reader";
+
 
 // import { slide as Menu } from "react-burger-menu";
 
@@ -37,14 +38,15 @@ class MapAdmin extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggle = this.toggle.bind(this);
-		this.handleFiles = this.handleFiles.bind(this);
+		this.fileToJSON = this.fileToJSON.bind(this);
+		//this.handleFiles = this.handleFiles.bind(this);
 		this.state = {
 			activeTab: "1",
 			geoJson: testGeoJson.testGeoJson,
+			jsonInfo: this.stripOutCoords(testGeoJson.testGeoJson),
 			center: [51.505, -0.09],
 			rectangle: [[51.49, -0.08], [51.5, -0.06]],
-			mapStyle: { height: "500px", width: "100%" },
-			
+			mapStyle: { height: "500px", width: "100%" }
 		};
 	}
 
@@ -61,11 +63,12 @@ class MapAdmin extends React.Component {
 			.then(geojson => {
 				delete geojson.fileName;
 				console.log("MyGeoL:", geojson);
-				
+
 				//do something with your geojson
-				this.setState ({
+				this.setState({
 					geoJson: geojson,
-					mapChangeToggle: !this.state.mapChangeToggle
+					mapChangeToggle: !this.state.mapChangeToggle,
+					jsonInfo: this.stripOutCoords(geojson),
 				});
 			})
 			.catch(error => {
@@ -73,34 +76,24 @@ class MapAdmin extends React.Component {
 			});
 	}
 
-	handleFiles(inFile) {
+
+	stripOutCoords(inJson) {
+		// return a copy of GeoJSON with all coords removed
+
+		const jsonCopy = JSON.parse(JSON.stringify(inJson));
 		
-		const myFile = inFile.fileList[0]
-		const fileExt = myFile.name
-			.split(".")
-			.pop()
-			.toLowerCase();
-		switch (fileExt) {
-			case "shp":
-			case "zip":
-				//code block
-				console.log("shp!");
-				const fileReader = new FileReader();
-				fileReader.addEventListener("load", event => {
-					const textFile = event.target;
-					this.fileToJSON(textFile.result);
-				});
-				fileReader.readAsArrayBuffer(myFile);
-				console.log("file:", myFile);
-				break;
-			case "geojson":
-			//code block
-			default:
-			//code block
-		}
+		Object.keys(jsonCopy.features).forEach(
+			i => {
+				
+				delete jsonCopy.features[i].geometry.coordinates;
+				delete jsonCopy.features[i].geometry.bbox;
+			}
+		);
+		return jsonCopy;
 	}
 
 	componentDidUpdate() {
+		// to force rre-rendering map tiles
 		const mapRef = this.refs.map.leafletElement;
 		mapRef.invalidateSize();
 		console.log("didUpdate!");
@@ -121,7 +114,7 @@ class MapAdmin extends React.Component {
 								this.toggle("1a");
 							}}
 						>
-							Import from shp
+							Import Shpfiles
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -133,7 +126,7 @@ class MapAdmin extends React.Component {
 								this.toggle("1b");
 							}}
 						>
-							Open from datase
+							Open Map
 						</NavLink>
 					</NavItem>
 					<NavItem>
@@ -201,19 +194,7 @@ class MapAdmin extends React.Component {
 					<TabPane tabId="1a">
 						<Row>
 							<Col sm="12">
-								<h4>
-									Select shape file (or zip of set of shape
-									files), from local drive, and import it as
-									GeoJSON based map
-								</h4>
-								<ReactFileReader
-									fileTypes=".zip, .shp, .geojson"
-									handleFiles={this.handleFiles}
-									multipleFiles={false}
-									base64={true}
-								>
-									<Button className="btn">Upload file</Button>
-								</ReactFileReader>
+								<ImportShp callback={this.fileToJSON}/>
 							</Col>
 						</Row>
 					</TabPane>
@@ -230,7 +211,7 @@ class MapAdmin extends React.Component {
 					<TabPane tabId="2">
 						<Row>
 							<Col sm="12">
-								<ReactJson src={this.state.geoJson} />
+								<ReactJson src={this.state.jsonInfo} />
 								}
 							</Col>
 						</Row>
