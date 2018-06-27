@@ -5,6 +5,7 @@ import ReactJson from "react-json-view";
 import shp from "shpjs";
 import ImportShp from "./ImportShp";
 import OpenMap from "./OpenMap";
+import UploadNewMap from "./UploadNewMap";
 import "./index.css";
 import testGeoJson from "./testGeoJson";
 import {
@@ -42,6 +43,7 @@ class MapAdmin extends React.Component {
 		this.toggle = this.toggle.bind(this);
 		this.fileToJSON = this.fileToJSON.bind(this);
 		this.OpenMapCallback = this.OpenMapCallback.bind(this);
+		this.uploadNewMap = this.uploadNewMap.bind(this);
 		this.state = {
 			activeTab: "1",
 			geoJson: testGeoJson.testGeoJson,
@@ -135,6 +137,10 @@ class MapAdmin extends React.Component {
 	OpenMapCallback(mapRef) {
 		console.log("mapRef:", mapRef);
 		this.retrieveMapFromFireBase(mapRef);
+	}
+
+	uploadNewMap(){
+		console.log("uploadNewMap in MapAdmin called!")
 	}
 
 	render() {
@@ -273,10 +279,10 @@ class MapAdmin extends React.Component {
 							<TabPane tabId="5">
 								<Row>
 									<Col sm="12">
-										<h4>
-											upload as new map on database (not
-											available on DEMO)
-										</h4>
+										
+									<UploadNewMap 
+										callback = {this.uploadNewMap}
+									/>
 									</Col>
 								</Row>
 							</TabPane>
