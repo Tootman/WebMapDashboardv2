@@ -127,6 +127,7 @@ class MapAdmin extends React.Component {
 		const mapRef = this.refs.map.leafletElement;
 		mapRef.invalidateSize();
 		console.log("didUpdate!");
+		 this.refs.map.leafletElement.fitBounds(this.refs.geoJsonLayer.leafletElement.getBounds()) 
 	}
 
 	OpenMapCallback(mapRef) {
@@ -260,6 +261,7 @@ class MapAdmin extends React.Component {
 								<GeoJSON
 									data={this.state.geoJson}
 									key={this.state.mapChangeToggle}
+									ref="geoJsonLayer"
 								/>
 								<LayerGroup />
 							</LayerGroup>
