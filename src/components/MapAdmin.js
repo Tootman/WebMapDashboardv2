@@ -32,6 +32,7 @@ import {
 	Rectangle,
 	TileLayer
 } from "react-leaflet";
+import { db, auth } from "../firebase/firebase";
 
 // import { slide as Menu } from "react-burger-menu";
 
@@ -59,6 +60,12 @@ class MapAdmin extends React.Component {
 		}
 	}
 
+	mapUpdateToggle() {
+		this.setState({
+			mapChangeToggle: !this.state.mapChangeToggle
+		});
+	}
+
 	fileToJSON(file) {
 		shp(file)
 			.then(geojson => {
@@ -68,9 +75,9 @@ class MapAdmin extends React.Component {
 				//do something with your geojson
 				this.setState({
 					geoJson: geojson,
-					mapChangeToggle: !this.state.mapChangeToggle,
 					jsonInfo: this.stripOutCoords(geojson)
 				});
+				this.mapUpdateToggle();
 			})
 			.catch(error => {
 				console.log("myError:", error);
@@ -89,6 +96,30 @@ class MapAdmin extends React.Component {
 		return jsonCopy;
 	}
 
+	retrieveMapFromFireBase(mapIndex) {
+		const nodePath = String("/App/Maps/" + mapIndex);
+		const parent = this;
+		db.ref(nodePath)
+			.once("value")
+			.then(
+				function(snapshot) {
+					// loadOverlayLayer(snapshot.val())  // checks storage then tries downliading file
+					//const layerData = snapshot.val()
+					//console.log("GeoJson: " + snapshot.val());
+					const geo = snapshot.val().Geo
+					parent.setState({
+						geoJson: geo,
+						jsonInfo: parent.stripOutCoords(geo)
+					});
+					parent.mapUpdateToggle()
+				}
+				// clear geoLayer data from map
+				//  setupGeoLayer (layerData.Geo, layerData.Meta)
+				// Map.fitBounds(App.geoLayer.getBounds())
+				// set state mapkey to  snapshot.key
+			);
+	}
+
 	componentDidUpdate() {
 		// to force rre-rendering map tiles
 		const mapRef = this.refs.map.leafletElement;
@@ -98,6 +129,7 @@ class MapAdmin extends React.Component {
 
 	OpenMapCallback(mapRef) {
 		console.log("mapRef:", mapRef);
+		this.retrieveMapFromFireBase(mapRef);
 	}
 
 	render() {

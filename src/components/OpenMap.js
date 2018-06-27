@@ -49,8 +49,11 @@ class OpenMap extends React.Component {
 		});
 	}
 
+
+
 	selectMapIndex(e) {
 		console.log("selectMapIndex called!", e);
+		this.props.callback(e);
 	}
 
 	render() {
@@ -83,7 +86,6 @@ class MapCards extends React.Component {
 										this.props.mapIndexCallback(item.mapID)
 									}
 								>
-									{" "}
 									Open
 								</Button>
 							</p>
