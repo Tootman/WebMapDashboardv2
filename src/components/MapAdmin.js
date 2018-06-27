@@ -141,124 +141,149 @@ class MapAdmin extends React.Component {
 		return (
 			<div>
 				<h1>Map Admin page</h1>
+				<Row>
+					<Col md="6">
+						<Nav tabs>
+							<NavItem>
+								<NavLink
+									className={classnames({
+										active: this.state.activeTab === "1a"
+									})}
+									onClick={() => {
+										this.toggle("1a");
+									}}
+								>
+									Import
+								</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink
+									className={classnames({
+										active: this.state.activeTab === "1b"
+									})}
+									onClick={() => {
+										this.toggle("1b");
+									}}
+								>
+									Open
+								</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink
+									className={classnames({
+										active: this.state.activeTab === "2"
+									})}
+									onClick={() => {
+										this.toggle("2");
+									}}
+								>
+									Inspector
+								</NavLink>
+							</NavItem>
 
-				<Nav tabs>
-					<NavItem>
-						<NavLink
-							className={classnames({
-								active: this.state.activeTab === "1a"
-							})}
-							onClick={() => {
-								this.toggle("1a");
-							}}
-						>
-							Import Shpfiles
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							className={classnames({
-								active: this.state.activeTab === "1b"
-							})}
-							onClick={() => {
-								this.toggle("1b");
-							}}
-						>
-							Open Map
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							className={classnames({
-								active: this.state.activeTab === "2"
-							})}
-							onClick={() => {
-								this.toggle("2");
-							}}
-						>
-							Data Viewer
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							className={classnames({
-								active: this.state.activeTab === "3a"
-							})}
-							onClick={() => {
-								this.toggle("3a");
-							}}
-						>
-							Map View
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							className={classnames({
-								active: this.state.activeTab === "3b"
-							})}
-							onClick={() => {
-								this.toggle("3b");
-							}}
-						>
-							Meta Data
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							className={classnames({
-								active: this.state.activeTab === "4"
-							})}
-							onClick={() => {
-								this.toggle("4");
-							}}
-						>
-							Export
-						</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink
-							className={classnames({
-								active: this.state.activeTab === "5"
-							})}
-							onClick={() => {
-								this.toggle("5");
-							}}
-						>
-							Export as new map on database
-						</NavLink>
-					</NavItem>
-				</Nav>
-				<TabContent activeTab={this.state.activeTab}>
-					<TabPane tabId="1a">
-						<Row>
-							<Col sm="12">
-								<ImportShp callback={this.fileToJSON} />
-							</Col>
-						</Row>
-					</TabPane>
-					<TabPane tabId="1b">
-						<OpenMap callback={this.OpenMapCallback} />
-					</TabPane>
-					<TabPane tabId="2">
-						<Row>
-							<Col sm="12">
-								<ReactJson
-									src={this.state.jsonInfo}
-									
-									enableEdit="false"
-									collapsed ="false"
-									enableClipboard = "false"
-									enableAdd="false"
-									enableDelet="false"
-									displayObjectSize = "false"
-									displayDataTypes = "false"
-									name="GeoJson"
-								/>
-								}
-							</Col>
-						</Row>
-					</TabPane>
-					<TabPane tabId="3a">
+							<NavItem>
+								<NavLink
+									className={classnames({
+										active: this.state.activeTab === "3b"
+									})}
+									onClick={() => {
+										this.toggle("3b");
+									}}
+								>
+									Meta
+								</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink
+									className={classnames({
+										active: this.state.activeTab === "4"
+									})}
+									onClick={() => {
+										this.toggle("4");
+									}}
+								>
+									Export
+								</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink
+									className={classnames({
+										active: this.state.activeTab === "5"
+									})}
+									onClick={() => {
+										this.toggle("5");
+									}}
+								>
+									Upload
+								</NavLink>
+							</NavItem>
+						</Nav>
+						<TabContent activeTab={this.state.activeTab}>
+							<TabPane tabId="1a">
+								<Row>
+									<Col sm="12">
+										<ImportShp callback={this.fileToJSON} />
+									</Col>
+								</Row>
+							</TabPane>
+							<TabPane tabId="1b">
+								<OpenMap callback={this.OpenMapCallback} />
+							</TabPane>
+							<TabPane tabId="2">
+								<Row>
+									<Col sm="12">
+										<ReactJson
+											src={this.state.jsonInfo}
+											enableEdit="false"
+											collapsed="false"
+											enableClipboard="false"
+											enableAdd="false"
+											enableDelet="false"
+											displayObjectSize="false"
+											displayDataTypes="false"
+											name="GeoJson"
+										/>
+										}
+									</Col>
+								</Row>
+							</TabPane>
+							<TabPane tabId="3b">
+								<Row>
+									<Col md="12">
+										<div>
+											<h4>Meta data </h4>
+											<p>
+												Tabular data of map meta data
+												etc
+											</p>
+										</div>
+									</Col>
+								</Row>
+							</TabPane>
+							<TabPane tabId="4">
+								<Row>
+									<Col sm="12">
+										<h4>
+											Export as set of ShapeFiles to local
+											drive
+										</h4>
+									</Col>
+								</Row>
+							</TabPane>
+							<TabPane tabId="5">
+								<Row>
+									<Col sm="12">
+										<h4>
+											upload as new map on database (not
+											available on DEMO)
+										</h4>
+									</Col>
+								</Row>
+							</TabPane>
+						</TabContent>
+					</Col>
+					<Col md="6">
+						<h3> Map </h3>
 						<Map
 							className="map"
 							ref="map"
@@ -279,37 +304,8 @@ class MapAdmin extends React.Component {
 								<LayerGroup />
 							</LayerGroup>
 						</Map>
-					</TabPane>
-					<TabPane tabId="3b">
-						<Row>
-							<Col md="12">
-								<div>
-									<h4>Meta data </h4>
-									<p>Tabular data of map meta data etc</p>
-								</div>
-							</Col>
-						</Row>
-					</TabPane>
-					<TabPane tabId="4">
-						<Row>
-							<Col sm="12">
-								<h4>
-									Export as set of ShapeFiles to local drive
-								</h4>
-							</Col>
-						</Row>
-					</TabPane>
-					<TabPane tabId="5">
-						<Row>
-							<Col sm="12">
-								<h4>
-									upload as new map on database (not available
-									on DEMO)
-								</h4>
-							</Col>
-						</Row>
-					</TabPane>
-				</TabContent>
+					</Col>
+				</Row>
 			</div>
 		);
 	}
