@@ -48,7 +48,9 @@ class MapAdmin extends React.Component {
 			jsonInfo: this.stripOutCoords(testGeoJson.testGeoJson),
 			center: [51.505, -0.09],
 			rectangle: [[51.49, -0.08], [51.5, -0.06]],
-			mapStyle: { height: "500px", width: "100%" }
+			mapStyle: { height: "500px", width: "100%" },
+			maxZoom: 18,
+			minZoom: 10
 		};
 	}
 
@@ -59,8 +61,6 @@ class MapAdmin extends React.Component {
 			});
 		}
 	}
-
-	
 
 	mapUpdateToggle() {
 		this.setState({
@@ -108,12 +108,12 @@ class MapAdmin extends React.Component {
 					// loadOverlayLayer(snapshot.val())  // checks storage then tries downliading file
 					//const layerData = snapshot.val()
 					//console.log("GeoJson: " + snapshot.val());
-					const geo = snapshot.val().Geo
+					const geo = snapshot.val().Geo;
 					parent.setState({
 						geoJson: geo,
 						jsonInfo: parent.stripOutCoords(geo)
 					});
-					parent.mapUpdateToggle()
+					parent.mapUpdateToggle();
 				}
 				// clear geoLayer data from map
 				//  setupGeoLayer (layerData.Geo, layerData.Meta)
@@ -127,7 +127,9 @@ class MapAdmin extends React.Component {
 		const mapRef = this.refs.map.leafletElement;
 		mapRef.invalidateSize();
 		console.log("didUpdate!");
-		 this.refs.map.leafletElement.fitBounds(this.refs.geoJsonLayer.leafletElement.getBounds()) 
+		this.refs.map.leafletElement.fitBounds(
+			this.refs.geoJsonLayer.leafletElement.getBounds()
+		);
 	}
 
 	OpenMapCallback(mapRef) {
@@ -240,7 +242,18 @@ class MapAdmin extends React.Component {
 					<TabPane tabId="2">
 						<Row>
 							<Col sm="12">
-								<ReactJson src={this.state.jsonInfo} />
+								<ReactJson
+									src={this.state.jsonInfo}
+									
+									enableEdit="false"
+									collapsed ="false"
+									enableClipboard = "false"
+									enableAdd="false"
+									enableDelet="false"
+									displayObjectSize = "false"
+									displayDataTypes = "false"
+									name="GeoJson"
+								/>
 								}
 							</Col>
 						</Row>
@@ -249,8 +262,8 @@ class MapAdmin extends React.Component {
 						<Map
 							className="map"
 							ref="map"
-							center={this.state.center}
-							zoom={13}
+							maxZoom={this.state.maxZoom}
+							minZoom={this.state.minZoom}
 						>
 							<TileLayer
 								attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
