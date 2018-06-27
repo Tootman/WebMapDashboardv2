@@ -60,6 +60,8 @@ class MapAdmin extends React.Component {
 		}
 	}
 
+	
+
 	mapUpdateToggle() {
 		this.setState({
 			mapChangeToggle: !this.state.mapChangeToggle

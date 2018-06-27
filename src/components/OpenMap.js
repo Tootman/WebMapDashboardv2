@@ -42,14 +42,14 @@ class OpenMap extends React.Component {
 		});
 	}
 
+	
+
 	renderMapIndexList() {
 		this.state.mapIndeces.map(item => {
 			<li> Hello insidr render: </li>;
 			console.log("from render: ", item);
 		});
 	}
-
-
 
 	selectMapIndex(e) {
 		console.log("selectMapIndex called!", e);
