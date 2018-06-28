@@ -52,7 +52,9 @@ class MapAdmin extends React.Component {
 			rectangle: [[51.49, -0.08], [51.5, -0.06]],
 			mapStyle: { height: "500px", width: "100%" },
 			maxZoom: 18,
-			minZoom: 10
+			minZoom: 10,
+			dbMapIndexPath: "App/Mapindex/",
+			dbMapPath: "App/Maps/"
 		};
 	}
 
@@ -139,8 +141,25 @@ class MapAdmin extends React.Component {
 		this.retrieveMapFromFireBase(mapRef);
 	}
 
-	uploadNewMap(){
-		console.log("uploadNewMap in MapAdmin called!")
+	uploadNewMap(uploadNewMapState){
+		console.log("uploadNewMap in MapAdmin called!", uploadNewMapState)
+		db
+	.ref(this.state.dbMapPath)
+	.push({
+		Geo: this.state.geoJson
+	})
+	.then(snap => {
+		//console.log("new key " + snap.key);
+		return snap.key;
+	})
+	.then (key=>{
+		db.ref(this.state.mapIndexPath).push({ 
+			mapID: key,
+			name: uploadNewMapState.mapName,
+			description: uploadNewMapState.mapDescription
+			 })
+});
+
 	}
 
 	render() {
@@ -233,7 +252,7 @@ class MapAdmin extends React.Component {
 								</Row>
 							</TabPane>
 							<TabPane tabId="1b">
-								<OpenMap callback={this.OpenMapCallback} />
+								 <OpenMap callback={this.OpenMapCallback}  />
 							</TabPane>
 							<TabPane tabId="2">
 								<Row>

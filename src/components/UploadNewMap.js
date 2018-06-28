@@ -34,12 +34,17 @@ class UploadNewMap extends React.Component {
 			mapIndeces: [
 				{ name: "Freddy", age: 27 },
 				{ name: "Jimmy", age: 25 }
-			]
+			],
+			mapName: "",
+			mapDescription: ""
 		};
 	}
 
-	handleSubmit() {
-		this.props.callback()
+	handleSubmit(e) {
+		this.props.callback(this.state)
+		e.preventDefault()
+		
+		//console.log("handled:", this.mapName.value)
 	}
 
 	render() {
@@ -54,6 +59,8 @@ class UploadNewMap extends React.Component {
 							name="mapName"
 							id="mapName"
 							placeholder="map name"
+							value={this.state.mapName}
+							onChange = {e=>{this.setState({mapName : e.target.value})}}
 						/>
 					</FormGroup>
 					<FormGroup>
@@ -63,9 +70,11 @@ class UploadNewMap extends React.Component {
 							name="mapDescription"
 							id="mapDescription"
 							placeholder="map description"
+							ref="mapDescription"
+							onChange = {e=>{this.setState({mapDescription : e.target.value})}}
 						/>
 					</FormGroup>
-					<Button color="success"  onClick={this.handleSubmit}>Upload</Button>
+					<Button type="submit" value="submit" color="success"  onClick={this.handleSubmit}>Upload</Button>
 				</Form>
 			</div>
 		);
