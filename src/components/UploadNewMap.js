@@ -29,7 +29,8 @@ import {
 class UploadNewMap extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleSubmit= this.handleSubmit.bind(this);
+		//this.handleSubmit = this.handleSubmit.bind(this);
+		this.uploadNewMap = this.uploadNewMap.bind(this);
 		this.state = {
 			mapIndeces: [
 				{ name: "Freddy", age: 27 },
@@ -41,10 +42,38 @@ class UploadNewMap extends React.Component {
 	}
 
 	handleSubmit(e) {
-		this.props.callback(this.state)
-		e.preventDefault()
-		
+		this.props.callback(this.state);
+		e.preventDefault();
+
 		//console.log("handled:", this.mapName.value)
+	}
+
+	uploadNewMap(e) {
+		//console.log("uploadNewMap in MapAdmin called!", uploadNewMapState);
+		//debugger
+		e.preventDefault();
+
+		db.ref(this.props.mapPath)
+			.push(this.props.geo)
+			.then(snap => {
+				//console.log("new key " + snap.key);
+				return snap.key;
+			})
+			.then(key => {
+				debugger
+				db.ref(this.props.mapIndexPath)
+				.push({
+					mapID: key,
+					name: this.state.mapName,
+					description: this.state.mapDescription
+				});
+				console.log(
+					"Pushing:",	key,this.state.mapName,	this.state.mapDescription
+				);
+			})
+			.catch(e => {
+				console.log("Errrror:", e);
+			});
 	}
 
 	render() {
@@ -60,7 +89,9 @@ class UploadNewMap extends React.Component {
 							id="mapName"
 							placeholder="map name"
 							value={this.state.mapName}
-							onChange = {e=>{this.setState({mapName : e.target.value})}}
+							onChange={e => {
+								this.setState({ mapName: e.target.value });
+							}}
 						/>
 					</FormGroup>
 					<FormGroup>
@@ -71,10 +102,21 @@ class UploadNewMap extends React.Component {
 							id="mapDescription"
 							placeholder="map description"
 							ref="mapDescription"
-							onChange = {e=>{this.setState({mapDescription : e.target.value})}}
+							onChange={e => {
+								this.setState({
+									mapDescription: e.target.value
+								});
+							}}
 						/>
 					</FormGroup>
-					<Button type="submit" value="submit" color="success"  onClick={this.handleSubmit}>Upload</Button>
+					<Button
+						type="submit"
+						value="submit"
+						color="success"
+						onClick={this.uploadNewMap}
+					>
+						Upload
+					</Button>
 				</Form>
 			</div>
 		);

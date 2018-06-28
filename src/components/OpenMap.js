@@ -36,13 +36,19 @@ class OpenMap extends React.Component {
 	componentWillMount() {
 		retriveMapIndex().then(res => {
 			console.log("res from OpenMap:", res);
+			
 			this.setState({
 				mapIndeces: res
 			});
+
+
 		});
+
 	}
 
-	
+	componentDidMount() {
+
+	}
 
 	renderMapIndexList() {
 		this.state.mapIndeces.map(item => {
@@ -50,6 +56,7 @@ class OpenMap extends React.Component {
 			console.log("from render: ", item);
 		});
 	}
+	
 
 	selectMapIndex(e) {
 		console.log("selectMapIndex called!", e);
@@ -58,22 +65,28 @@ class OpenMap extends React.Component {
 
 	render() {
 		return (
+			<section>
+			<p> Open an existing map from the database</p>
 			<MapCards
 				mapRefs={this.state.mapIndeces}
 				mapIndexCallback={this.selectMapIndex.bind(this)}
 			/>
+			</section>
 		);
 	}
 }
 
 class MapCards extends React.Component {
 	render() {
-		const MapCards = this.props.mapRefs.map((item, k) => {
+		
+
+// take the object of mapReferences, convert to array using map, then iterate through them creating card components
+const MapCards =  Object.values(this.props.mapRefs).map((item) => {
 			return (
 				<Col
 					md="4"
 					className="d-flex align-items-stretch justify-content-around"
-					key={k}
+					key={item.mapID}
 				>
 					<Card body className="bg-info text-white ">
 						<CardTitle>{item.name}</CardTitle>
@@ -92,9 +105,10 @@ class MapCards extends React.Component {
 						</article>
 					</Card>
 				</Col>
+				
 			);
 		});
-		return <Row> {MapCards} </Row>;
+		return <Row> {MapCards}</Row>;
 	}
 }
 

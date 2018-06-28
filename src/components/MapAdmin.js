@@ -43,7 +43,7 @@ class MapAdmin extends React.Component {
 		this.toggle = this.toggle.bind(this);
 		this.fileToJSON = this.fileToJSON.bind(this);
 		this.OpenMapCallback = this.OpenMapCallback.bind(this);
-		this.uploadNewMap = this.uploadNewMap.bind(this);
+		//this.uploadNewMap = this.uploadNewMap.bind(this);
 		this.state = {
 			activeTab: "1",
 			geoJson: testGeoJson.testGeoJson,
@@ -141,26 +141,7 @@ class MapAdmin extends React.Component {
 		this.retrieveMapFromFireBase(mapRef);
 	}
 
-	uploadNewMap(uploadNewMapState){
-		console.log("uploadNewMap in MapAdmin called!", uploadNewMapState)
-		db
-	.ref(this.state.dbMapPath)
-	.push({
-		Geo: this.state.geoJson
-	})
-	.then(snap => {
-		//console.log("new key " + snap.key);
-		return snap.key;
-	})
-	.then (key=>{
-		db.ref(this.state.mapIndexPath).push({ 
-			mapID: key,
-			name: uploadNewMapState.mapName,
-			description: uploadNewMapState.mapDescription
-			 })
-});
 
-	}
 
 	render() {
 		return (
@@ -301,6 +282,9 @@ class MapAdmin extends React.Component {
 										
 									<UploadNewMap 
 										callback = {this.uploadNewMap}
+										geo = {this.state.geoJson}
+										mapPath={this.state.dbMapPath}
+										mapIndexPath = {this.state.dbMapIndexPath}
 									/>
 									</Col>
 								</Row>
