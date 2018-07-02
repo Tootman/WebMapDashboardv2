@@ -5,6 +5,7 @@ import ReactJson from "react-json-view";
 import shp from "shpjs";
 import ImportShp from "./ImportShp";
 import OpenMap from "./OpenMap";
+import SaveShp from "./SaveShp";
 import UploadNewMap from "./UploadNewMap";
 import "./index.css";
 import testGeoJson from "./testGeoJson";
@@ -141,8 +142,6 @@ class MapAdmin extends React.Component {
 		this.retrieveMapFromFireBase(mapRef);
 	}
 
-
-
 	render() {
 		return (
 			<div>
@@ -233,7 +232,7 @@ class MapAdmin extends React.Component {
 								</Row>
 							</TabPane>
 							<TabPane tabId="1b">
-								 <OpenMap callback={this.OpenMapCallback}  />
+								<OpenMap callback={this.OpenMapCallback} />
 							</TabPane>
 							<TabPane tabId="2">
 								<Row>
@@ -269,23 +268,21 @@ class MapAdmin extends React.Component {
 							<TabPane tabId="4">
 								<Row>
 									<Col sm="12">
-										<h4>
-											Export as set of ShapeFiles to local
-											drive
-										</h4>
+										<SaveShp geoJson={this.state.geoJson} />
 									</Col>
 								</Row>
 							</TabPane>
 							<TabPane tabId="5">
 								<Row>
 									<Col sm="12">
-										
-									<UploadNewMap 
-										callback = {this.uploadNewMap}
-										geo = {this.state.geoJson}
-										mapPath={this.state.dbMapPath}
-										mapIndexPath = {this.state.dbMapIndexPath}
-									/>
+										<UploadNewMap
+											callback={this.uploadNewMap}
+											geo={this.state.geoJson}
+											mapPath={this.state.dbMapPath}
+											mapIndexPath={
+												this.state.dbMapIndexPath
+											}
+										/>
 									</Col>
 								</Row>
 							</TabPane>
