@@ -7,6 +7,7 @@ import ImportShp from "./ImportShp";
 import OpenMap from "./OpenMap";
 import SaveShp from "./SaveShp";
 import MetaData from "./MetaData";
+// import RelatedData from "./RelatedData";
 import UploadNewMap from "./UploadNewMap";
 import "./index.css";
 import testGeoJson from "./testGeoJson";
@@ -60,8 +61,8 @@ class MapAdmin extends React.Component {
 			mapId: "",
 			mapName: "",
 			mapDescription: "",
-			metaData : {"no meta data" : ""},
-			relatedData : {}
+			metaData: { "no meta data": "" },
+			relatedData: { "No related data": "" }
 		};
 	}
 
@@ -116,33 +117,19 @@ class MapAdmin extends React.Component {
 		const parent = this;
 		db.ref(nodePath)
 			.once("value")
-			.then(
-				function(snapshot) {
-					// loadOverlayLayer(snapshot.val())  // checks storage then tries downliading file
-					//const layerData = snapshot.val()
-					//console.log("GeoJson: " + snapshot.val());
-					const geo = snapshot.val().Geo;
-					//const meta = snapshot.val().Meta;
-					const related =  snapshot.val().related;
-					
-					parent.setState({
-						geoJson: geo,
-						jsonInfo: parent.stripOutCoords(geo),
-						metaData:  (snapshot.val().Meta)  || {"no meta data" : ""} ,
-						relatedData : related
-					});
-					parent.mapUpdateToggle();
-				}
-
-
-
-
-
-				// clear geoLayer data from map
-				//  setupGeoLayer (layerData.Geo, layerData.Meta)
-				// Map.fitBounds(App.geoLayer.getBounds())
-				// set state mapkey to  snapshot.key
-			);
+			.then(function(snapshot) {
+				// loadOverlayLayer(snapshot.val())  // checks storage then tries downliading file
+				//const layerData = snapshot.val()
+				//console.log("GeoJson: " + snapshot.val());
+				const snap = snapshot.val();
+				parent.setState({
+					geoJson: snap.Geo,
+					jsonInfo: parent.stripOutCoords(snap.Geo),
+					metaData: snap.Meta || { "no meta data": "" },
+					relatedData: snap.Related || { "no related data": "" }
+				});
+				parent.mapUpdateToggle();
+			});
 	}
 
 	componentDidUpdate() {
@@ -225,6 +212,18 @@ class MapAdmin extends React.Component {
 							<NavItem>
 								<NavLink
 									className={classnames({
+										active: this.state.activeTab === "3c"
+									})}
+									onClick={() => {
+										this.toggle("3c");
+									}}
+								>
+									Related
+								</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink
+									className={classnames({
 										active: this.state.activeTab === "4"
 									})}
 									onClick={() => {
@@ -282,8 +281,28 @@ class MapAdmin extends React.Component {
 										<div>
 											<h4>Meta data </h4>
 											<MetaData
-												metaData = {this.state.metaData}
+												metaData={this.state.metaData}
 											/>
+										</div>
+									</Col>
+								</Row>
+							</TabPane>
+							<TabPane tabId="3c">
+								<Row>
+									<Col md="12">
+										<div>
+											<h4>Related data </h4>
+											<ReactJson
+											src={this.state.relatedData}
+											enableEdit="false"
+											collapsed="false"
+											enableClipboard="false"
+											enableAdd="false"
+											enableDelet="false"
+											displayObjectSize="false"
+											displayDataTypes="false"
+											name="Related Data"
+										/>
 										</div>
 									</Col>
 								</Row>
