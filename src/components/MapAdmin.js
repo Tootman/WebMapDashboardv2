@@ -55,7 +55,9 @@ class MapAdmin extends React.Component {
 			maxZoom: 18,
 			minZoom: 10,
 			dbMapIndexPath: "App/Mapindex/",
-			dbMapPath: "App/Maps/"
+			dbMapPath: "App/Maps/",
+			mapName: "",
+			mapDescription: ""
 		};
 	}
 

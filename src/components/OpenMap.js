@@ -40,16 +40,10 @@ class OpenMap extends React.Component {
 			this.setState({
 				mapIndeces: res
 			});
-
-
 		});
-
 	}
 
-	componentDidMount() {
-
-	}
-
+	
 	renderMapIndexList() {
 		this.state.mapIndeces.map(item => {
 			<li> Hello insidr render: </li>;
