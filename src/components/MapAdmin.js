@@ -56,6 +56,7 @@ class MapAdmin extends React.Component {
 			minZoom: 10,
 			dbMapIndexPath: "App/Mapindex/",
 			dbMapPath: "App/Maps/",
+			mapId: "",
 			mapName: "",
 			mapDescription: ""
 		};
@@ -76,14 +77,14 @@ class MapAdmin extends React.Component {
 	}
 
 	fileToJSON(file) {
-		console.log("file:", file)
+		console.log("file:", file);
 		shp(file)
 			.then(geojson => {
 				delete geojson.fileName;
 				console.log("MyGeoL:", geojson);
 
 				//do something with your geojson
-				
+
 				this.setState({
 					geoJson: geojson,
 					jsonInfo: this.stripOutCoords(geojson)
@@ -142,8 +143,14 @@ class MapAdmin extends React.Component {
 	}
 
 	OpenMapCallback(mapRef) {
-		console.log("mapRef:", mapRef);
-		this.retrieveMapFromFireBase(mapRef);
+		console.log("mapRef:", mapRef.id);
+
+		this.retrieveMapFromFireBase(mapRef.id);
+		this.setState({
+			mapId: mapRef.id,
+			mapName: mapRef.name,
+			mapDescription: mapRef.description
+		});
 	}
 
 	render() {
@@ -293,7 +300,9 @@ class MapAdmin extends React.Component {
 						</TabContent>
 					</Col>
 					<Col md="6">
-						<h3> Map </h3>
+						<h3> {this.state.mapName} </h3>
+						<p>{this.state.mapDescription}</p>
+
 						<Map
 							className="map"
 							ref="map"
