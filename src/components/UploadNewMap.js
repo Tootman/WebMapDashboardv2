@@ -54,13 +54,13 @@ class UploadNewMap extends React.Component {
 		e.preventDefault();
 
 		db.ref(this.props.mapPath)
-			.push(this.props.geo)
+			.push({Geo: this.props.geo})
 			.then(snap => {
 				//console.log("new key " + snap.key);
 				return snap.key;
 			})
 			.then(key => {
-				debugger
+				
 				db.ref(this.props.mapIndexPath)
 				.push({
 					mapID: key,

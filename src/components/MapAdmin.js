@@ -74,12 +74,14 @@ class MapAdmin extends React.Component {
 	}
 
 	fileToJSON(file) {
+		console.log("file:", file)
 		shp(file)
 			.then(geojson => {
 				delete geojson.fileName;
 				console.log("MyGeoL:", geojson);
 
 				//do something with your geojson
+				
 				this.setState({
 					geoJson: geojson,
 					jsonInfo: this.stripOutCoords(geojson)
