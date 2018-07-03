@@ -6,6 +6,7 @@ import shp from "shpjs";
 import ImportShp from "./ImportShp";
 import OpenMap from "./OpenMap";
 import SaveShp from "./SaveShp";
+import MetaData from "./MetaData";
 import UploadNewMap from "./UploadNewMap";
 import "./index.css";
 import testGeoJson from "./testGeoJson";
@@ -58,7 +59,9 @@ class MapAdmin extends React.Component {
 			dbMapPath: "App/Maps/",
 			mapId: "",
 			mapName: "",
-			mapDescription: ""
+			mapDescription: "",
+			metaData : {"no meta data" : ""},
+			relatedData : {}
 		};
 	}
 
@@ -119,12 +122,22 @@ class MapAdmin extends React.Component {
 					//const layerData = snapshot.val()
 					//console.log("GeoJson: " + snapshot.val());
 					const geo = snapshot.val().Geo;
+					//const meta = snapshot.val().Meta;
+					const related =  snapshot.val().related;
+					
 					parent.setState({
 						geoJson: geo,
-						jsonInfo: parent.stripOutCoords(geo)
+						jsonInfo: parent.stripOutCoords(geo),
+						metaData:  (snapshot.val().Meta)  || {"no meta data" : ""} ,
+						relatedData : related
 					});
 					parent.mapUpdateToggle();
 				}
+
+
+
+
+
 				// clear geoLayer data from map
 				//  setupGeoLayer (layerData.Geo, layerData.Meta)
 				// Map.fitBounds(App.geoLayer.getBounds())
@@ -268,10 +281,9 @@ class MapAdmin extends React.Component {
 									<Col md="12">
 										<div>
 											<h4>Meta data </h4>
-											<p>
-												Tabular data of map meta data
-												etc
-											</p>
+											<MetaData
+												metaData = {this.state.metaData}
+											/>
 										</div>
 									</Col>
 								</Row>
