@@ -35,7 +35,7 @@ class LandingPage extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<Container>
 				<Row>
 					<Col md="6">
 						<h1>Landing</h1>
@@ -69,7 +69,7 @@ class LandingPage extends React.Component {
 									this.toggle("2");
 								}}
 							>
-								Moar Tabs
+								More Tabs
 							</NavLink>
 						</NavItem>
 					</Nav>
@@ -113,7 +113,7 @@ class LandingPage extends React.Component {
 						</TabPane>
 					</TabContent>
 				</div>
-			</div>
+			</Container>
 		);
 	}
 }

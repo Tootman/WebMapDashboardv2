@@ -5,9 +5,15 @@ export default {
 			{
 				type: "Feature",
 				properties: {
-					name: "PLace 1",
-					amenity: "Baseball Stadium",
-					popupContent: "This is where the Rockies play!"
+					name: "Litter bin",
+					Asset: "Litter bin",
+					description: "metal, circular",
+					lastInspection: "4 May 2016",
+					condition: 3,
+					instructions: "paint it green",
+					OBJECTID: "0004Point"
+				
+					
 				},
 				geometry: {
 					type: "Point",
@@ -17,9 +23,13 @@ export default {
 			{
 				type: "Feature",
 				properties: {
-					name: "PLace 2",
-					amenity: "Baseball Stadium",
-					popupContent: "This is where the others play!"
+					name: "Gulley Grating",
+					Asset: "Gulley Grating",
+					description: "metal, small",
+					lastInspection: "2 May 2016",
+					condition: 2,
+					instructions: "clear if it is blocked",
+					OBJECTID: "0006Point"
 				},
 				geometry: {
 					type: "Point",

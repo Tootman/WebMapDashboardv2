@@ -11,6 +11,10 @@ import MetaData from "./MetaData";
 import UploadNewMap from "./UploadNewMap";
 import "./index.css";
 import testGeoJson from "./testGeoJson";
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+import treeTableHOC from "react-table/lib/hoc/treeTable";
+
 import {
 	TabContent,
 	TabPane,
@@ -39,6 +43,8 @@ import {
 import { db, auth } from "../firebase/firebase";
 
 // import { slide as Menu } from "react-burger-menu";
+
+const TreeTable = treeTableHOC(ReactTable);
 
 class MapAdmin extends React.Component {
 	constructor(props) {
@@ -155,8 +161,8 @@ class MapAdmin extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<h1>Map Admin page</h1>
+			<Container fluid>
+				<h1>Map Admin</h1>
 				<Row>
 					<Col md="6">
 						<Nav tabs>
@@ -196,7 +202,18 @@ class MapAdmin extends React.Component {
 									Inspector
 								</NavLink>
 							</NavItem>
-
+							<NavItem>
+								<NavLink
+									className={classnames({
+										active: this.state.activeTab === "2a"
+									})}
+									onClick={() => {
+										this.toggle("2a");
+									}}
+								>
+									Table
+								</NavLink>
+							</NavItem>
 							<NavItem>
 								<NavLink
 									className={classnames({
@@ -275,6 +292,83 @@ class MapAdmin extends React.Component {
 									</Col>
 								</Row>
 							</TabPane>
+							<TabPane tabId="2a">
+								<TreeTable
+									data={this.state.geoJson.features}
+									SubComponent={row => {
+										// a SubComponent just for the final detail
+										const columns = [
+											{
+												Header: "Property",
+												accessor: "property",
+												style: {
+													backgroundColor: "#DDD",
+													textAlign: "right"
+												}
+											},
+											{
+												Header: "Value",
+												accessor: "value"
+											}
+										];
+										const rowData = Object.keys(
+											row.original.properties
+										).map(key => {
+											return {
+												property: key,
+												value: row.original.properties[
+													key
+												].toString()
+											};
+										});
+										return (
+											<div>
+												<ReactTable
+													data={rowData}
+													columns={columns}
+												/>
+											</div>
+										);
+									}}
+									columns={[
+										{
+											Header: "Asset",
+											accessor: "properties.Asset"
+										},
+										{
+											Header: "Condition",
+											id: "condition",
+											accessor: "properties.condition"
+										},
+
+										{
+											Header: "description",
+											accessor: "properties.description"
+										},
+										{
+											Header: "OBJECTID",
+											accessor: "properties.OBJECTID"
+										}
+									]}
+									defaultPageSize={5}
+									className="-striped -highlight"
+									filterable
+									defaultFilterMethod={(
+										filter,
+										row,
+										column
+									) => {
+										const id = filter.pivotId || filter.id;
+										return row[id] !== undefined
+											? String(row[id])
+													.toLowerCase()
+													.includes(
+														filter.value.toLowerCase()
+													)
+											: true;
+									}}
+								/>
+							</TabPane>
 							<TabPane tabId="3b">
 								<Row>
 									<Col md="12">
@@ -293,16 +387,16 @@ class MapAdmin extends React.Component {
 										<div>
 											<h4>Related data </h4>
 											<ReactJson
-											src={this.state.relatedData}
-											enableEdit="false"
-											collapsed="false"
-											enableClipboard="false"
-											enableAdd="false"
-											enableDelet="false"
-											displayObjectSize="false"
-											displayDataTypes="false"
-											name="Related Data"
-										/>
+												src={this.state.relatedData}
+												enableEdit="false"
+												collapsed="false"
+												enableClipboard="false"
+												enableAdd="false"
+												enableDelet="false"
+												displayObjectSize="false"
+												displayDataTypes="false"
+												name="Related Data"
+											/>
 										</div>
 									</Col>
 								</Row>
@@ -356,7 +450,8 @@ class MapAdmin extends React.Component {
 						</Map>
 					</Col>
 				</Row>
-			</div>
+				
+			</Container>
 		);
 	}
 }

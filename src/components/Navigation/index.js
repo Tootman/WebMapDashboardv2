@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  Container,
   Collapse,
   Navbar,
   NavbarToggler,
@@ -54,6 +55,7 @@ class NavigationAuth extends React.Component {
 
   render() {
     return (
+      
       <Navbar color="dark" dark expand="md">
 
         <NavbarToggler onClick={this.toggle} />
@@ -109,6 +111,7 @@ class NavigationAuth extends React.Component {
           </Nav>
         </Collapse>
       </Navbar>
+     
     );
   }
 }
