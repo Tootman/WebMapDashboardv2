@@ -11,9 +11,7 @@ import MetaData from "./MetaData";
 import UploadNewMap from "./UploadNewMap";
 import "./index.css";
 import testGeoJson from "./testGeoJson";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
-import treeTableHOC from "react-table/lib/hoc/treeTable";
+import TableView from "./TableView";
 
 import {
 	TabContent,
@@ -44,7 +42,6 @@ import { db, auth } from "../firebase/firebase";
 
 // import { slide as Menu } from "react-burger-menu";
 
-const TreeTable = treeTableHOC(ReactTable);
 
 class MapAdmin extends React.Component {
 	constructor(props) {
@@ -293,80 +290,8 @@ class MapAdmin extends React.Component {
 								</Row>
 							</TabPane>
 							<TabPane tabId="2a">
-								<TreeTable
+								<TableView
 									data={this.state.geoJson.features}
-									SubComponent={row => {
-										// a SubComponent just for the final detail
-										const columns = [
-											{
-												Header: "Property",
-												accessor: "property",
-												style: {
-													backgroundColor: "#DDD",
-													textAlign: "right"
-												}
-											},
-											{
-												Header: "Value",
-												accessor: "value"
-											}
-										];
-										const rowData = Object.keys(
-											row.original.properties
-										).map(key => {
-											return {
-												property: key,
-												value: row.original.properties[
-													key
-												].toString()
-											};
-										});
-										return (
-											<div>
-												<ReactTable
-													data={rowData}
-													columns={columns}
-												/>
-											</div>
-										);
-									}}
-									columns={[
-										{
-											Header: "Asset",
-											accessor: "properties.Asset"
-										},
-										{
-											Header: "Condition",
-											id: "condition",
-											accessor: "properties.condition"
-										},
-
-										{
-											Header: "description",
-											accessor: "properties.description"
-										},
-										{
-											Header: "OBJECTID",
-											accessor: "properties.OBJECTID"
-										}
-									]}
-									defaultPageSize={5}
-									className="-striped -highlight"
-									filterable
-									defaultFilterMethod={(
-										filter,
-										row,
-										column
-									) => {
-										const id = filter.pivotId || filter.id;
-										return row[id] !== undefined
-											? String(row[id])
-													.toLowerCase()
-													.includes(
-														filter.value.toLowerCase()
-													)
-											: true;
-									}}
 								/>
 							</TabPane>
 							<TabPane tabId="3b">
@@ -450,7 +375,6 @@ class MapAdmin extends React.Component {
 						</Map>
 					</Col>
 				</Row>
-				
 			</Container>
 		);
 	}
