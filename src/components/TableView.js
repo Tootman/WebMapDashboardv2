@@ -15,40 +15,21 @@ class TableView extends React.Component {
 	constructor(props) {
 		super(props);
 		//this.uploadNewMap = this.uploadNewMap.bind(this);
+		//this.featureSelected = this.featureSelected.bind(this);
+		//this.handleRowClick = this.handleRowClick.bind(this);
 		const p = this.props.data[0].properties;
 		this.state = {
 			//col1: this.props.data.properties.name ||  this.props.data.Name || this.props.data.Asset || this.props.data.DESCRIPTIO || this.props.OBJECTID
 			//col1 : "name"
 			col1: "default",
 			col2: "default",
-			col3: "default"
+			col3: "default",
+			activeRowCoords: [],
+			expanded: {}
 		};
 	}
 
-	/*
-	componentWillMount() {
-		/*
-		let p = this.props.data[0].properties;
-		this.setState = {
-			//col1: this.props.data.properties.name ||  this.props.data.Name || this.props.data.Asset || this.props.data.DESCRIPTIO || this.props.OBJECTID
-			//col1 : "name"
-			col1: x => {
-				if ("name" in p) {
-					return "name";
-				}
-				if ("Asset" in p) {
-					return "Asset";
-				}
-				if ("NAME" in p) {
-					return "NAME";
-				}
-			}
-		};
-		debugger
-		
-	}
-*/
-
+	
 	componentWillReceiveProps() {
 		console.log("receive Props!", Date());
 		let p = this.props.data[0].properties;
@@ -75,11 +56,34 @@ class TableView extends React.Component {
 		console.log("this.state.col1:", this.state.col1);
 	}
 
+	/*
+	handleRowClick(rowInfo) {
+		console.log("handleRowClick!:", rowInfo);
+		onClick: (e, handleOriginal) => {
+			if (handleOriginal) {
+				handleOriginal();
+			}
+		};
+	}
+	*/
+
+
+	handleRowExpanded(newExpanded, index, event) {
+		
+		this.setState({
+			// we override newExpanded, keeping only current selected row expanded
+			expanded: { [index]: !this.state.expanded[index] }
+		});
+		this.props.activeFeatureLocationCallback(index, !this.state.expanded[index])
+	}
+
 	render() {
 		return (
 			<TreeTable
 				//data={this.state.geoJson.features}
 				data={this.props.data}
+				//expanded={this.state.expanded}
+				//onExpandedChange={(newExpanded, index, event) => this.handleRowExpanded(newExpanded, index, event)}
 				SubComponent={row => {
 					// a SubComponent just for the final detail
 

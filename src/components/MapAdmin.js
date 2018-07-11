@@ -30,6 +30,7 @@ import {
 import classnames from "classnames";
 import {
 	Circle,
+	CircleMarker,
 	FeatureGroup,
 	LayerGroup,
 	GeoJSON,
@@ -42,13 +43,16 @@ import { db, auth } from "../firebase/firebase";
 
 // import { slide as Menu } from "react-burger-menu";
 
-
 class MapAdmin extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggle = this.toggle.bind(this);
 		this.fileToJSON = this.fileToJSON.bind(this);
 		this.OpenMapCallback = this.OpenMapCallback.bind(this);
+		//this.activeFeatureLocationCallback = this.activeFeatureLocationCallback.bind(this);
+		this.activeFeatureLocationCallback2 = this.activeFeatureLocationCallback2.bind(
+			this
+		);
 		//this.uploadNewMap = this.uploadNewMap.bind(this);
 		this.state = {
 			activeTab: "1",
@@ -65,7 +69,9 @@ class MapAdmin extends React.Component {
 			mapName: "",
 			mapDescription: "",
 			metaData: { "no meta data": "" },
-			relatedData: { "No related data": "" }
+			relatedData: { "No related data": "" },
+			//activeFeatureLocation: [51.510937, -0.104396], // dummy location
+			//activeFeatureOpacity: 0
 		};
 	}
 
@@ -81,6 +87,34 @@ class MapAdmin extends React.Component {
 		this.setState({
 			mapChangeToggle: !this.state.mapChangeToggle
 		});
+	}
+
+	activeFeatureLocationCallback2(index, expanded) {
+		
+		let coords = []; // will store the first point of feature
+
+		switch (this.state.geoJson.features[index].geometry.type) {
+			case "LineString":
+				coords = this.state.geoJson.features[index].geometry
+					.coordinates[0];
+				break;
+
+			case "Point":
+				coords = this.state.geoJson.features[index].geometry
+					.coordinates;
+				break;
+
+			case "Polygon":
+				coords = this.state.geoJson.features[index].geometry
+					.coordinates[0][0];
+				break;
+		}
+
+		this.setState({
+			activeFeatureLocation: coords,
+			activeFeatureOpacity: expanded ? 1 : 0
+		});
+		//console.log("coords:",this.state.geoJson.features[index].geometry.coordinates)
 	}
 
 	fileToJSON(file) {
@@ -292,6 +326,7 @@ class MapAdmin extends React.Component {
 							<TabPane tabId="2a">
 								<TableView
 									data={this.state.geoJson.features}
+									//activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
 								/>
 							</TabPane>
 							<TabPane tabId="3b">
@@ -370,8 +405,21 @@ class MapAdmin extends React.Component {
 									key={this.state.mapChangeToggle}
 									ref="geoJsonLayer"
 								/>
-								<LayerGroup />
 							</LayerGroup>
+							{/*
+							<CircleMarker
+								center={[
+									this.state.activeFeatureLocation[1],
+									this.state.activeFeatureLocation[0]
+								]}
+								//center = {[ 51.52, -0.11]}
+								opacity={this.state.activeFeatureOpacity}
+								key={"my234343Key"}
+								radius={20}
+								color={"red"}
+								weight={3}
+							/>
+						*/}
 						</Map>
 					</Col>
 				</Row>
