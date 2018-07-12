@@ -12,6 +12,8 @@ import UploadNewMap from "./UploadNewMap";
 import "./index.css";
 import testGeoJson from "./testGeoJson";
 import TableView from "./TableView";
+import CheckIcon from "./check.svg";
+import L from "leaflet";
 
 import {
 	TabContent,
@@ -49,11 +51,15 @@ class MapAdmin extends React.Component {
 		this.toggle = this.toggle.bind(this);
 		this.fileToJSON = this.fileToJSON.bind(this);
 		this.OpenMapCallback = this.OpenMapCallback.bind(this);
+		this.onEachFeature = this.onEachFeature.bind(this);
+		this.onPointToLayer = this.onPointToLayer.bind(this);
 		//this.activeFeatureLocationCallback = this.activeFeatureLocationCallback.bind(this);
 		this.activeFeatureLocationCallback2 = this.activeFeatureLocationCallback2.bind(
 			this
 		);
+		this.tableRowCallback = this.tableRowCallback.bind(this);
 		//this.uploadNewMap = this.uploadNewMap.bind(this);
+
 		this.state = {
 			activeTab: "1",
 			geoJson: testGeoJson.testGeoJson,
@@ -70,8 +76,14 @@ class MapAdmin extends React.Component {
 			mapDescription: "",
 			metaData: { "no meta data": "" },
 			relatedData: { "No related data": "" },
+			selectedFeatureStyle: {
+				color: "orange",
+				fillColor: "red",
+				markerColor: "red"
+			},
 			//activeFeatureLocation: [51.510937, -0.104396], // dummy location
 			//activeFeatureOpacity: 0
+			activeFeatureIndex: null
 		};
 	}
 
@@ -83,6 +95,27 @@ class MapAdmin extends React.Component {
 		}
 	}
 
+	onPointToLayer(feature, latlng) {
+		return L.circleMarker(latlng); // Change marker to circle
+		// return L.marker(latlng, { icon: {}}); // Change the icon to a custom icon
+	}
+
+	onEachFeature(layer, feature) {
+		//debugger
+		console.log("OEFlayer:", layer, "OEFfeature:", feature);
+		//feature.options.fillColor = this.state.selectedFeatureStyle.fillColor
+
+		if (layer.properties.newProp) {
+			feature.options.color = "orange";
+			feature.options.fillColor = "orange";
+		} else {
+			feature.options.color = "blue";
+			feature.options.fillColor = "blue";
+		}
+
+		//feature.options.markerColor= this.state.selectedFeatureStyle.markerColor
+	}
+
 	mapUpdateToggle() {
 		this.setState({
 			mapChangeToggle: !this.state.mapChangeToggle
@@ -90,7 +123,6 @@ class MapAdmin extends React.Component {
 	}
 
 	activeFeatureLocationCallback2(index, expanded) {
-		
 		let coords = []; // will store the first point of feature
 
 		switch (this.state.geoJson.features[index].geometry.type) {
@@ -174,6 +206,7 @@ class MapAdmin extends React.Component {
 		const mapRef = this.refs.map.leafletElement;
 		mapRef.invalidateSize();
 		console.log("didUpdate!");
+
 		this.refs.map.leafletElement.fitBounds(
 			this.refs.geoJsonLayer.leafletElement.getBounds()
 		);
@@ -188,6 +221,40 @@ class MapAdmin extends React.Component {
 			mapName: mapRef.name,
 			mapDescription: mapRef.description
 		});
+	}
+
+	tableRowCallback(rowInfo) {
+		console.log("tableRowCallback!", rowInfo.index);
+		//debugger;
+		this.setState({
+			activeFeatureIndex: rowInfo.index
+			//geoJson.features[rowInfo.index].properties.newProp : "Hello",
+			//geoJson: { ...this.state.someProperty, flag: false} }
+		});
+
+		// if myProp exists for this feature then flip it, if if doesnt exist, create it
+		let newProp = this.state.geoJson.features[rowInfo.index].properties.newProp;
+		
+		if (newProp=== undefined) {
+			this.state.geoJson.features[rowInfo.index].properties.newProp = true
+		} else this.state.geoJson.features[rowInfo.index].properties.newProp =  !this.state.geoJson.features[rowInfo.index].properties.newProp;
+		//this.setState({ state: this.state });
+	}
+
+	style(feature) {
+		return {
+			// the fillColor is adapted from a property which can be changed by the user (segment)
+
+			weight: feature.properties.newProp ? 7: 2,
+			//stroke-width: to have a constant width on the screen need to adapt with scale
+			opacity: 1,
+			color: feature.properties.newProp ? "red" : "green",
+			fillColor: "blue",
+			radius: 5,
+			className: "myClass",
+			//dashArray: "3",
+			fillOpacity: 1
+		};
 	}
 
 	render() {
@@ -327,6 +394,7 @@ class MapAdmin extends React.Component {
 								<TableView
 									data={this.state.geoJson.features}
 									//activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
+									rowCallback={this.tableRowCallback}
 								/>
 							</TabPane>
 							<TabPane tabId="3b">
@@ -404,6 +472,9 @@ class MapAdmin extends React.Component {
 									data={this.state.geoJson}
 									key={this.state.mapChangeToggle}
 									ref="geoJsonLayer"
+									style={this.style} // works - feature as parameter
+									//onEachFeature={this.onEachFeature}
+									pointToLayer={this.onPointToLayer}
 								/>
 							</LayerGroup>
 							{/*

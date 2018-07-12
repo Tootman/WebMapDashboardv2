@@ -16,7 +16,7 @@ class TableView extends React.Component {
 		super(props);
 		//this.uploadNewMap = this.uploadNewMap.bind(this);
 		//this.featureSelected = this.featureSelected.bind(this);
-		//this.handleRowClick = this.handleRowClick.bind(this);
+		this.handleRowClick = this.handleRowClick.bind(this);
 		const p = this.props.data[0].properties;
 		this.state = {
 			//col1: this.props.data.properties.name ||  this.props.data.Name || this.props.data.Asset || this.props.data.DESCRIPTIO || this.props.OBJECTID
@@ -25,11 +25,11 @@ class TableView extends React.Component {
 			col2: "default",
 			col3: "default",
 			activeRowCoords: [],
-			expanded: {}
+			expanded: {},
+			activeRow: null
 		};
 	}
 
-	
 	componentWillReceiveProps() {
 		console.log("receive Props!", Date());
 		let p = this.props.data[0].properties;
@@ -56,25 +56,33 @@ class TableView extends React.Component {
 		console.log("this.state.col1:", this.state.col1);
 	}
 
-	/*
-	handleRowClick(rowInfo) {
-		console.log("handleRowClick!:", rowInfo);
-		onClick: (e, handleOriginal) => {
-			if (handleOriginal) {
-				handleOriginal();
-			}
-		};
-	}
-	*/
+	
+	handleRowClick(e, t, rowInfo,state,instance) {
+		//debugger
+		//console.log("handleRowClick!:", rowInfo);
+		this.props.rowCallback(rowInfo)
+		//this.setState({
+		//	activeRow : rowInfo.index
+		//})
 
+		//onClick: (e, handleOriginal) => {
+		//	if (handleOriginal) {
+		//		handleOriginal();
+		//	}
+		//};
+	}
+	
 
 	handleRowExpanded(newExpanded, index, event) {
-		
+		//debugger;
 		this.setState({
 			// we override newExpanded, keeping only current selected row expanded
 			expanded: { [index]: !this.state.expanded[index] }
 		});
-		this.props.activeFeatureLocationCallback(index, !this.state.expanded[index])
+		this.props.activeFeatureLocationCallback(
+			index,
+			!this.state.expanded[index]
+		);
 	}
 
 	render() {
@@ -84,6 +92,19 @@ class TableView extends React.Component {
 				data={this.props.data}
 				//expanded={this.state.expanded}
 				//onExpandedChange={(newExpanded, index, event) => this.handleRowExpanded(newExpanded, index, event)}
+				getTdProps={(state, rowInfo, column, instance) => {
+					return {
+						/*
+						onClick: (e, this.handleOriginal) => {
+							console.log("It was in this row:", rowInfo);
+							if (handleOriginal) {
+								handleOriginal();
+							}
+						}
+						*/
+						onClick: (e, t) => { this.handleRowClick(e, t, rowInfo,state,instance) }
+					};
+				}}
 				SubComponent={row => {
 					// a SubComponent just for the final detail
 
