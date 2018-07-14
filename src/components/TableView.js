@@ -5,6 +5,7 @@ import "./index.css";
 import testGeoJson from "./testGeoJson";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import "./table-view.css";
 import treeTableHOC from "react-table/lib/hoc/treeTable";
 
 // import { slide as Menu } from "react-burger-menu";
@@ -26,7 +27,8 @@ class TableView extends React.Component {
 			col3: "default",
 			activeRowCoords: [],
 			expanded: {},
-			activeRow: null
+			activeRow: null,
+			
 		};
 	}
 
@@ -56,11 +58,10 @@ class TableView extends React.Component {
 		console.log("this.state.col1:", this.state.col1);
 	}
 
-	
-	handleRowClick(e, t, rowInfo,state,instance) {
+	handleRowClick(e, t, rowInfo, state, instance) {
 		//debugger
 		//console.log("handleRowClick!:", rowInfo);
-		this.props.rowCallback(rowInfo)
+		this.props.rowCallback(rowInfo);
 		//this.setState({
 		//	activeRow : rowInfo.index
 		//})
@@ -71,7 +72,6 @@ class TableView extends React.Component {
 		//	}
 		//};
 	}
-	
 
 	handleRowExpanded(newExpanded, index, event) {
 		//debugger;
@@ -92,6 +92,20 @@ class TableView extends React.Component {
 				data={this.props.data}
 				//expanded={this.state.expanded}
 				//onExpandedChange={(newExpanded, index, event) => this.handleRowExpanded(newExpanded, index, event)}
+
+				/*
+				getTrProps={(state, rowInfo, column) => {
+					
+					return {
+						style: {
+							color: "blue"
+						}
+					};
+				}}
+				*/
+
+				
+
 				getTdProps={(state, rowInfo, column, instance) => {
 					return {
 						/*
@@ -102,7 +116,24 @@ class TableView extends React.Component {
 							}
 						}
 						*/
-						onClick: (e, t) => { this.handleRowClick(e, t, rowInfo,state,instance) }
+
+						style: {
+							backgroundColor: (rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.newProp) )? 'yellow' : "lightGrey") : 'lightGrey'
+						},
+
+
+
+						onClick: (e, t) => {
+							this.handleRowClick(e, t, rowInfo, state, instance);
+
+							/*
+							// toggle "hello" class on row - but not working as index is rel to top row of current page
+							let selectedClassName  = "rt-tr-group hello";
+							const unselectedClassName = "rt-tr-group"
+							const el = e.target.parentElement.parentElement
+							el.className =  el.className.includes("hello") ? unselectedClassName : selectedClassName
+							*/
+						}
 					};
 				}}
 				SubComponent={row => {
@@ -154,7 +185,16 @@ class TableView extends React.Component {
 						Header: "Condition",
 						id: "condition",
 						accessor: "properties.condition"
-					}
+					},
+					{
+						Header: "",
+						id: "newProp",
+						accessor: "properties.newProp",
+						show: false
+
+					},
+
+
 				]}
 				defaultPageSize="5"
 				className="-striped -highlight"

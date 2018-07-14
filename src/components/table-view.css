@@ -1,0 +1,11 @@
+
+.ReactTable .rt-tbody .rt-tr-group .rt-tr:hover {
+    color: brown;
+    border-style:solid;
+    border-color:blue;
+}
+
+.rt-tr-group.hello {
+	color :white;
+	background-color: chocolate;
+}

@@ -234,7 +234,7 @@ class MapAdmin extends React.Component {
 
 		// if myProp exists for this feature then flip it, if if doesnt exist, create it
 		let newProp = this.state.geoJson.features[rowInfo.index].properties.newProp;
-		
+		className: (rowInfo.index == 1) ? "Hello" : ""
 		if (newProp=== undefined) {
 			this.state.geoJson.features[rowInfo.index].properties.newProp = true
 		} else this.state.geoJson.features[rowInfo.index].properties.newProp =  !this.state.geoJson.features[rowInfo.index].properties.newProp;
@@ -245,15 +245,16 @@ class MapAdmin extends React.Component {
 		return {
 			// the fillColor is adapted from a property which can be changed by the user (segment)
 
-			weight: feature.properties.newProp ? 7: 2,
+			weight: feature.properties.newProp ? 10: 2,
 			//stroke-width: to have a constant width on the screen need to adapt with scale
-			opacity: 1,
+			opacity: feature.properties.newProp ? 1 : 0.5,
 			color: feature.properties.newProp ? "red" : "green",
+
 			fillColor: "blue",
 			radius: 5,
 			className: "myClass",
 			//dashArray: "3",
-			fillOpacity: 1
+			fillOpacity: feature.properties.newProp ? 1 : 0.5,
 		};
 	}
 
@@ -477,20 +478,7 @@ class MapAdmin extends React.Component {
 									pointToLayer={this.onPointToLayer}
 								/>
 							</LayerGroup>
-							{/*
-							<CircleMarker
-								center={[
-									this.state.activeFeatureLocation[1],
-									this.state.activeFeatureLocation[0]
-								]}
-								//center = {[ 51.52, -0.11]}
-								opacity={this.state.activeFeatureOpacity}
-								key={"my234343Key"}
-								radius={20}
-								color={"red"}
-								weight={3}
-							/>
-						*/}
+						
 						</Map>
 					</Col>
 				</Row>
