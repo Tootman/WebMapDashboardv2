@@ -28,6 +28,8 @@ class TableView extends React.Component {
 			activeRowCoords: [],
 			expanded: {},
 			activeRow: null,
+			selectedStyle: {backgroundColor:'khaki'},
+			unSelectedStyle: {backgroundColor:'gainsboro'}
 			
 		};
 	}
@@ -104,7 +106,7 @@ class TableView extends React.Component {
 				}}
 				*/
 
-				
+				minRows={1}
 
 				getTdProps={(state, rowInfo, column, instance) => {
 					return {
@@ -117,10 +119,15 @@ class TableView extends React.Component {
 						}
 						*/
 
+						/*
 						style: {
 							backgroundColor: (rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.newProp) )? 'yellow' : "lightGrey") : 'lightGrey'
 						},
+						*/
 
+						//className:  ((rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.newProp) )? 'Hello' : "lightGrey") : 'lightGrey'),
+
+						style: ((rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.newProp) )? this.state.selectedStyle : this.state.unSelectedStyle) : this.state.unSelectedStyle),
 
 
 						onClick: (e, t) => {

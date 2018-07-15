@@ -1,11 +1,12 @@
 
 .ReactTable .rt-tbody .rt-tr-group .rt-tr:hover {
-    color: brown;
     border-style:solid;
-    border-color:blue;
+    border-color:khaki;
 }
 
-.rt-tr-group.hello {
-	color :white;
-	background-color: chocolate;
+/*
+.ReactTable .rt-tbody .rt-tr-group .rt-td .Hello {
+
+	background-color: khaki;
 }
+*/
