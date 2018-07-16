@@ -81,6 +81,10 @@ class TableView extends React.Component {
 		);
 	}
 
+	showRelated(value){
+		console.log("showRelated clicked!", value)
+	}
+
 	render() {
 		return (
 			<TreeTable
@@ -164,6 +168,7 @@ class TableView extends React.Component {
 							accessor: "value"
 						}
 					];
+
 					const rowData = Object.keys(row.original.properties).map(
 						key => {
 							return {
@@ -172,6 +177,7 @@ class TableView extends React.Component {
 							};
 						}
 					);
+
 					return (
 						<div>
 							<ReactTable
@@ -202,7 +208,9 @@ class TableView extends React.Component {
 						id: "highlightOnMap",
 						accessor: "properties.highlightOnMap",
 						show: false
-					}
+					},
+					
+				
 				]}
 				defaultPageSize="5"
 				className="-striped -highlight"

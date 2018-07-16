@@ -54,9 +54,7 @@ class MapAdmin extends React.Component {
 		this.onEachFeature = this.onEachFeature.bind(this);
 		this.onPointToLayer = this.onPointToLayer.bind(this);
 		//this.activeFeatureLocationCallback = this.activeFeatureLocationCallback.bind(this);
-		this.activeFeatureLocationCallback2 = this.activeFeatureLocationCallback2.bind(
-			this
-		);
+		//this.activeFeatureLocationCallback2 = this.activeFeatureLocationCallback2.bind(this);
 		this.tableRowCallback = this.tableRowCallback.bind(this);
 		//this.uploadNewMap = this.uploadNewMap.bind(this);
 
@@ -122,6 +120,7 @@ class MapAdmin extends React.Component {
 		});
 	}
 
+	/*
 	activeFeatureLocationCallback2(index, expanded) {
 		let coords = []; // will store the first point of feature
 
@@ -148,6 +147,7 @@ class MapAdmin extends React.Component {
 		});
 		//console.log("coords:",this.state.geoJson.features[index].geometry.coordinates)
 	}
+	*/
 
 	fileToJSON(file) {
 		console.log("file:", file);
