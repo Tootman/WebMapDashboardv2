@@ -38,12 +38,11 @@ class LandingPage extends React.Component {
 			<Container>
 				<Row>
 					<Col md="6">
-						<h1>Landing</h1>
-						<p>Titkle 1 signed in.</p>
+						
 					</Col>
 					<Col md="6">
 						<h1>Landing</h1>
-						<p>The Landing Page</p>
+						<p>Welcome to ORCL WebMapping Admin console </p>
 					</Col>
 				</Row>
 				<div>

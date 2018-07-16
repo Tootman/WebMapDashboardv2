@@ -219,7 +219,8 @@ class MapAdmin extends React.Component {
 		this.setState({
 			mapId: mapRef.id,
 			mapName: mapRef.name,
-			mapDescription: mapRef.description
+			mapDescription: mapRef.description,
+			activeTab:'2a' 
 		});
 	}
 
