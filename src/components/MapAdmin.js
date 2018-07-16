@@ -105,7 +105,7 @@ class MapAdmin extends React.Component {
 		console.log("OEFlayer:", layer, "OEFfeature:", feature);
 		//feature.options.fillColor = this.state.selectedFeatureStyle.fillColor
 
-		if (layer.properties.newProp) {
+		if (layer.properties.highlightOnMap) {
 			feature.options.color = "orange";
 			feature.options.fillColor = "orange";
 		} else {
@@ -223,38 +223,51 @@ class MapAdmin extends React.Component {
 		});
 	}
 
-	tableRowCallback(rowInfo) {
+	tableRowCallback(rowInfo, handleOriginal) {
 		console.log("tableRowCallback!", rowInfo.index);
 		//debugger;
-		this.setState({
-			activeFeatureIndex: rowInfo.index
-			//geoJson.features[rowInfo.index].properties.newProp : "Hello",
-			//geoJson: { ...this.state.someProperty, flag: false} }
-		});
+		handleOriginal(); //not working !
+
+		this.setState(
+			{
+				activeFeatureIndex: rowInfo.index
+			},
+			// // geoJson.features[rowInfo.index].properties.highlightOnMap : "Hello",
+			// // geoJson: { ...this.state.someProperty, flag: false} }
+			() => {
+				handleOriginal();
+			}
+		);
 
 		// if myProp exists for this feature then flip it, if if doesnt exist, create it
-		let newProp = this.state.geoJson.features[rowInfo.index].properties.newProp;
-		className: (rowInfo.index == 1) ? "Hello" : ""
-		if (newProp=== undefined) {
-			this.state.geoJson.features[rowInfo.index].properties.newProp = true
-		} else this.state.geoJson.features[rowInfo.index].properties.newProp =  !this.state.geoJson.features[rowInfo.index].properties.newProp;
-		//this.setState({ state: this.state });
+		let highlightOnMap = this.state.geoJson.features[rowInfo.index].properties
+			.highlightOnMap;
+		className: rowInfo.index == 1 ? "Hello" : "";
+		if (highlightOnMap === undefined) {
+			this.state.geoJson.features[
+				rowInfo.index
+			].properties.highlightOnMap = true;
+		} else
+			this.state.geoJson.features[
+				rowInfo.index
+			].properties.highlightOnMap = !this.state.geoJson.features[rowInfo.index]
+				.properties.highlightOnMap;
 	}
 
 	style(feature) {
 		return {
 			// the fillColor is adapted from a property which can be changed by the user (segment)
 
-			weight: feature.properties.newProp ? 10: 2,
+			weight: feature.properties.highlightOnMap ? 10 : 2,
 			//stroke-width: to have a constant width on the screen need to adapt with scale
-			opacity: feature.properties.newProp ? 1 : 0.5,
-			color: feature.properties.newProp ? "red" : "green",
+			opacity: feature.properties.highlightOnMap ? 1 : 0.5,
+			color: feature.properties.highlightOnMap ? "red" : "green",
 
 			fillColor: "blue",
 			radius: 5,
 			className: "myClass",
 			//dashArray: "3",
-			fillOpacity: feature.properties.newProp ? 1 : 0.5,
+			fillOpacity: feature.properties.highlightOnMap ? 1 : 0.5
 		};
 	}
 
@@ -478,7 +491,6 @@ class MapAdmin extends React.Component {
 									pointToLayer={this.onPointToLayer}
 								/>
 							</LayerGroup>
-						
 						</Map>
 					</Col>
 				</Row>

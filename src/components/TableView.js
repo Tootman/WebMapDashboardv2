@@ -28,9 +28,8 @@ class TableView extends React.Component {
 			activeRowCoords: [],
 			expanded: {},
 			activeRow: null,
-			selectedStyle: {backgroundColor:'khaki'},
-			unSelectedStyle: {backgroundColor:'gainsboro'}
-			
+			selectedStyle: { backgroundColor: "khaki" },
+			unSelectedStyle: { backgroundColor: "gainsboro" }
 		};
 	}
 
@@ -60,19 +59,14 @@ class TableView extends React.Component {
 		console.log("this.state.col1:", this.state.col1);
 	}
 
-	handleRowClick(e, t, rowInfo, state, instance) {
+	handleRowClick(e, handleOriginal, rowInfo, state, instance) {
 		//debugger
 		//console.log("handleRowClick!:", rowInfo);
-		this.props.rowCallback(rowInfo);
+		this.props.rowCallback(rowInfo, handleOriginal);
+		//handleOriginal();
 		//this.setState({
 		//	activeRow : rowInfo.index
 		//})
-
-		//onClick: (e, handleOriginal) => {
-		//	if (handleOriginal) {
-		//		handleOriginal();
-		//	}
-		//};
 	}
 
 	handleRowExpanded(newExpanded, index, event) {
@@ -107,7 +101,6 @@ class TableView extends React.Component {
 				*/
 
 				minRows={1}
-
 				getTdProps={(state, rowInfo, column, instance) => {
 					return {
 						/*
@@ -121,17 +114,28 @@ class TableView extends React.Component {
 
 						/*
 						style: {
-							backgroundColor: (rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.newProp) )? 'yellow' : "lightGrey") : 'lightGrey'
+							backgroundColor: (rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.highlightOnMap) )? 'yellow' : "lightGrey") : 'lightGrey'
 						},
 						*/
 
-						//className:  ((rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.newProp) )? 'Hello' : "lightGrey") : 'lightGrey'),
+						//className:  ((rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.highlightOnMap) )? 'Hello' : "lightGrey") : 'lightGrey'),
 
-						style: ((rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.newProp) )? this.state.selectedStyle : this.state.unSelectedStyle) : this.state.unSelectedStyle),
+						style:
+							rowInfo && this.props.data[rowInfo.index]
+								? this.props.data[rowInfo.index].properties
+										.highlightOnMap
+									? this.state.selectedStyle
+									: this.state.unSelectedStyle
+								: this.state.unSelectedStyle,
 
-
-						onClick: (e, t) => {
-							this.handleRowClick(e, t, rowInfo, state, instance);
+						onClick: (e, handleOriginal) => {
+							this.handleRowClick(
+								e,
+								handleOriginal,
+								rowInfo,
+								state,
+								instance
+							);
 
 							/*
 							// toggle "hello" class on row - but not working as index is rel to top row of current page
@@ -195,13 +199,10 @@ class TableView extends React.Component {
 					},
 					{
 						Header: "",
-						id: "newProp",
-						accessor: "properties.newProp",
+						id: "highlightOnMap",
+						accessor: "properties.highlightOnMap",
 						show: false
-
-					},
-
-
+					}
 				]}
 				defaultPageSize="5"
 				className="-striped -highlight"
