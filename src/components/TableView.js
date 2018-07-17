@@ -8,20 +8,15 @@ import "react-table/react-table.css";
 import "./table-view.css";
 import treeTableHOC from "react-table/lib/hoc/treeTable";
 
-// import { slide as Menu } from "react-burger-menu";
-
 const TreeTable = treeTableHOC(ReactTable);
 
 class TableView extends React.Component {
 	constructor(props) {
 		super(props);
-		//this.uploadNewMap = this.uploadNewMap.bind(this);
-		//this.featureSelected = this.featureSelected.bind(this);
 		this.handleRowClick = this.handleRowClick.bind(this);
 		const p = this.props.data[0].properties;
 		this.state = {
-			//col1: this.props.data.properties.name ||  this.props.data.Name || this.props.data.Asset || this.props.data.DESCRIPTIO || this.props.OBJECTID
-			//col1 : "name"
+			
 			col1: "default",
 			col2: "default",
 			col3: "default",
@@ -50,8 +45,7 @@ class TableView extends React.Component {
 			e => e === "description" || e === "DESCRIPTIO"
 		);
 		this.setState({
-			//col1: this.props.data.properties.name ||  this.props.data.Name || this.props.data.Asset || this.props.data.DESCRIPTIO || this.props.OBJECTID
-			//col1 : "name"
+			
 			col1: col1,
 			col2: col2
 		});
@@ -60,17 +54,12 @@ class TableView extends React.Component {
 	}
 
 	handleRowClick(e, handleOriginal, rowInfo, state, instance) {
-		//debugger
-		//console.log("handleRowClick!:", rowInfo);
+	
 		this.props.rowCallback(rowInfo, handleOriginal);
-		//handleOriginal();
-		//this.setState({
-		//	activeRow : rowInfo.index
-		//})
-	}
+		}
 
 	handleRowExpanded(newExpanded, index, event) {
-		//debugger;
+	
 		this.setState({
 			// we override newExpanded, keeping only current selected row expanded
 			expanded: { [index]: !this.state.expanded[index] }
@@ -88,42 +77,14 @@ class TableView extends React.Component {
 	render() {
 		return (
 			<TreeTable
-				//data={this.state.geoJson.features}
+				
 				data={this.props.data}
-				//expanded={this.state.expanded}
-				//onExpandedChange={(newExpanded, index, event) => this.handleRowExpanded(newExpanded, index, event)}
-
-				/*
-				getTrProps={(state, rowInfo, column) => {
-					
-					return {
-						style: {
-							color: "blue"
-						}
-					};
-				}}
-				*/
+				
 
 				minRows={1}
 				getTdProps={(state, rowInfo, column, instance) => {
 					return {
-						/*
-						onClick: (e, this.handleOriginal) => {
-							console.log("It was in this row:", rowInfo);
-							if (handleOriginal) {
-								handleOriginal();
-							}
-						}
-						*/
-
-						/*
-						style: {
-							backgroundColor: (rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.highlightOnMap) )? 'yellow' : "lightGrey") : 'lightGrey'
-						},
-						*/
-
-						//className:  ((rowInfo && this.props.data[rowInfo.index]) ? (((this.props.data[(rowInfo.index)].properties.highlightOnMap) )? 'Hello' : "lightGrey") : 'lightGrey'),
-
+					
 						style:
 							rowInfo && this.props.data[rowInfo.index]
 								? this.props.data[rowInfo.index].properties
@@ -141,13 +102,6 @@ class TableView extends React.Component {
 								instance
 							);
 
-							/*
-							// toggle "hello" class on row - but not working as index is rel to top row of current page
-							let selectedClassName  = "rt-tr-group hello";
-							const unselectedClassName = "rt-tr-group"
-							const el = e.target.parentElement.parentElement
-							el.className =  el.className.includes("hello") ? unselectedClassName : selectedClassName
-							*/
 						}
 					};
 				}}
