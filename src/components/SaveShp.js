@@ -46,7 +46,7 @@ class SaveShp extends React.Component {
 					Save current map as zipped shapefile(s), with option to add
 					properties from 'related Tables' as attributes
 				</h4>
-				<Button onClick={this.handleSaveButton}> Save file </Button>
+				<Button onClick={this.handleSaveButton}> Save as shape File set (zip) </Button>
 				<p style={chkStyle}>
 					<Label check>
 						<Input type="checkbox" /> Include related data

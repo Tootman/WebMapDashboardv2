@@ -31,7 +31,18 @@ if (!firebase.apps.length) {
 const db = firebase.database();
 const auth = firebase.auth();
 
+
+ const getRelatedData  =  (mapIndex) =>{
+  console.log("hello from geteRelatedData")
+}
+
+
+
+
+
+
 export {
   db,
   auth,
+  getRelatedData
 };

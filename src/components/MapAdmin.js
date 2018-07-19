@@ -6,6 +6,7 @@ import shp from "shpjs";
 import ImportShp from "./ImportShp";
 import OpenMap from "./OpenMap";
 import SaveShp from "./SaveShp";
+import SaveCSV from "./SaveCSV";
 import MetaData from "./MetaData";
 // import RelatedData from "./RelatedData";
 import UploadNewMap from "./UploadNewMap";
@@ -81,7 +82,8 @@ class MapAdmin extends React.Component {
 			},
 			//activeFeatureLocation: [51.510937, -0.104396], // dummy location
 			//activeFeatureOpacity: 0
-			activeFeatureIndex: null
+			activeFeatureIndex: null,
+			//appendLatestRelatedData: false
 		};
 	}
 
@@ -91,6 +93,42 @@ class MapAdmin extends React.Component {
 				activeTab: tab
 			});
 		}
+	}
+
+	appendRelatedDataToFeatureState(featureSet, related) {
+		if (related === null || related === undefined) {
+			return featureSet; // return straight back as is
+		}
+		const getLastRelDataItem = RelDataSet => {
+			const sortedKeys = Object.keys(RelDataSet).sort();
+			const lastDataItem = RelDataSet[sortedKeys[sortedKeys.length - 1]];
+			return lastDataItem;
+		};
+
+		const attachRelatedToRecord = (relKey, index, relDataOb) => {
+			// creates an ob with set of keys with related properties as their values
+			relDataOb[relKey] = getLastRelDataItem(related[relKey]); 
+		};
+		const relDataObject = {};
+		Object.keys(related).map((relKey, index) => {
+			attachRelatedToRecord(relKey, index, relDataObject);
+		});
+
+		const assignPropsToFeature = (feature, featureIndex, relDataObject) => {
+			const ObId = String(
+				feature.properties.OBJECTID + feature.geometry.type
+			);
+			Object.assign(
+				featureSet[featureIndex].properties,
+				relDataObject[ObId]
+			); // asign related Props to feature
+		};
+		const updatedFeatureSet = featureSet.map((feature, index) => {
+			assignPropsToFeature(feature, index, relDataObject);
+		});
+		const featureState = this.state.geoJson; // get a ref to state
+		featureState.features = featureSet;
+		this.setState(featureState);
 	}
 
 	onPointToLayer(feature, latlng) {
@@ -198,6 +236,10 @@ class MapAdmin extends React.Component {
 					relatedData: snap.Related || { "no related data": "" }
 				});
 				parent.mapUpdateToggle();
+				parent.appendRelatedDataToFeatureState(
+					snap.Geo.features,
+					snap.Related
+				);
 			});
 	}
 
@@ -220,7 +262,7 @@ class MapAdmin extends React.Component {
 			mapId: mapRef.id,
 			mapName: mapRef.name,
 			mapDescription: mapRef.description,
-			activeTab:'2a' 
+			activeTab: "2a"
 		});
 	}
 
@@ -241,8 +283,8 @@ class MapAdmin extends React.Component {
 		);
 
 		// if myProp exists for this feature then flip it, if if doesnt exist, create it
-		let highlightOnMap = this.state.geoJson.features[rowInfo.index].properties
-			.highlightOnMap;
+		let highlightOnMap = this.state.geoJson.features[rowInfo.index]
+			.properties.highlightOnMap;
 		className: rowInfo.index == 1 ? "Hello" : "";
 		if (highlightOnMap === undefined) {
 			this.state.geoJson.features[
@@ -251,8 +293,9 @@ class MapAdmin extends React.Component {
 		} else
 			this.state.geoJson.features[
 				rowInfo.index
-			].properties.highlightOnMap = !this.state.geoJson.features[rowInfo.index]
-				.properties.highlightOnMap;
+			].properties.highlightOnMap = !this.state.geoJson.features[
+				rowInfo.index
+			].properties.highlightOnMap;
 	}
 
 	style(feature) {
@@ -408,6 +451,7 @@ class MapAdmin extends React.Component {
 							<TabPane tabId="2a">
 								<TableView
 									data={this.state.geoJson.features}
+									relatedData={this.state.relatedData}
 									//activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
 									rowCallback={this.tableRowCallback}
 								/>
@@ -448,6 +492,7 @@ class MapAdmin extends React.Component {
 								<Row>
 									<Col sm="12">
 										<SaveShp geoJson={this.state.geoJson} />
+										<SaveCSV geoJson = {this.state.geoJson}/>
 									</Col>
 								</Row>
 							</TabPane>

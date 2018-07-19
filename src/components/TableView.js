@@ -7,16 +7,19 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./table-view.css";
 import treeTableHOC from "react-table/lib/hoc/treeTable";
+import { getRelatedData } from "../firebase/firebase";
 
 const TreeTable = treeTableHOC(ReactTable);
+
+// NOTES - geoJson set in constructor only - so won't add new related data in realtime
 
 class TableView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleRowClick = this.handleRowClick.bind(this);
-		const p = this.props.data[0].properties;
+		//const p = this.props.data[0].properties;
+
 		this.state = {
-			
 			col1: "default",
 			col2: "default",
 			col3: "default",
@@ -24,13 +27,32 @@ class TableView extends React.Component {
 			expanded: {},
 			activeRow: null,
 			selectedStyle: { backgroundColor: "khaki" },
-			unSelectedStyle: { backgroundColor: "gainsboro" }
+			unSelectedStyle: { backgroundColor: "gainsboro" },
+			tableData: this.props.data
 		};
+	}
+
+	componentWillMount() {
+		//console.log("hello from cwm")
+		this.assignRelatedDataToTableData();
+
+		this.setState({
+			//newpropertiesList
+			//myProps
+		});
+	}
+
+	assignRelatedDataToTableData() {
+		// fetch latest relatedDataSet for map
+		getRelatedData ("myKey")
+		const myProps = this.state.tableData;
+		myProps[0].properties.newPropKey = "myNewPropVal-1";
+		myProps[1].properties.newPropKey = "myNewPropVal-2";
 	}
 
 	componentWillReceiveProps() {
 		console.log("receive Props!", Date());
-		let p = this.props.data[0].properties;
+		let p = this.props.data[0].properties; // base the headings on fields in the  1st record
 
 		const col1 = Object.keys(p).find(
 			e =>
@@ -44,20 +66,20 @@ class TableView extends React.Component {
 		const col2 = Object.keys(p).find(
 			e => e === "description" || e === "DESCRIPTIO"
 		);
+
+		const newPropKey = this.state.tableData[0].myNewProp;
 		this.setState({
-			
 			col1: col1,
-			col2: col2
+			col2: col2,
+			tableData: this.props.data
 		});
-		console.log("New props:", this.props);
-		console.log("this.state.col1:", this.state.col1);
 	}
 
 	handleRowClick(e, handleOriginal, rowInfo, state, instance) {
-	
 		this.props.rowCallback(rowInfo, handleOriginal);
-		}
+	}
 
+	/*
 	handleRowExpanded(newExpanded, index, event) {
 	
 		this.setState({
@@ -69,25 +91,22 @@ class TableView extends React.Component {
 			!this.state.expanded[index]
 		);
 	}
+	*/
 
-	showRelated(value){
-		console.log("showRelated clicked!", value)
+	showRelated(value) {
+		console.log("showRelated clicked!", value);
 	}
 
 	render() {
 		return (
 			<TreeTable
-				
-				data={this.props.data}
-				
-
+				data={this.state.tableData}
 				minRows={1}
 				getTdProps={(state, rowInfo, column, instance) => {
 					return {
-					
 						style:
-							rowInfo && this.props.data[rowInfo.index]
-								? this.props.data[rowInfo.index].properties
+							rowInfo && this.state.tableData[rowInfo.index]
+								? this.state.tableData[rowInfo.index].properties
 										.highlightOnMap
 									? this.state.selectedStyle
 									: this.state.unSelectedStyle
@@ -101,7 +120,6 @@ class TableView extends React.Component {
 								state,
 								instance
 							);
-
 						}
 					};
 				}}
@@ -162,9 +180,7 @@ class TableView extends React.Component {
 						id: "highlightOnMap",
 						accessor: "properties.highlightOnMap",
 						show: false
-					},
-					
-				
+					}
 				]}
 				defaultPageSize="5"
 				className="-striped -highlight"
