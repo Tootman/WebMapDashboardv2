@@ -35,14 +35,7 @@ class SaveCSV extends React.Component {
 
 	handleSaveButton() {
 		//console.log("save button called with geoJson:", this.props.geoJson);
-		//this.saveAsShape(this.props.geoJson, "download_shp");
-		debugger;
-		try {
-			const csv = json2csv.Parser.parse({ csvData });
-			console.log(csv);
-		} catch (err) {
-			console.error(err);
-		}
+
 	}
 
 	saveAsCSV(geoJSON, fileName) {
@@ -65,7 +58,7 @@ class SaveCSV extends React.Component {
 		const chkStyle = { textAlign: "center" };
 		return (
 			<div>
-				<Button onClick={this.handleSaveButton}> Save as csv </Button>
+				
 				<p style={chkStyle}>
 					<Label check>
 						<Input type="checkbox" /> Include related data
