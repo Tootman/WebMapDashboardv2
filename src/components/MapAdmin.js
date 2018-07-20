@@ -54,10 +54,7 @@ class MapAdmin extends React.Component {
 		this.OpenMapCallback = this.OpenMapCallback.bind(this);
 		this.onEachFeature = this.onEachFeature.bind(this);
 		this.onPointToLayer = this.onPointToLayer.bind(this);
-		//this.activeFeatureLocationCallback = this.activeFeatureLocationCallback.bind(this);
-		//this.activeFeatureLocationCallback2 = this.activeFeatureLocationCallback2.bind(this);
 		this.tableRowCallback = this.tableRowCallback.bind(this);
-		//this.uploadNewMap = this.uploadNewMap.bind(this);
 
 		this.state = {
 			activeTab: "1",
@@ -66,7 +63,7 @@ class MapAdmin extends React.Component {
 			center: [51.505, -0.09],
 			rectangle: [[51.49, -0.08], [51.5, -0.06]],
 			mapStyle: { height: "500px", width: "100%" },
-			maxZoom: 18,
+			maxZoom: 22,
 			minZoom: 10,
 			dbMapIndexPath: "App/Mapindex/",
 			dbMapPath: "App/Maps/",
@@ -84,6 +81,7 @@ class MapAdmin extends React.Component {
 			//activeFeatureOpacity: 0
 			activeFeatureIndex: null,
 			//appendLatestRelatedData: false
+			newMaploadedLatch: false //not used
 		};
 	}
 
@@ -107,7 +105,7 @@ class MapAdmin extends React.Component {
 
 		const attachRelatedToRecord = (relKey, index, relDataOb) => {
 			// creates an ob with set of keys with related properties as their values
-			relDataOb[relKey] = getLastRelDataItem(related[relKey]); 
+			relDataOb[relKey] = getLastRelDataItem(related[relKey]);
 		};
 		const relDataObject = {};
 		Object.keys(related).map((relKey, index) => {
@@ -137,10 +135,22 @@ class MapAdmin extends React.Component {
 	}
 
 	onEachFeature(layer, feature) {
-		//debugger
 		console.log("OEFlayer:", layer, "OEFfeature:", feature);
+		const p = layer.properties;
+		
+		const popupContent = p.ASSET || p.Asset || p.NAME || p.OBJECTID || "";
+		feature.bindPopup(popupContent);
+		/*
+		layer.on({
+			mouseover: this.highlightFeature.bind(this),
+			mouseout: this.resetHighlight.bind(this),
+			click: this.clickToFeature.bind(this)
+		});
+		*/
+
 		//feature.options.fillColor = this.state.selectedFeatureStyle.fillColor
 
+		/*
 		if (layer.properties.highlightOnMap) {
 			feature.options.color = "orange";
 			feature.options.fillColor = "orange";
@@ -150,42 +160,21 @@ class MapAdmin extends React.Component {
 		}
 
 		//feature.options.markerColor= this.state.selectedFeatureStyle.markerColor
+		*/
 	}
 
 	mapUpdateToggle() {
 		this.setState({
 			mapChangeToggle: !this.state.mapChangeToggle
 		});
+
+		const mapRef = this.refs.map.leafletElement;
+		mapRef.invalidateSize();
+		this.refs.map.leafletElement.fitBounds(
+			this.refs.geoJsonLayer.leafletElement.getBounds()
+		);
+		console.log("mapUpdateToggle!");
 	}
-
-	/*
-	activeFeatureLocationCallback2(index, expanded) {
-		let coords = []; // will store the first point of feature
-
-		switch (this.state.geoJson.features[index].geometry.type) {
-			case "LineString":
-				coords = this.state.geoJson.features[index].geometry
-					.coordinates[0];
-				break;
-
-			case "Point":
-				coords = this.state.geoJson.features[index].geometry
-					.coordinates;
-				break;
-
-			case "Polygon":
-				coords = this.state.geoJson.features[index].geometry
-					.coordinates[0][0];
-				break;
-		}
-
-		this.setState({
-			activeFeatureLocation: coords,
-			activeFeatureOpacity: expanded ? 1 : 0
-		});
-		//console.log("coords:",this.state.geoJson.features[index].geometry.coordinates)
-	}
-	*/
 
 	fileToJSON(file) {
 		console.log("file:", file);
@@ -244,14 +233,16 @@ class MapAdmin extends React.Component {
 	}
 
 	componentDidUpdate() {
-		// to force rre-rendering map tiles
+		// to force re-rendering map tiles
+		// .. but only after a map is opened
+		/*
 		const mapRef = this.refs.map.leafletElement;
 		mapRef.invalidateSize();
-		console.log("didUpdate!");
-
+		
 		this.refs.map.leafletElement.fitBounds(
 			this.refs.geoJsonLayer.leafletElement.getBounds()
 		);
+		*/
 	}
 
 	OpenMapCallback(mapRef) {
@@ -492,7 +483,7 @@ class MapAdmin extends React.Component {
 								<Row>
 									<Col sm="12">
 										<SaveShp geoJson={this.state.geoJson} />
-										<SaveCSV geoJson = {this.state.geoJson}/>
+										<SaveCSV geoJson={this.state.geoJson} />
 									</Col>
 								</Row>
 							</TabPane>
@@ -525,6 +516,7 @@ class MapAdmin extends React.Component {
 							<TileLayer
 								attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
 								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+								maxZoom={22}
 							/>
 
 							<LayerGroup>
@@ -533,7 +525,7 @@ class MapAdmin extends React.Component {
 									key={this.state.mapChangeToggle}
 									ref="geoJsonLayer"
 									style={this.style} // works - feature as parameter
-									//onEachFeature={this.onEachFeature}
+									onEachFeature={this.onEachFeature}
 									pointToLayer={this.onPointToLayer}
 								/>
 							</LayerGroup>
