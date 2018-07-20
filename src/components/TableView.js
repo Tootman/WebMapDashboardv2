@@ -8,8 +8,20 @@ import "react-table/react-table.css";
 import "./table-view.css";
 import treeTableHOC from "react-table/lib/hoc/treeTable";
 import { getRelatedData } from "../firebase/firebase";
+import ImageLoader from "react-load-image";
 
 const TreeTable = treeTableHOC(ReactTable);
+
+const Photo = props => {
+	return (
+		<div>
+			<ImageLoader src={props.url}>
+				<img style={{width: '100%'}} />
+			</ImageLoader>
+			The logged in user is {props.url}
+		</div>
+	);
+};
 
 // NOTES - geoJson set in constructor only - so won't add new related data in realtime
 
@@ -44,7 +56,7 @@ class TableView extends React.Component {
 
 	assignRelatedDataToTableData() {
 		// fetch latest relatedDataSet for map
-		getRelatedData ("myKey")
+		getRelatedData("myKey");
 		const myProps = this.state.tableData;
 		myProps[0].properties.newPropKey = "myNewPropVal-1";
 		myProps[1].properties.newPropKey = "myNewPropVal-2";
@@ -150,8 +162,11 @@ class TableView extends React.Component {
 						}
 					);
 
+					let photoUrl = row.original.properties['photo'] || "http://placekitten.com/300/150" ;
+ 
 					return (
 						<div>
+							<Photo url={photoUrl} />
 							<ReactTable
 								data={rowData}
 								columns={columns}

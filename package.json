@@ -16,6 +16,7 @@
     "react-file-reader": "^1.1.4",
     "react-json-view": "^1.17.1",
     "react-leaflet": "^1.9.1",
+    "react-load-image": "^0.1.6",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "react-table": "^6.8.6",
