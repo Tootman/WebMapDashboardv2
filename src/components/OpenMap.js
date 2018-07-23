@@ -76,6 +76,7 @@ class MapCards extends React.Component {
 				<Col
 					md="4"
 					className="d-flex align-items-stretch justify-content-around"
+					style={{marginBottom:"1em"}}
 					key={item.mapID}
 				>
 					<Card body className="bg-info text-white ">
