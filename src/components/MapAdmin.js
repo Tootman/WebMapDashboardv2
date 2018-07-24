@@ -315,7 +315,7 @@ class MapAdmin extends React.Component {
 	}
 
 	render() {
-		// myAdded line! 24July 2018
+		// myAdded line! 24July 2018  - 2nd time
 		return (
 			<Container fluid>
 				<h1>Map Admin</h1>
