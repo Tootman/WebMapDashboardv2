@@ -315,6 +315,7 @@ class MapAdmin extends React.Component {
 	}
 
 	render() {
+		// myAdded line! 24July 2018
 		return (
 			<Container fluid>
 				<h1>Map Admin</h1>
