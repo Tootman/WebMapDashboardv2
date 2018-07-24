@@ -71,9 +71,9 @@ class TableView extends React.Component {
 				e === "name" ||
 				e === "Name" ||
 				e === "NAME" ||
-				e === "OBJECTID" ||
 				e === "Asset" ||
-				e === "ASSET"
+				e === "ASSET" ||
+				e === "OBJECTID"
 		);
 		const col2 = Object.keys(p).find(
 			e => e === "description" || e === "DESCRIPTIO"

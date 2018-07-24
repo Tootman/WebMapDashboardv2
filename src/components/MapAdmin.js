@@ -72,14 +72,14 @@ class MapAdmin extends React.Component {
 			mapDescription: "",
 			metaData: { "no meta data": "" },
 			relatedData: { "No related data": "" },
-			selectedFeatureStyle: {
-				color: "orange",
-				fillColor: "red",
-				markerColor: "red"
+			selectedFeatureStyle: {  // not used
+				color: "purple",
+				fillColor: "burple",
+				markerColor: "purple"
 			},
 			//activeFeatureLocation: [51.510937, -0.104396], // dummy location
 			//activeFeatureOpacity: 0
-			activeFeatureIndex: null,
+			activeFeatureIndex: null,  // not used?
 			//appendLatestRelatedData: false
 			newMaploadedLatch: false //not used
 		};
@@ -130,8 +130,11 @@ class MapAdmin extends React.Component {
 	}
 
 	onPointToLayer(feature, latlng) {
+		//enable mcircleMarker instead of marker for color coding of points etc
+		debugger
 		return L.circleMarker(latlng); // Change marker to circle
-		// return L.marker(latlng, { icon: {}}); // Change the icon to a custom icon
+		//return L.marker(latlng); // Change the icon to a custom icon
+
 	}
 
 	onEachFeature(layer, feature) {
@@ -139,7 +142,11 @@ class MapAdmin extends React.Component {
 		const p = layer.properties;
 		
 		const popupContent = p.ASSET || p.Asset || p.NAME || p.OBJECTID || "";
-		feature.bindPopup(popupContent);
+		//feature.bindPopup(popupContent)
+		
+		//console.log ("f,l:", feature,layer)
+		feature.bindTooltip(popupContent)
+
 		/*
 		layer.on({
 			mouseover: this.highlightFeature.bind(this),
@@ -199,6 +206,7 @@ class MapAdmin extends React.Component {
 	stripOutCoords(inJson) {
 		// return a copy of GeoJSON with all coords removed
 
+		
 		const jsonCopy = JSON.parse(JSON.stringify(inJson));
 
 		Object.keys(jsonCopy.features).forEach(i => {
@@ -290,19 +298,19 @@ class MapAdmin extends React.Component {
 	}
 
 	style(feature) {
+		const f = feature.properties.highlightOnMap
 		return {
 			// the fillColor is adapted from a property which can be changed by the user (segment)
 
-			weight: feature.properties.highlightOnMap ? 10 : 2,
+			weight: f ? 10 : 2,
 			//stroke-width: to have a constant width on the screen need to adapt with scale
-			opacity: feature.properties.highlightOnMap ? 1 : 0.5,
-			color: feature.properties.highlightOnMap ? "red" : "green",
-
+			opacity: f ? 1 : 0.5,
+			color: f ? "red" : "green",
 			fillColor: "blue",
 			radius: 5,
-			className: "myClass",
+			className: f ? "myClass" : "",
 			//dashArray: "3",
-			fillOpacity: feature.properties.highlightOnMap ? 1 : 0.5
+			fillOpacity: f ? 1 : 0.5
 		};
 	}
 
@@ -518,17 +526,15 @@ class MapAdmin extends React.Component {
 								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 								maxZoom={22}
 							/>
-
-							<LayerGroup>
 								<GeoJSON
 									data={this.state.geoJson}
 									key={this.state.mapChangeToggle}
 									ref="geoJsonLayer"
 									style={this.style} // works - feature as parameter
 									onEachFeature={this.onEachFeature}
-									pointToLayer={this.onPointToLayer}
+									pointToLayer={this.onPointToLayer} 
 								/>
-							</LayerGroup>
+							
 						</Map>
 					</Col>
 				</Row>
