@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://tootman.github.io/WebMapDashboardv2/",
   "dependencies": {
+    "@mapbox/geojson-merge": "^1.0.2",
     "bootstrap": "^4.1.1",
     "firebase": "^5.0.4",
     "json2csv": "^4.1.6",
