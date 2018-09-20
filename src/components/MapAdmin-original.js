@@ -131,7 +131,7 @@ class MapAdmin extends React.Component {
 
 	onPointToLayer(feature, latlng) {
 		//enable mcircleMarker instead of marker for color coding of points etc
-	
+		debugger
 		return L.circleMarker(latlng); // Change marker to circle
 		//return L.marker(latlng); // Change the icon to a custom icon
 
