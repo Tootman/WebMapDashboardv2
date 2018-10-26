@@ -126,6 +126,7 @@ class MapAdmin extends React.Component {
         };
         const updatedFeatureSet = featureSet.map((feature, index) => {
             assignPropsToFeature(feature, index, relDataObject);
+            console.log("updateFeatureSet:", feature,index)
         });
         const featureState = this.state.geoJson; // get a ref to state
         featureState.features = featureSet;
