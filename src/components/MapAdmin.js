@@ -323,7 +323,7 @@ class MapAdmin extends React.Component {
     }
 
     tableRowCallback(rowInfo, handleOriginal) {
-        console.log("tableRowCallback!", rowInfo.index);
+        console.log("tableRowCallback!", rowInfo);
         //debugger;
         handleOriginal(); //not working !
 
@@ -358,15 +358,15 @@ class MapAdmin extends React.Component {
         return {
             // the fillColor is adapted from a property which can be changed by the user (segment)
 
-            weight: f ? 10 : 2,
+            weight: f ? 8 : 2,
             //stroke-width: to have a constant width on the screen need to adapt with scale
-            opacity: f ? 1 : 0.5,
-            color: f ? "red" : "green",
-            fillColor: "blue",
-            radius: 5,
+            opacity: f ? 1 : 0.1,
+            color: f ? "red" : "blue",
+            fillColor: f ? "red" : "blue",
+            radius: f? 16 : 2,
             className: f ? "myClass" : "",
             //dashArray: "3",
-            fillOpacity: f ? 1 : 0.5
+            fillOpacity: f ? 1 : 0.1
         };
     }
 
