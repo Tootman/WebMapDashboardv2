@@ -12,6 +12,8 @@ import ImageLoader from "react-load-image";
 
 const TreeTable = treeTableHOC(ReactTable);
 
+
+
 const Photo = props => {
 	return (
 		<div>
@@ -29,6 +31,9 @@ class TableView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleRowClick = this.handleRowClick.bind(this);
+		//this.cancelled = false		
+		//this.handleFilterUpdate = this.handleFilterUpdate.bind(this)
+		//this.reactFilteredTable = this.reactFilteredTable.bind(this);
 		//const p = this.props.data[0].properties;
 
 		this.state = {
@@ -44,8 +49,13 @@ class TableView extends React.Component {
 		};
 	}
 
+	//var keys = {};
+     //window.onkeyup = function(e) { keys[e.keyCode] = false; }
+   
+
 	componentWillMount() {
 		//console.log("hello from cwm")
+		//document.addEventListener("keydown", this._handleKeyDown.bind(this));
 		this.assignRelatedDataToTableData();
 
 		this.setState({
@@ -53,6 +63,14 @@ class TableView extends React.Component {
 			//myProps
 		});
 	}
+ 
+    /*
+    _handleKeyDown = (event) => {
+       this.cancelled=true
+       console.log("keyDown!")
+    }
+    */
+
 
 	assignRelatedDataToTableData() {
 		// fetch latest relatedDataSet for map
@@ -61,6 +79,12 @@ class TableView extends React.Component {
 		myProps[0].properties.newPropKey = "myNewPropVal-1";
 		myProps[1].properties.newPropKey = "myNewPropVal-2";
 	}
+
+	/*
+	componentDidUpdate(){
+		console.log("tableInstance (from cdUpdate):", this.tableInstance.getWrappedInstance().getResolvedState().sortedData);
+	}
+	*/
 
 	componentWillReceiveProps() {
 		console.log("receive Props!", Date());
@@ -88,8 +112,36 @@ class TableView extends React.Component {
 	}
 
 	handleRowClick(e, handleOriginal, rowInfo, state, instance) {
+		//console.log("instance (RowClick):", instance.getResolvedState().sortedData);
 		this.props.rowCallback(rowInfo, handleOriginal);
 	}
+
+	/*
+	myCallback (){
+		console.log("callback called!")
+		this.cancelled = true
+		this.handleFilterUpdate()
+		console.log("CallbackDone!")
+	}
+	*/
+
+	handleFilterUpdate(){
+		console.log("tableInstance:", this.tableInstance.getWrappedInstance().getResolvedState().sortedData);
+	//console.log("start")
+	//this.cancelled= false
+	//console.log("cancelled:" , this.cancelled)
+	/*
+	for (let i = 0; i<100000000; i++){
+			//console.log(this.cancelled)
+			if (this.cancelled == true) {
+				console.log("interupted and break!")
+				break} 
+			}
+	*/
+	//this.cancelled = false
+	//console.log("finish", "cancelled:", this.cancelled)		
+	}
+
 
 	/*
 	handleRowExpanded(newExpanded, index, event) {
@@ -105,15 +157,25 @@ class TableView extends React.Component {
 	}
 	*/
 
+
 	showRelated(value) {
 		console.log("showRelated clicked!", value);
 	}
 
+	
 	render() {
 		return (
 			<TreeTable
 				data={this.state.tableData}
 				minRows={1}
+				ref={(instance)=>this.tableInstance=instance}
+				onFilteredChange={() => {
+    				//const { page } = this.tableInstance.getResolvedState()
+    				// page is the current pageIndex
+    				//console.log("filteredChanged!", this.tableInstance.getWrappedInstance().getResolvedState().sortedData)
+  				    this.handleFilterUpdate()
+  					//this.myCallback()
+  				}}
 				getTdProps={(state, rowInfo, column, instance) => {
 					return {
 						style:
