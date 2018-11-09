@@ -420,9 +420,9 @@ class MapAdmin extends React.Component {
                 Row >
                 <
                 Col md = "4" >
-                
+
                 <
-                p > <b>{ this.state.mapName } </b>  < /p> <
+                p > <b>{ this.state.mapName } </b> < /p> <
                 Nav tabs >
                 <
                 NavItem >
