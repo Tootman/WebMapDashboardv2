@@ -171,7 +171,8 @@ class TableView extends React.Component {
 	}
 
 	selectAllRows (){
-		 const selectedRows = this.state.selectedRows
+		/*
+		const selectedRows = this.state.selectedRows
 		selectedRows.map(row => {
 			//this.state.tableData[row._index].properties.highlightOnMap = true
 			const key = this.state.tableData[row._index].properties
@@ -182,23 +183,30 @@ class TableView extends React.Component {
 		console.log("select AllRows!",)
 
 		  //this.setState({ state: this.state });
-	}
+		*/
+	//console.log("selectAllRows Button!")
+	
 
+	this.props.selectAllRowsCallback (this.state.selectedRows)
+	}
 
 	selectNoRows (){
 		//const selectedRows = this.state.selectedRows
+		/*
 		this.state.tableData.map(row => {
 			row.properties.highlightOnMap = false
 			//row.properties.highlightOnMap = true
 		})
+		*/
+		this.props.selectNoRowsCallback ()
 		//console.log("select AllRows!",)
 	}
 
 	render() {
 		return (
 			<div>
-			<Button onClick={this.selectAllRows}>select All</Button>
-			<Button onClick={this.selectNoRows}>select None</Button>
+			<Button onClick={this.selectAllRows}>Select All</Button>
+			<Button onClick={this.selectNoRows}>Clear all</Button>
 			<TreeTable
 				data={this.state.tableData}
 				minRows={1}
@@ -279,12 +287,14 @@ class TableView extends React.Component {
 					},
 					{
 						Header: this.state.col2,
-						accessor: "properties." + this.state.col2
+						accessor: "properties." + this.state.col2,
+						maxWidth: 100
 					},
 					{
 						Header: "Condition",
 						id: "condition",
-						accessor: "properties.condition"
+						accessor: "properties.condition",
+						maxWidth: 100
 					},
 					{
 						Header: "",

@@ -55,6 +55,8 @@ class MapAdmin extends React.Component {
         this.onEachFeature = this.onEachFeature.bind(this);
         this.onPointToLayer = this.onPointToLayer.bind(this);
         this.tableRowCallback = this.tableRowCallback.bind(this);
+        this.selectAllRowsCallback = this.selectAllRowsCallback.bind(this)
+        this.selectNoRowsCallback = this.selectNoRowsCallback.bind(this)
 
         this.state = {
             activeTab: "1",
@@ -322,6 +324,46 @@ class MapAdmin extends React.Component {
         });
     }
 
+    selectAllRowsCallback(selectedRows) {
+        console.log("MapAdmin selectAllRowsCallback called!", selectedRows)
+        selectedRows.map(row => {
+            //this.state.tableData[row._index].properties.highlightOnMap = true
+            const key = this.state.geoJson.features[row._index].properties
+            key.highlightOnMap = true
+            this.setState({ key })
+            //row.properties.highlightOnMap = true
+        })
+    }
+
+    selectNoRowsCallback() {
+
+        /*
+        this.state.tableData.map(row => {
+            row.properties.highlightOnMap = false
+            //row.properties.highlightOnMap = true
+        })
+        */
+
+        this.setState((prevState, props) => {
+
+
+            console.log("noRowsPrevState:", prevState.geoJson.features[1].properties)
+
+
+            prevState.geoJson.features.map(row => {
+
+                let key = row.properties
+                key.highlightOnMap = false
+                console.log("newkey:", key)
+                this.setState({ key })
+            })
+
+
+        })
+    }
+
+
+
     tableRowCallback(rowInfo, handleOriginal) {
         console.log("tableRowCallback!", rowInfo);
         //debugger;
@@ -375,11 +417,12 @@ class MapAdmin extends React.Component {
         return ( <
                 Container fluid >
                 <
-                h1 > Map Admin < /h1> <
                 Row >
                 <
-                Col md = "6" >
+                Col md = "4" >
+                
                 <
+                p > <b>{ this.state.mapName } </b>  < /p> <
                 Nav tabs >
                 <
                 NavItem >
@@ -545,6 +588,8 @@ class MapAdmin extends React.Component {
             TableView
         data = { this.state.geoJson.features }
         relatedData = { this.state.relatedData }
+        selectAllRowsCallback = { this.selectAllRowsCallback }
+        selectNoRowsCallback = { this.selectNoRowsCallback }
         //activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
         rowCallback = { this.tableRowCallback }
         /> < /
@@ -622,10 +667,8 @@ class MapAdmin extends React.Component {
         TabPane > <
             /TabContent> < /
         Col > <
-            Col md = "6" >
-            <
-            h3 > { this.state.mapName } < /h3> <
-        p > { this.state.mapDescription } < /p>
+            Col md = "8" >
+
 
             <
             Map
@@ -637,7 +680,7 @@ class MapAdmin extends React.Component {
             TileLayer
         attribution = "&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        maxZoom = { 22 }
+        maxZoom = { 24 }
         /> <
         GeoJSON
         data = { this.state.geoJson }
