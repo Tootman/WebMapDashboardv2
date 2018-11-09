@@ -126,7 +126,7 @@ class MapAdmin extends React.Component {
         };
         const updatedFeatureSet = featureSet.map((feature, index) => {
             assignPropsToFeature(feature, index, relDataObject);
-            console.log("updateFeatureSet:", feature,index)
+            console.log("updateFeatureSet:", feature, index)
         });
         const featureState = this.state.geoJson; // get a ref to state
         featureState.features = featureSet;
@@ -153,9 +153,9 @@ class MapAdmin extends React.Component {
 
         /*
         layer.on({
-        	mouseover: this.highlightFeature.bind(this),
-        	mouseout: this.resetHighlight.bind(this),
-        	click: this.clickToFeature.bind(this)
+            mouseover: this.highlightFeature.bind(this),
+            mouseout: this.resetHighlight.bind(this),
+            click: this.clickToFeature.bind(this)
         });
         */
 
@@ -163,11 +163,11 @@ class MapAdmin extends React.Component {
 
         /*
         if (layer.properties.highlightOnMap) {
-        	feature.options.color = "orange";
-        	feature.options.fillColor = "orange";
+            feature.options.color = "orange";
+            feature.options.fillColor = "orange";
         } else {
-        	feature.options.color = "blue";
-        	feature.options.fillColor = "blue";
+            feature.options.color = "blue";
+            feature.options.fillColor = "blue";
         }
 
         //feature.options.markerColor= this.state.selectedFeatureStyle.markerColor
@@ -303,9 +303,9 @@ class MapAdmin extends React.Component {
         /*
         const mapRef = this.refs.map.leafletElement;
         mapRef.invalidateSize();
-		
+        
         this.refs.map.leafletElement.fitBounds(
-        	this.refs.geoJsonLayer.leafletElement.getBounds()
+            this.refs.geoJsonLayer.leafletElement.getBounds()
         );
         */
     }
@@ -363,7 +363,7 @@ class MapAdmin extends React.Component {
             opacity: f ? 1 : 0.1,
             color: f ? "red" : "blue",
             fillColor: f ? "red" : "blue",
-            radius: f? 16 : 2,
+            radius: f ? 16 : 2,
             className: f ? "myClass" : "",
             //dashArray: "3",
             fillOpacity: f ? 1 : 0.1

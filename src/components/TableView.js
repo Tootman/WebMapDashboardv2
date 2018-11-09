@@ -9,6 +9,9 @@ import "./table-view.css";
 import treeTableHOC from "react-table/lib/hoc/treeTable";
 import { getRelatedData } from "../firebase/firebase";
 import ImageLoader from "react-load-image";
+import {
+    Button
+} from "reactstrap";
 
 const TreeTable = treeTableHOC(ReactTable);
 
@@ -31,6 +34,8 @@ class TableView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleRowClick = this.handleRowClick.bind(this);
+		this.selectAllRows = this.selectAllRows.bind(this)
+		this.selectNoRows = this.selectNoRows.bind(this)
 		//this.cancelled = false		
 		//this.handleFilterUpdate = this.handleFilterUpdate.bind(this)
 		//this.reactFilteredTable = this.reactFilteredTable.bind(this);
@@ -45,7 +50,8 @@ class TableView extends React.Component {
 			activeRow: null,
 			selectedStyle: { backgroundColor: "khaki" },
 			unSelectedStyle: { backgroundColor: "gainsboro" },
-			tableData: this.props.data
+			tableData: this.props.data,
+			selectedRows : []
 		};
 	}
 
@@ -127,6 +133,8 @@ class TableView extends React.Component {
 
 	handleFilterUpdate(){
 		console.log("tableInstance:", this.tableInstance.getWrappedInstance().getResolvedState().sortedData);
+		this.setState({selectedRows :  this.tableInstance.getWrappedInstance().getResolvedState().sortedData})
+	
 	//console.log("start")
 	//this.cancelled= false
 	//console.log("cancelled:" , this.cancelled)
@@ -162,9 +170,35 @@ class TableView extends React.Component {
 		console.log("showRelated clicked!", value);
 	}
 
-	
+	selectAllRows (){
+		 const selectedRows = this.state.selectedRows
+		selectedRows.map(row => {
+			//this.state.tableData[row._index].properties.highlightOnMap = true
+			const key = this.state.tableData[row._index].properties
+			key.highlightOnMap = true
+			this.setState({key})
+			//row.properties.highlightOnMap = true
+		})
+		console.log("select AllRows!",)
+
+		  //this.setState({ state: this.state });
+	}
+
+
+	selectNoRows (){
+		//const selectedRows = this.state.selectedRows
+		this.state.tableData.map(row => {
+			row.properties.highlightOnMap = false
+			//row.properties.highlightOnMap = true
+		})
+		//console.log("select AllRows!",)
+	}
+
 	render() {
 		return (
+			<div>
+			<Button onClick={this.selectAllRows}>select All</Button>
+			<Button onClick={this.selectNoRows}>select None</Button>
 			<TreeTable
 				data={this.state.tableData}
 				minRows={1}
@@ -267,6 +301,7 @@ class TableView extends React.Component {
 					return  String(row[id]).toLowerCase().includes(filter.value.toLowerCase())
 				}}
 			/>
+			</div>
 		);
 	}
 }
