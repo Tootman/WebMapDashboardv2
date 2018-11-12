@@ -3,6 +3,9 @@
 	height: 550px;
 }
 
+body{
+	background-color: lightgray!important;
+}
 
 .bg-info .text-white .card .card-body {
     margin-bottom: 1em;

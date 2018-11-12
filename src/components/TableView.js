@@ -62,7 +62,7 @@ class TableView extends React.Component {
 	componentWillMount() {
 		//console.log("hello from cwm")
 		//document.addEventListener("keydown", this._handleKeyDown.bind(this));
-		this.assignRelatedDataToTableData();
+		//this.assignRelatedDataToTableData();
 
 		this.setState({
 			//newpropertiesList
@@ -78,6 +78,7 @@ class TableView extends React.Component {
     */
 
 
+	/*
 	assignRelatedDataToTableData() {
 		// fetch latest relatedDataSet for map
 		getRelatedData("myKey");
@@ -85,6 +86,7 @@ class TableView extends React.Component {
 		myProps[0].properties.newPropKey = "myNewPropVal-1";
 		myProps[1].properties.newPropKey = "myNewPropVal-2";
 	}
+	*/
 
 	/*
 	componentDidUpdate(){
@@ -210,6 +212,8 @@ class TableView extends React.Component {
 			<TreeTable
 				data={this.state.tableData}
 				minRows={1}
+				showPaginationTop = {true}
+				showPaginationBottom = {false}
 				ref={(instance)=>this.tableInstance=instance}
 				onFilteredChange={() => {
     				//const { page } = this.tableInstance.getResolvedState()
@@ -274,8 +278,7 @@ class TableView extends React.Component {
 							<ReactTable
 								data={rowData}
 								columns={columns}
-								minRows={1}
-								showPagination={false}
+								minRows={1}				
 							/>
 						</div>
 					);

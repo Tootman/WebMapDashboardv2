@@ -10,7 +10,6 @@ import SaveCSV from "./SaveCSV";
 import MetaData from "./MetaData";
 // import RelatedData from "./RelatedData";
 import UploadNewMap from "./UploadNewMap";
-import "./index.css";
 import testGeoJson from "./testGeoJson";
 import TableView from "./TableView";
 import CheckIcon from "./check.svg";
@@ -30,6 +29,7 @@ import {
     Col,
     Container
 } from "reactstrap";
+import "./index.css";
 import classnames from "classnames";
 import {
     Circle,
@@ -292,10 +292,12 @@ class MapAdmin extends React.Component {
                     relatedData: snap.Related || { "no related data": "" }
                 });
                 parent.mapUpdateToggle();
+                /*
                 parent.appendRelatedDataToFeatureState(
                     snap.Geo.features,
                     snap.Related
                 );
+                */
             });
     }
 
@@ -405,10 +407,10 @@ class MapAdmin extends React.Component {
             opacity: f ? 1 : 0.1,
             color: f ? "red" : "blue",
             fillColor: f ? "red" : "blue",
-            radius: f ? 16 : 2,
+            radius: f ? 6 : 2,
             className: f ? "myClass" : "",
             //dashArray: "3",
-            fillOpacity: f ? 1 : 0.1
+            fillOpacity: f ? 1 : 0.03
         };
     }
 
@@ -587,7 +589,7 @@ class MapAdmin extends React.Component {
             <
             TableView
         data = { this.state.geoJson.features }
-        relatedData = { this.state.relatedData }
+        
         selectAllRowsCallback = { this.selectAllRowsCallback }
         selectNoRowsCallback = { this.selectNoRowsCallback }
         //activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
@@ -679,7 +681,9 @@ class MapAdmin extends React.Component {
             <
             TileLayer
         attribution = "&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-        url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url = "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuc2ltbW9ucyIsImEiOiJjamRsc2NieTEwYmxnMnhsN3J5a3FoZ3F1In0.m0ct-AGSmSX2zaCMbXl0-w"
+        id= "mapbox.light"
+
         maxZoom = { 24 }
         /> <
         GeoJSON
