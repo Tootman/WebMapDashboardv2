@@ -14,7 +14,6 @@ import testGeoJson from "./testGeoJson";
 import TableView from "./TableView";
 import CheckIcon from "./check.svg";
 import L from "leaflet";
-
 import {
     TabContent,
     TabPane,
@@ -43,6 +42,7 @@ import {
     TileLayer
 } from "react-leaflet";
 import { db, auth } from "../firebase/firebase";
+var Spinner = require('react-spinkit');
 
 // import { slide as Menu } from "react-burger-menu";
 
@@ -292,12 +292,14 @@ class MapAdmin extends React.Component {
                     relatedData: snap.Related || { "no related data": "" }
                 });
                 parent.mapUpdateToggle();
-                /*
+                
+                
                 parent.appendRelatedDataToFeatureState(
                     snap.Geo.features,
                     snap.Related
                 );
-                */
+                
+                
             });
     }
 
@@ -670,14 +672,15 @@ class MapAdmin extends React.Component {
             /TabContent> < /
         Col > <
             Col md = "8" >
-
-
-            <
+             
+            
+                        <
             Map
         className = "map"
         ref = "map"
         maxZoom = { this.state.maxZoom }
         minZoom = { this.state.minZoom } >
+           
             <
             TileLayer
         attribution = "&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -685,7 +688,8 @@ class MapAdmin extends React.Component {
         id= "mapbox.light"
 
         maxZoom = { 24 }
-        /> <
+        />  {true ? <Spinner name='double-bounce' color="red" /> : null}
+         <
         GeoJSON
         data = { this.state.geoJson }
         key = { this.state.mapChangeToggle }
