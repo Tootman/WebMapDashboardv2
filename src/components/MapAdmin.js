@@ -42,7 +42,11 @@ import {
     TileLayer
 } from "react-leaflet";
 import { db, auth } from "../firebase/firebase";
-var Spinner = require('react-spinkit');
+
+
+
+
+
 
 // import { slide as Menu } from "react-burger-menu";
 
@@ -86,7 +90,10 @@ class MapAdmin extends React.Component {
             //activeFeatureOpacity: 0
             activeFeatureIndex: null, // not used?
             //appendLatestRelatedData: false
-            newMaploadedLatch: false //not used
+            newMaploadedLatch: false, //not used
+            /*showWorkingSpinner :false,*/
+            /*showWorkingSpinnerClassName : 'spinner-not-visible',*/
+            statusMessage: ""
         };
     }
 
@@ -275,12 +282,16 @@ class MapAdmin extends React.Component {
     retrieveMapFromFireBase(mapIndex) {
         const nodePath = String("/App/Maps/" + mapIndex);
         const parent = this;
+        /*parent.setState({showWorkingSpinner :true}) */
+        /*parent.setState({showWorkingSpinnerClassName : 'spinner-is-visible'}) */
+        parent.setState({ statusMessage: 'loading map ...' })
         db.ref(nodePath)
             .once("value")
             .then(function(snapshot) {
                 // loadOverlayLayer(snapshot.val())  // checks storage then tries downliading file
                 //const layerData = snapshot.val()
                 //console.log("GeoJson: " + snapshot.val());
+
                 const snap = snapshot.val();
                 // const geoJson = parent.mergeNormalizeGeojson([snap.Geo[0], snap.Geo[1], snap.Geo[2]])
                 let geoJson = null
@@ -292,14 +303,16 @@ class MapAdmin extends React.Component {
                     relatedData: snap.Related || { "no related data": "" }
                 });
                 parent.mapUpdateToggle();
-                
-                
+
+
                 parent.appendRelatedDataToFeatureState(
                     snap.Geo.features,
                     snap.Related
                 );
-                
-                
+                /*parent.setState({showWorkingSpinner :false}) */
+                /*parent.setState({showWorkingSpinnerClassName : 'spinner-not-visible'}) */
+                parent.setState({ statusMessage: '' })
+
             });
     }
 
@@ -330,6 +343,7 @@ class MapAdmin extends React.Component {
 
     selectAllRowsCallback(selectedRows) {
         console.log("MapAdmin selectAllRowsCallback called!", selectedRows)
+        this.setState({ statusMessage: 'processing ...' })
         selectedRows.map(row => {
             //this.state.tableData[row._index].properties.highlightOnMap = true
             const key = this.state.geoJson.features[row._index].properties
@@ -337,6 +351,7 @@ class MapAdmin extends React.Component {
             this.setState({ key })
             //row.properties.highlightOnMap = true
         })
+        this.setState({ statusMessage: '' }) 
     }
 
     selectNoRowsCallback() {
@@ -348,22 +363,17 @@ class MapAdmin extends React.Component {
         })
         */
 
+        this.setState({ statusMessage: 'processing ...' })
         this.setState((prevState, props) => {
-
-
             console.log("noRowsPrevState:", prevState.geoJson.features[1].properties)
-
-
             prevState.geoJson.features.map(row => {
-
                 let key = row.properties
                 key.highlightOnMap = false
                 console.log("newkey:", key)
                 this.setState({ key })
-            })
-
-
+            })          
         })
+        this.setState({ statusMessage: '' })
     }
 
 
@@ -420,7 +430,7 @@ class MapAdmin extends React.Component {
         // myAdded line! 24July 2018  - 2nd time
         return ( <
                 Container fluid >
-                <
+                <div class = "status-message position-fixed" >{this.state.statusMessage}</div> <
                 Row >
                 <
                 Col md = "4" >
@@ -591,7 +601,7 @@ class MapAdmin extends React.Component {
             <
             TableView
         data = { this.state.geoJson.features }
-        
+
         selectAllRowsCallback = { this.selectAllRowsCallback }
         selectNoRowsCallback = { this.selectNoRowsCallback }
         //activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
@@ -672,24 +682,23 @@ class MapAdmin extends React.Component {
             /TabContent> < /
         Col > <
             Col md = "8" >
-             
-            
-                        <
+
+
+            <
             Map
         className = "map"
         ref = "map"
         maxZoom = { this.state.maxZoom }
         minZoom = { this.state.minZoom } >
-           
+
             <
             TileLayer
         attribution = "&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         url = "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuc2ltbW9ucyIsImEiOiJjamRsc2NieTEwYmxnMnhsN3J5a3FoZ3F1In0.m0ct-AGSmSX2zaCMbXl0-w"
-        id= "mapbox.light"
+        id = "mapbox.light"
 
         maxZoom = { 24 }
-        />  {true ? <Spinner name='double-bounce' color="red" /> : null}
-         <
+        />  <
         GeoJSON
         data = { this.state.geoJson }
         key = { this.state.mapChangeToggle }

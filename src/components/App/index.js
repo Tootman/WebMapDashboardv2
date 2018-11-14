@@ -13,8 +13,8 @@ import * as routes from "../../constants/routes";
 import Djspage from "../Djspage";
 import MapAdmin from "../MapAdmin";
 import DemoMap from "../demomap";
-
 import "./index.css";
+
 
 const App = () => (
   <Router>
