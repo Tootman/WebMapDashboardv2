@@ -1,7 +1,7 @@
 # MapAdmin
 ## Description and overview
 Provides a Browser based dashboard with MapView, for managing ORCL mapdata for Local authority owned parks recreation areas and conservation area, intended for  use by surveyor GIS managers or staff
- 
+
 version: 0.9 - not yet ready - not releaased
 
 ## Features
@@ -26,7 +26,7 @@ version: 0.9 - not yet ready - not releaased
 
 ## Notes
  - Demo : <https://tootman.github.io/WebMapDashboardv2/>
- - MapAdmin component structure: <goo.gl/LsMg5o>
+ - MapAdmin component structure: <https://goo.gl/LsMg5o>
  - Contect API to access User permissions on page components
 - Leaflet object shared thorughout Application
 
