@@ -1,8 +1,10 @@
-## MapAdmin
-Provides a dashboard with MapView, for managing online Maps, intended for surveyor Staff / managers
+# MapAdmin
+## Description and overview
+Provides a Browser based dashboard with MapView, for managing ORCL mapdata for Local authority owned parks recreation areas and conservation area, intended for  use by surveyor GIS managers or staff
+ 
 version: 0.9 - not yet ready - not releaased
 
-# Features
+## Features
  - Import a zipped set of shapefiles as a map
  - filterable and sortable tabular view of features with their RelatedData
  - highlight filtered set of features on a map
@@ -11,16 +13,19 @@ version: 0.9 - not yet ready - not releaased
   -  Upload Dataset to the cloud database, as a new map 
   -  User Not logged in can access one set of webpages (Read only), user logged in can access additionally MapAdmin page (read and write to database)
 
-# Bugs / fixes to do
+## Bugs / fixes to do
  - large dataset can freeze UI while busy - how to interrupt
  - how to report 'busy' status to user while canvas is busy when redrawing large datasets on Leaflet map 
  - Visual style and layout  - replace MapAdmin tabs with menu
  - Add company branding /logo /visual style 
- - Create webpage content for public static Webpages
  - Addess 'bundle much too large' message
 
-# Notes
- - Demo : <>
+## feature wishlist
+  - Ability to view/inspect feature properties upon selecting a map feature (ie feature_on_click detailed infobox)
+  - Create webpage content for public static Webpages
+
+## Notes
+ - Demo : <https://tootman.github.io/WebMapDashboardv2/>
  - MapAdmin component structure: <goo.gl/LsMg5o>
  - Contect API to access User permissions on page components
 - Leaflet object shared thorughout Application
@@ -50,12 +55,13 @@ version: 0.9 - not yet ready - not releaased
  - Firebase database for Cloud storage
  - Bootstrap 4  
 
-## Proposed Client WebMap View
-# User requirement 
+# Proposed Client WebMap View
+## User requirement 
 - Ability to easily search for feature (or set of features), and  highlight on map,  by Condition, featureName, or Memorial Plaque / memorial name
  - Apply bookmarks (extents or map bounds), if map based on ward and/or park name(s)
  - Ability to see who (person or organisation) owns/manages an asset
   - Useful, but not essential, to have the ability to load data for the whole borough into MapAdmin, all at once
+
 ### User Stories
  - As a GIS user / client end-user I want to be able to respond to a customer  enquiry asking me where abouts in a park they can find their memorial bench (or memorial tree), by intuatively searching/inspecting an interactive WebMap
 
