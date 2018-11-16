@@ -13,14 +13,15 @@ version: 0.9 - not yet ready - not releaased
   -  Upload Dataset to the cloud database, as a new map 
   -  User Not logged in can access one set of webpages (Read only), user logged in can access additionally MapAdmin page (read and write to database)
 
-## Bugs / fixes to do
+## Bugs / issues
  - large dataset can freeze UI while busy - how to interrupt
  - how to report 'busy' status to user while canvas is busy when redrawing large datasets on Leaflet map 
  - Visual style and layout  - replace MapAdmin tabs with menu
  - Add company branding /logo /visual style 
  - Addess 'bundle much too large' message
 
-## feature wishlist
+## features todo / wishlist
+  - Set map bounds to extent of selectedRows (with Minimum bounds)
   - Ability to view/inspect feature properties upon selecting a map feature (ie feature_on_click detailed infobox)
   - Create webpage content for public static Webpages
 
@@ -55,6 +56,8 @@ version: 0.9 - not yet ready - not releaased
  - Firebase database for Cloud storage
  - Bootstrap 4  
 
+---
+
 # Proposed Client WebMap View
 ## User requirement 
 - Ability to easily search for feature (or set of features), and  highlight on map,  by Condition, featureName, or Memorial Plaque / memorial name
@@ -69,3 +72,9 @@ version: 0.9 - not yet ready - not releaased
 
  - (As a 'friend of park' (or as member of the public?) I want to identify the location of my memorial bench (or memorial tree), from a WebMap
  
+### Proposed map design behavour for 'who owns/manages what' map 
+  Start with map containing all features of the park -  Click feature on map showing all features over OpenMap baselayer to view popup infoBox containing details inc who Owns/manages, (partly solved in WebApp, however would need to search table)
+
+### For map for searching for a specific memorial etc
+
+    Start with empty map (with minimal detail eg basebap with park bounds?) with search bar - generate a droplist of fuzzy results from searhc, and display (and zoom to), selected (clicked) result, on map. 
