@@ -51,6 +51,12 @@ Provides a Browser based dashboard with MapView, for managing ORCL mapdata for L
     forEachFeature in map
         set highlightOnMap property to FALSE
 
+
+#### onTableRowClick:
+    toggle the value of mapAdmin.state.geojson.features(tableRow.index).properties.highlight_on_map
+    // then the change of state causes react to refresh style prop callback forEachFeature 
+
+
 ## How it it built - technology stack
  - Leaflet Mapping API
  - ReactJS v 16.3 (with Webpack via Create-react-App)
@@ -82,4 +88,7 @@ Provides a Browser based dashboard with MapView, for managing ORCL mapdata for L
 
 ### For map for searching for a specific memorial etc
 
-    Start with empty map (with minimal detail eg basebap with park bounds?) with search bar - generate a dropdownlist of fuzzy results from search, and display (and zoom to), selected (clicked) result, on map. 
+    Start with empty map (with minimal detail eg basebap with park bounds?) with search bar - generate a dropdownlist of fuzzy results from search, and display (and zoom to), selected (clicked) result, on map.  - maybe use google mymap?
+
+### Combination of above two maps
+  tyf

@@ -44,10 +44,6 @@ import {
 import { db, auth } from "../firebase/firebase";
 
 
-
-
-
-
 // import { slide as Menu } from "react-burger-menu";
 
 class MapAdmin extends React.Component {
@@ -93,7 +89,8 @@ class MapAdmin extends React.Component {
             newMaploadedLatch: false, //not used
             /*showWorkingSpinner :false,*/
             /*showWorkingSpinnerClassName : 'spinner-not-visible',*/
-            statusMessage: ""
+            statusMessage: "",
+            selectedLayers: {} // indexKey : layer
         };
     }
 
@@ -330,7 +327,7 @@ class MapAdmin extends React.Component {
     }
 
     OpenMapCallback(mapRef) {
-        console.log("mapRef:", mapRef.id);
+        console.log("mapRef:", mapRef);
 
         this.retrieveMapFromFireBase(mapRef.id);
         this.setState({
@@ -344,15 +341,35 @@ class MapAdmin extends React.Component {
     selectAllRowsCallback(selectedRows) {
         console.log("MapAdmin selectAllRowsCallback called!", selectedRows)
         this.setState({ statusMessage: 'processing ...' })
+        //let featureCollection = []
         selectedRows.map(row => {
             //this.state.tableData[row._index].properties.highlightOnMap = true
             const key = this.state.geoJson.features[row._index].properties
             key.highlightOnMap = true
             this.setState({ key })
+            //featureCollection.push(this.refs.geoJsonLayer.leafletElement.getLayers()[row._index])
+            //this.addToSelectedLayers(row._index, this.refs.geoJsonLayer.leafletElement.getLayers()[row._index])
             //row.properties.highlightOnMap = true
         })
-        this.setState({ statusMessage: '' }) 
+        this.setState({ statusMessage: '' })
+
     }
+
+
+    addToSelectedLayers(indexKey, layer) {
+        //console.log("set of features: ", featureCollection)
+        //var featureGroup = new L.featureGroup(featureCollection);
+        /*
+        this.refs.map.leafletElement.flyToBounds(
+            featureGroup.getBounds()
+        );
+        */
+        //const selectedLayer = this.state.selectedLayers
+        //selectedLayer[indexKey] = layer
+        //this.setState ({selectedLayer})
+    }
+
+
 
     selectNoRowsCallback() {
 
@@ -371,7 +388,7 @@ class MapAdmin extends React.Component {
                 key.highlightOnMap = false
                 console.log("newkey:", key)
                 this.setState({ key })
-            })          
+            })
         })
         this.setState({ statusMessage: '' })
     }
@@ -396,7 +413,7 @@ class MapAdmin extends React.Component {
         // if myProp exists for this feature then flip it, if if doesnt exist, create it
         let highlightOnMap = this.state.geoJson.features[rowInfo.index]
             .properties.highlightOnMap;
-        className: rowInfo.index == 1 ? "Hello" : "";
+
         if (highlightOnMap === undefined) {
             this.state.geoJson.features[
                 rowInfo.index
@@ -407,6 +424,8 @@ class MapAdmin extends React.Component {
             ].properties.highlightOnMap = !this.state.geoJson.features[
                 rowInfo.index
             ].properties.highlightOnMap;
+
+        console.log("feature clicked:", this.refs.geoJsonLayer.leafletElement.getLayers()[rowInfo.index])
     }
 
     style(feature) {
