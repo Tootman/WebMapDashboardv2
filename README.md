@@ -1,8 +1,9 @@
 # MapAdmin
+version: 0.9 - not yet ready - not releaased
+---
+
 ## Description and overview
 Provides a Browser based dashboard with MapView, for managing ORCL mapdata for Local authority owned parks recreation areas and conservation area, intended for  use by surveyor GIS managers or staff
-
-version: 0.9 - not yet ready - not releaased
 
 ## Features
  - Import a zipped set of shapefiles as a map
@@ -28,8 +29,8 @@ version: 0.9 - not yet ready - not releaased
 ## Notes
  - Demo : <https://tootman.github.io/WebMapDashboardv2/>
  - MapAdmin component structure: <https://goo.gl/LsMg5o>
- - Contect API to access User permissions on page components
-- Leaflet object shared thorughout Application
+ - Connect API to access User permissions on page components
+- Leaflet object shared throughout Application
 
 
 ## Functional specification
@@ -60,21 +61,25 @@ version: 0.9 - not yet ready - not releaased
 
 # Proposed Client WebMap View
 ## User requirement 
-- Ability to easily search for feature (or set of features), and  highlight on map,  by Condition, featureName, or Memorial Plaque / memorial name
+- Ability to easily search for feature (or set of features), and  highlight on map,  by Condition, featureName, or Memorial Plaque details / memorial name
  - Apply bookmarks (extents or map bounds), if map based on ward and/or park name(s)
  - Ability to see who (person or organisation) owns/manages an asset
-  - Useful, but not essential, to have the ability to load data for the whole borough into MapAdmin, all at once
+ - Useful, but not essential, to have the ability to load data for the whole borough into MapAdmin, all at once
+ - (Related Data not needed?)
+ - (Completed/notCompleted symbology not needed?)
+
 
 ### User Stories
- - As a GIS user / client end-user I want to be able to respond to a customer  enquiry asking me where abouts in a park they can find their memorial bench (or memorial tree), by intuatively searching/inspecting an interactive WebMap
+ - As a GIS user / client end-user I want to be able to respond to a customer enquiry, (from my office computer), asking me where abouts in a park they can find their memorial bench (or memorial tree), by intuatively searching/inspecting an interactive WebMap
 
  - As a GIS user / client end-user I want to easily find the information on who owns (or manages) a specific feature that I have identified on the WebMap (eg a specific boundary wall.
 
- - (As a 'friend of park' (or as member of the public?) I want to identify the location of my memorial bench (or memorial tree), from a WebMap
+ - (As a 'friend of park' (or as member of the public?) I want to identify the location of my memorial bench (or memorial tree), from an easily-usable WebMap, from my phone, tablet or computer
  
 ### Proposed map design behavour for 'who owns/manages what' map 
-  Start with map containing all features of the park -  Click feature on map showing all features over OpenMap baselayer to view popup infoBox containing details inc who Owns/manages, (partly solved in WebApp, however would need to search table)
+  Start with map containing all features of the park Iie basic Leaflet -  Click feature on map showing all features over OpenMap baselayer to view popup infoBox containing details inc who Owns/manages, (partly solved in WebApp, however would need to search table)
+
 
 ### For map for searching for a specific memorial etc
 
-    Start with empty map (with minimal detail eg basebap with park bounds?) with search bar - generate a droplist of fuzzy results from searhc, and display (and zoom to), selected (clicked) result, on map. 
+    Start with empty map (with minimal detail eg basebap with park bounds?) with search bar - generate a dropdownlist of fuzzy results from search, and display (and zoom to), selected (clicked) result, on map. 
