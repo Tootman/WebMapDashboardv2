@@ -33,7 +33,8 @@ const Photo = props => {
 class TableView extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleRowClick = this.handleRowClick.bind(this);
+		//this.handleRowClick = this.handleRowClick.bind(this);
+		this.handleRowClick2 = this.handleRowClick2.bind(this);
 		this.selectAllRows = this.selectAllRows.bind(this)
 		this.selectNoRows = this.selectNoRows.bind(this)
 		this.locateFeatureOnMap = this.locateFeatureOnMap.bind(this)
@@ -120,9 +121,16 @@ class TableView extends React.Component {
 		});
 	}
 
+	/*
 	handleRowClick(e, handleOriginal, rowInfo, state, instance) {
 		//console.log("instance (RowClick):", instance.getResolvedState().sortedData);
 		this.props.rowCallback(rowInfo, handleOriginal);
+	}
+	*/
+
+	handleRowClick2(row) {
+		//console.log("instance (RowClick):", instance.getResolvedState().sortedData);
+		this.props.rowCallback2(row);
 	}
 
 	/*
@@ -222,6 +230,14 @@ class TableView extends React.Component {
 				showPaginationTop = {true}
 				showPaginationBottom = {false}
 				ref={(instance)=>this.tableInstance=instance}
+				/*
+				onExpandedChange={
+					(newExpanded, index, event) =>{
+						console.log("expandedChanged!")
+						console.log("event:",event )
+					}
+				} */
+
 				onFilteredChange={() => {
     				//const { page } = this.tableInstance.getResolvedState()
     				// page is the current pageIndex
@@ -237,17 +253,7 @@ class TableView extends React.Component {
 										.highlightOnMap
 									? this.state.selectedStyle
 									: this.state.unSelectedStyle
-								: this.state.unSelectedStyle,
-
-						onClick: (e, handleOriginal) => {
-							this.handleRowClick(
-								e,
-								handleOriginal,
-								rowInfo,
-								state,
-								instance
-							);
-						}
+								: this.state.unSelectedStyle				
 					};
 				}}
 				SubComponent={row => {
@@ -283,7 +289,12 @@ class TableView extends React.Component {
 						<div>
 						<Button onClick={(e)=>{
 							this.locateFeatureOnMap(row.index)
-						}}>Fly to</Button>
+							}}>Fly to
+						</Button>
+						<Button onClick={(e)=>{
+							  this.handleRowClick2( row	);
+						   }}> select
+						</Button>
 							<Photo url={photoUrl} />
 							<ReactTable
 								data={rowData}
@@ -318,7 +329,9 @@ class TableView extends React.Component {
 				]}
 				defaultPageSize="5"
 				className="-striped -highlight"
+				collapseOnDataChange =  {false}
 				filterable
+				showPageJump = {false}
 				defaultFilterMethod={(filter, row, column) => {
 					const id = filter.pivotId || filter.id;
 					return  String(row[id]).toLowerCase().includes(filter.value.toLowerCase())

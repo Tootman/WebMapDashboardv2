@@ -54,7 +54,8 @@ class MapAdmin extends React.Component {
         this.OpenMapCallback = this.OpenMapCallback.bind(this);
         this.onEachFeature = this.onEachFeature.bind(this);
         this.onPointToLayer = this.onPointToLayer.bind(this);
-        this.tableRowCallback = this.tableRowCallback.bind(this);
+        // this.tableRowCallback = this.tableRowCallback.bind(this);
+          this.tableRowCallback2 = this.tableRowCallback2.bind(this);
         this.selectAllRowsCallback = this.selectAllRowsCallback.bind(this)
         this.selectNoRowsCallback = this.selectNoRowsCallback.bind(this)
         this.zoomToFeatureCallback = this.zoomToFeatureCallback.bind(this)
@@ -110,7 +111,7 @@ class MapAdmin extends React.Component {
         featureCollection.push (feature)
         const featureGroup = new L.featureGroup(featureCollection);
         this.refs.map.leafletElement.flyToBounds(
-           featureGroup.getBounds().pad(7)
+           featureGroup.getBounds(), 22 // pad not working !!
         );
     
     }
@@ -413,6 +414,7 @@ class MapAdmin extends React.Component {
         this.setState({ statusMessage: '' })
     }
 
+   /*
 
     tableRowCallback(rowInfo, handleOriginal) {
         console.log("tableRowCallback!", rowInfo);
@@ -446,6 +448,41 @@ class MapAdmin extends React.Component {
 
         console.log("feature clicked:", this.refs.geoJsonLayer.leafletElement.getLayers()[rowInfo.index])
     }
+
+    */
+
+ tableRowCallback2(rowInfo) {
+        console.log("tableRowCallback2!", rowInfo);
+        //debugger;
+        //handleOriginal(); //not working !
+
+        this.setState({
+                activeFeatureIndex: rowInfo.index
+            },
+            // // geoJson.features[rowInfo.index].properties.highlightOnMap : "Hello",
+            // // geoJson: { ...this.state.someProperty, flag: false} }
+           
+        );
+
+        // if myProp exists for this feature then flip it, if if doesnt exist, create it
+        let highlightOnMap = this.state.geoJson.features[rowInfo.index]
+            .properties.highlightOnMap;
+
+        if (highlightOnMap === undefined) {
+            this.state.geoJson.features[
+                rowInfo.index
+            ].properties.highlightOnMap = true;
+        } else
+            this.state.geoJson.features[
+                rowInfo.index
+            ].properties.highlightOnMap = !this.state.geoJson.features[
+                rowInfo.index
+            ].properties.highlightOnMap;
+
+        console.log("feature clicked:", this.refs.geoJsonLayer.leafletElement.getLayers()[rowInfo.index])
+    }
+
+
 
     style(feature) {
         const f = feature.properties.highlightOnMap
@@ -643,7 +680,8 @@ class MapAdmin extends React.Component {
         selectAllRowsCallback = { this.selectAllRowsCallback }
         selectNoRowsCallback = { this.selectNoRowsCallback }
         //activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
-        rowCallback = { this.tableRowCallback }
+     
+        rowCallback2 = { this.tableRowCallback2 }
         zoomToFeatureCallback = { this.zoomToFeatureCallback }
         /> < /
         TabPane > <
