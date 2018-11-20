@@ -57,6 +57,7 @@ class MapAdmin extends React.Component {
         this.tableRowCallback = this.tableRowCallback.bind(this);
         this.selectAllRowsCallback = this.selectAllRowsCallback.bind(this)
         this.selectNoRowsCallback = this.selectNoRowsCallback.bind(this)
+        this.zoomToFeatureCallback = this.zoomToFeatureCallback.bind(this)
 
         this.state = {
             activeTab: "1",
@@ -102,6 +103,18 @@ class MapAdmin extends React.Component {
         }
     }
 
+    zoomToFeatureCallback(featureIndex) {
+        console.log("zoomToFeatureCallback index:", featureIndex)
+       const feature = this.refs.geoJsonLayer.leafletElement.getLayers()[featureIndex]
+        const featureCollection = []
+        featureCollection.push (feature)
+        const featureGroup = new L.featureGroup(featureCollection);
+        this.refs.map.leafletElement.flyToBounds(
+           featureGroup.getBounds().pad(7)
+        );
+    
+    }
+
     appendRelatedDataToFeatureState(featureSet, related) {
         if (related === null || related === undefined) {
             return featureSet; // return straight back as is
@@ -132,7 +145,7 @@ class MapAdmin extends React.Component {
         };
         const updatedFeatureSet = featureSet.map((feature, index) => {
             assignPropsToFeature(feature, index, relDataObject);
-            console.log("updateFeatureSet:", feature, index)
+            //console.log("updateFeatureSet:", feature, index)
         });
         const featureState = this.state.geoJson; // get a ref to state
         featureState.features = featureSet;
@@ -148,7 +161,7 @@ class MapAdmin extends React.Component {
     }
 
     onEachFeature(layer, feature) {
-        console.log("OEFlayer:", layer, "OEFfeature:", feature);
+        //console.log("OEFlayer:", layer, "OEFfeature:", feature);
         const p = layer.properties;
 
         const popupContent = p.ASSET || p.Asset || p.NAME || p.OBJECTID || "";
@@ -341,7 +354,7 @@ class MapAdmin extends React.Component {
     selectAllRowsCallback(selectedRows) {
         console.log("MapAdmin selectAllRowsCallback called!", selectedRows)
         this.setState({ statusMessage: 'processing ...' })
-        //let featureCollection = []
+        let featureCollection = []
         selectedRows.map(row => {
             //this.state.tableData[row._index].properties.highlightOnMap = true
             const key = this.state.geoJson.features[row._index].properties
@@ -350,6 +363,13 @@ class MapAdmin extends React.Component {
             //featureCollection.push(this.refs.geoJsonLayer.leafletElement.getLayers()[row._index])
             //this.addToSelectedLayers(row._index, this.refs.geoJsonLayer.leafletElement.getLayers()[row._index])
             //row.properties.highlightOnMap = true
+
+            /*
+            let featureGroup = new L.featureGroup(featureCollection);
+            this.refs.map.leafletElement.flyToBounds(
+                featureGroup.getBounds()
+            );
+            */
         })
         this.setState({ statusMessage: '' })
 
@@ -386,13 +406,12 @@ class MapAdmin extends React.Component {
             prevState.geoJson.features.map(row => {
                 let key = row.properties
                 key.highlightOnMap = false
-                console.log("newkey:", key)
+                //console.log("newkey:", key)
                 this.setState({ key })
             })
         })
         this.setState({ statusMessage: '' })
     }
-
 
 
     tableRowCallback(rowInfo, handleOriginal) {
@@ -452,7 +471,7 @@ class MapAdmin extends React.Component {
                 <div class = "status-message position-fixed" >{this.state.statusMessage}</div> <
                 Row >
                 <
-                Col md = "4" >
+                Col md = "5" >
 
                 <
                 p > <b>{ this.state.mapName } </b> < /p> <
@@ -625,6 +644,7 @@ class MapAdmin extends React.Component {
         selectNoRowsCallback = { this.selectNoRowsCallback }
         //activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
         rowCallback = { this.tableRowCallback }
+        zoomToFeatureCallback = { this.zoomToFeatureCallback }
         /> < /
         TabPane > <
             TabPane tabId = "3b" >
@@ -700,7 +720,7 @@ class MapAdmin extends React.Component {
         TabPane > <
             /TabContent> < /
         Col > <
-            Col md = "8" >
+            Col md = "7" >
 
 
             <

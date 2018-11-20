@@ -36,6 +36,7 @@ class TableView extends React.Component {
 		this.handleRowClick = this.handleRowClick.bind(this);
 		this.selectAllRows = this.selectAllRows.bind(this)
 		this.selectNoRows = this.selectNoRows.bind(this)
+		this.locateFeatureOnMap = this.locateFeatureOnMap.bind(this)
 		//this.cancelled = false		
 		//this.handleFilterUpdate = this.handleFilterUpdate.bind(this)
 		//this.reactFilteredTable = this.reactFilteredTable.bind(this);
@@ -204,6 +205,12 @@ class TableView extends React.Component {
 		//console.log("select AllRows!",)
 	}
 
+	locateFeatureOnMap (featureIndex){
+		//console.log("locateONMap!",e)
+		this.props.zoomToFeatureCallback (featureIndex)
+	}
+
+
 	render() {
 		return (
 			<div>
@@ -274,6 +281,9 @@ class TableView extends React.Component {
  
 					return (
 						<div>
+						<Button onClick={(e)=>{
+							this.locateFeatureOnMap(row.index)
+						}}>Fly to</Button>
 							<Photo url={photoUrl} />
 							<ReactTable
 								data={rowData}
