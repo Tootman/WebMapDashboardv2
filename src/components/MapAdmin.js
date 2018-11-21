@@ -111,7 +111,7 @@ class MapAdmin extends React.Component {
         featureCollection.push (feature)
         const featureGroup = new L.featureGroup(featureCollection);
         this.refs.map.leafletElement.flyToBounds(
-           featureGroup.getBounds(), 22 // pad not working !!
+           featureGroup.getBounds(), {maxZoom: 20} // pad not working !!
         );
     
     }
