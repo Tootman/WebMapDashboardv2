@@ -10,7 +10,8 @@ import treeTableHOC from "react-table/lib/hoc/treeTable";
 import { getRelatedData } from "../firebase/firebase";
 import ImageLoader from "react-load-image";
 import {
-    Button
+    Button,
+    Row
 } from "reactstrap";
 
 const TreeTable = treeTableHOC(ReactTable);
@@ -287,14 +288,16 @@ class TableView extends React.Component {
  
 					return (
 						<div>
-						<Button onClick={(e)=>{
+						<Row>
+						<Button color="primary" size="sm" className="col-sm-3"  onClick={(e)=>{
 							this.locateFeatureOnMap(row.index)
 							}}>Fly to
 						</Button>
-						<Button onClick={(e)=>{
+						<Button color="info" size="sm" className="col-sm-3 offset-sm-1" onClick={(e)=>{
 							  this.handleRowClick2( row	);
-						   }}> select
+						   }}>Show / Hide
 						</Button>
+						</Row>
 							<Photo url={photoUrl} />
 							<ReactTable
 								data={rowData}

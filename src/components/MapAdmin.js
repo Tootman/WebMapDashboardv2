@@ -55,7 +55,7 @@ class MapAdmin extends React.Component {
         this.onEachFeature = this.onEachFeature.bind(this);
         this.onPointToLayer = this.onPointToLayer.bind(this);
         // this.tableRowCallback = this.tableRowCallback.bind(this);
-          this.tableRowCallback2 = this.tableRowCallback2.bind(this);
+        this.tableRowCallback2 = this.tableRowCallback2.bind(this);
         this.selectAllRowsCallback = this.selectAllRowsCallback.bind(this)
         this.selectNoRowsCallback = this.selectNoRowsCallback.bind(this)
         this.zoomToFeatureCallback = this.zoomToFeatureCallback.bind(this)
@@ -106,14 +106,14 @@ class MapAdmin extends React.Component {
 
     zoomToFeatureCallback(featureIndex) {
         console.log("zoomToFeatureCallback index:", featureIndex)
-       const feature = this.refs.geoJsonLayer.leafletElement.getLayers()[featureIndex]
+        const feature = this.refs.geoJsonLayer.leafletElement.getLayers()[featureIndex]
         const featureCollection = []
-        featureCollection.push (feature)
+        featureCollection.push(feature)
         const featureGroup = new L.featureGroup(featureCollection);
         this.refs.map.leafletElement.flyToBounds(
-           featureGroup.getBounds(), {maxZoom: 20} // pad not working !!
+            featureGroup.getBounds(), { maxZoom: 20 } // pad not working !!
         );
-    
+
     }
 
     appendRelatedDataToFeatureState(featureSet, related) {
@@ -165,11 +165,18 @@ class MapAdmin extends React.Component {
         //console.log("OEFlayer:", layer, "OEFfeature:", feature);
         const p = layer.properties;
 
-        const popupContent = p.ASSET || p.Asset || p.NAME || p.OBJECTID || "";
+        const popupTitle = p.ASSET || p.Asset || p.NAME || p.OBJECTID || "";
         //feature.bindPopup(popupContent)
 
+        let popupTableContent = "<table>"         
+
+        //Object.keys(p).map(item =>{return ({"name" : myProps[item] })})
+        Object.keys(p).forEach(prop => { popupTableContent += "<tr>" + "<td>" + prop + "</td><td>" + p[prop] + "</td></tr>" })
+        popupTableContent += "</table>"
         //console.log ("f,l:", feature,layer)
-        feature.bindTooltip(popupContent)
+
+        feature.bindTooltip(popupTitle)
+        feature.bindPopup(popupTableContent)
 
         /*
         layer.on({
@@ -414,44 +421,44 @@ class MapAdmin extends React.Component {
         this.setState({ statusMessage: '' })
     }
 
-   /*
+    /*
 
-    tableRowCallback(rowInfo, handleOriginal) {
-        console.log("tableRowCallback!", rowInfo);
-        //debugger;
-        handleOriginal(); //not working !
+     tableRowCallback(rowInfo, handleOriginal) {
+         console.log("tableRowCallback!", rowInfo);
+         //debugger;
+         handleOriginal(); //not working !
 
-        this.setState({
-                activeFeatureIndex: rowInfo.index
-            },
-            // // geoJson.features[rowInfo.index].properties.highlightOnMap : "Hello",
-            // // geoJson: { ...this.state.someProperty, flag: false} }
-            () => {
-                handleOriginal();
-            }
-        );
+         this.setState({
+                 activeFeatureIndex: rowInfo.index
+             },
+             // // geoJson.features[rowInfo.index].properties.highlightOnMap : "Hello",
+             // // geoJson: { ...this.state.someProperty, flag: false} }
+             () => {
+                 handleOriginal();
+             }
+         );
 
-        // if myProp exists for this feature then flip it, if if doesnt exist, create it
-        let highlightOnMap = this.state.geoJson.features[rowInfo.index]
-            .properties.highlightOnMap;
+         // if myProp exists for this feature then flip it, if if doesnt exist, create it
+         let highlightOnMap = this.state.geoJson.features[rowInfo.index]
+             .properties.highlightOnMap;
 
-        if (highlightOnMap === undefined) {
-            this.state.geoJson.features[
-                rowInfo.index
-            ].properties.highlightOnMap = true;
-        } else
-            this.state.geoJson.features[
-                rowInfo.index
-            ].properties.highlightOnMap = !this.state.geoJson.features[
-                rowInfo.index
-            ].properties.highlightOnMap;
+         if (highlightOnMap === undefined) {
+             this.state.geoJson.features[
+                 rowInfo.index
+             ].properties.highlightOnMap = true;
+         } else
+             this.state.geoJson.features[
+                 rowInfo.index
+             ].properties.highlightOnMap = !this.state.geoJson.features[
+                 rowInfo.index
+             ].properties.highlightOnMap;
 
-        console.log("feature clicked:", this.refs.geoJsonLayer.leafletElement.getLayers()[rowInfo.index])
-    }
+         console.log("feature clicked:", this.refs.geoJsonLayer.leafletElement.getLayers()[rowInfo.index])
+     }
 
-    */
+     */
 
- tableRowCallback2(rowInfo) {
+    tableRowCallback2(rowInfo) {
         console.log("tableRowCallback2!", rowInfo);
         //debugger;
         //handleOriginal(); //not working !
@@ -461,7 +468,7 @@ class MapAdmin extends React.Component {
             },
             // // geoJson.features[rowInfo.index].properties.highlightOnMap : "Hello",
             // // geoJson: { ...this.state.someProperty, flag: false} }
-           
+
         );
 
         // if myProp exists for this feature then flip it, if if doesnt exist, create it
@@ -680,7 +687,7 @@ class MapAdmin extends React.Component {
         selectAllRowsCallback = { this.selectAllRowsCallback }
         selectNoRowsCallback = { this.selectNoRowsCallback }
         //activeFeatureLocationCallback={this.activeFeatureLocationCallback2}
-     
+
         rowCallback2 = { this.tableRowCallback2 }
         zoomToFeatureCallback = { this.zoomToFeatureCallback }
         /> < /
