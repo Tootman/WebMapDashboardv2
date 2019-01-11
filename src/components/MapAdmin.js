@@ -93,6 +93,10 @@ class MapAdmin extends React.Component {
     };
   }
 
+  testMethod(x) {
+    return x * 2;
+  }
+
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
@@ -159,7 +163,8 @@ class MapAdmin extends React.Component {
     //console.log("OEFlayer:", layer, "OEFfeature:", feature);
     const p = layer.properties;
 
-    const popupTitle = p.ASSET || p.Asset || p.NAME || p.OBJECTID || "";
+    const popupTitle =
+      p.ASSET || p.Asset || p.asset || p.NAME || p.OBJECTID || "";
     //feature.bindPopup(popupContent)
 
     let popupTableContent = "<table>";
@@ -732,4 +737,9 @@ class MapAdmin extends React.Component {
 }
 
 const authCondition = authUser => !!authUser;
-export default withAuthorization(authCondition)(MapAdmin);
+const MapAdminComponent = withAuthorization(authCondition)(MapAdmin);
+const MapAdminTest = MapAdmin;
+export { MapAdminComponent, MapAdminTest };
+// originally:
+//export default withAuthorization(authCondition)(MapAdmin);
+// remember to change App/index.js import back to import MapAdmin ...
