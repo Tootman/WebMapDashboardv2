@@ -42,17 +42,24 @@ class ImportShp extends React.Component {
   render() {
     return (
       <div>
-        <h4>
-          Select shape file (or zip of set of shape files), from local drive,
-          and import it as GeoJSON based map
-        </h4>
+        <h4>Import shp</h4>
         <ReactFileReader
           fileTypes=".zip, .shp, .geojson"
           handleFiles={this.handleFiles}
           multipleFiles={false}
           base64={true}
         >
-          <Button className="btn">Upload file</Button>
+          <ul>
+            <li>create QGIS project from shp file set</li>
+            <li>
+              copy desired features into new layers - splitting up selection etc
+              if necessary
+            </li>
+            <li>Rename 'ASSETS' or 'assets' fields in each shp to 'Assets' </li>
+            <li>Zip up</li>
+            <li>Click upload etc </li>
+          </ul>
+          <Button color="primary">Upload zipped shp files</Button>
         </ReactFileReader>
       </div>
     );

@@ -273,7 +273,8 @@ class MapAdmin extends React.Component {
       .then(geojson => {
         geojson = this.mergeNormalizeGeojson(Object.values(geojson));
         delete geojson.fileName;
-        console.log("MyGeoL:", geojson);
+        geojson = this.removeNaNPropertyValues(geojson);
+        //console.log("MyGeoL:", geojson)
 
         //do something with your geojson
 
@@ -295,6 +296,19 @@ class MapAdmin extends React.Component {
     Object.keys(jsonCopy.features).forEach(i => {
       delete jsonCopy.features[i].geometry.coordinates;
       delete jsonCopy.features[i].geometry.bbox;
+    });
+    return jsonCopy;
+  }
+
+  removeNaNPropertyValues(inJson) {
+    const jsonCopy = JSON.parse(JSON.stringify(inJson)); // todo - fudge?
+    Object.keys(jsonCopy.features).forEach(i => {
+      if (jsonCopy.features[i].properties.CONDITION == NaN) {
+        jsonCopy.features[i].properties.CONDITION = 0;
+      }
+      if (jsonCopy.features[i].properties.HEIGHT == NaN) {
+        jsonCopy.features[i].properties.HEIGHT = 0;
+      }
     });
     return jsonCopy;
   }
