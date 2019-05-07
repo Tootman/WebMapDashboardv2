@@ -35,7 +35,8 @@ class UploadNewMap extends React.Component {
       mapIndeces: [{ name: "Freddy", age: 27 }, { name: "Jimmy", age: 25 }],
       mapName: "",
       mapDescription: "",
-      relDataMapHash: ""
+      relDataMapHash: "",
+      projectHash: ""
     };
   }
 
@@ -48,6 +49,10 @@ class UploadNewMap extends React.Component {
 
   handleRelDataMapHashChange = event => {
     this.setState({ relDataMapHash: event.target.value });
+  };
+
+  handleProjectHashChange = event => {
+    this.setState({ projectHash: event.target.value });
   };
 
   uploadNewMap(e) {
@@ -67,11 +72,19 @@ class UploadNewMap extends React.Component {
           description: this.state.mapDescription
         });
         console.log(
-          "Pushing:",
+          "Pushing to mapIndex:",
           key,
           this.state.mapName,
           this.state.mapDescription
         );
+        return key;
+      })
+      .then(key => {
+        const refPath = `App/Projects/${this.state.projectHash}/mapSet`;
+        const refChild = db.ref(refPath).child(key);
+        refChild.set(this.state.mapDescription);
+        //db.ref(`App/projects/${this.state.projectHash}/mapSet`).push(key);
+        console.log("Pushing to project:", this.state.projectHash);
       })
       .catch(e => {
         console.log("Errrror:", e);
@@ -89,7 +102,7 @@ class UploadNewMap extends React.Component {
               type="text"
               name="mapName"
               id="mapName"
-              placeholder="map name"
+              placeholder="eg Cranford"
               value={this.state.mapName}
               onChange={e => {
                 this.setState({ mapName: e.target.value });
@@ -102,7 +115,7 @@ class UploadNewMap extends React.Component {
               type="text"
               name="mapDescription"
               id="mapDescription"
-              placeholder="map description"
+              placeholder="eg Cranford ward"
               ref="mapDescription"
               onChange={e => {
                 this.setState({
@@ -120,6 +133,15 @@ class UploadNewMap extends React.Component {
               id="relDataMapHash"
               value={this.state.relDataMapHash}
               onChange={this.handleRelDataMapHashChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="projectHash">Project hash (firebase ID)</Label>
+            <Input
+              placeholder="eg -L3TSvfrg6754e"
+              id="projectHash"
+              value={this.state.projectHash}
+              onChange={this.handleProjectHashChange}
             />
           </FormGroup>
 
