@@ -56,11 +56,6 @@ class ImportShp extends React.Component {
               if necessary
             </li>
             <li>Rename 'ASSETS' or 'assets' fields in each shp to 'Assets' </li>
-            <li>
-              Need to sort out 'condition' and height properties case sens as
-              well maybe - need further testing
-            </li>
-            <li>need to refactor removeNaNPropertyValues etc</li>
             <li>Zip up</li>
             <li>Click upload etc </li>
           </ul>
