@@ -89,7 +89,8 @@ class MapAdmin extends React.Component {
       /*showWorkingSpinner :false,*/
       /*showWorkingSpinnerClassName : 'spinner-not-visible',*/
       statusMessage: "",
-      selectedLayers: {} // indexKey : layer
+      selectedLayers: {}, // indexKey : layer
+      relDataMapHash:"" // mapID for map contining related data and markers etc
     };
   }
 
@@ -267,8 +268,8 @@ class MapAdmin extends React.Component {
     return output;
   }
 
-  fileToJSON(file) {
-    console.log("file:", file);
+  fileToJSON(file, relDataMapHash) {
+    console.log("file:", file, "mapHashfromChild:", relDataMapHash);
     shp(file)
       .then(geojson => {
         geojson = this.mergeNormalizeGeojson(Object.values(geojson));
@@ -280,7 +281,8 @@ class MapAdmin extends React.Component {
 
         this.setState({
           geoJson: geojson,
-          jsonInfo: this.stripOutCoords(geojson)
+          jsonInfo: this.stripOutCoords(geojson),
+          relDataMapHash: relDataMapHash
         });
         this.mapUpdateToggle();
       })
