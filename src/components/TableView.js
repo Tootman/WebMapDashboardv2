@@ -122,6 +122,11 @@ class TableView extends React.Component {
 	}
 	*/
 
+  testMethod(x) {
+    return x* 2;
+  }
+
+
   handleRowClick2(row) {
     //console.log("instance (RowClick):", instance.getResolvedState().sortedData);
     this.props.rowCallback2(row);
@@ -177,7 +182,6 @@ class TableView extends React.Component {
 
   showRelated(value) {
     console.log("showRelated clicked!", value);
-    
   }
 
   selectAllRows() {

@@ -89,8 +89,13 @@ class MapAdmin extends React.Component {
       /*showWorkingSpinner :false,*/
       /*showWorkingSpinnerClassName : 'spinner-not-visible',*/
       statusMessage: "",
-      selectedLayers: {} // indexKey : layer
+      selectedLayers: {}, // indexKey : layer
+      relDataMapHash:"" // mapID for map contining related data and markers etc
     };
+  }
+
+  testMethod(x) {
+    return x * 2;
   }
 
   toggle(tab) {
@@ -159,7 +164,8 @@ class MapAdmin extends React.Component {
     //console.log("OEFlayer:", layer, "OEFfeature:", feature);
     const p = layer.properties;
 
-    const popupTitle = p.ASSET || p.Asset || p.NAME || p.OBJECTID || "";
+    const popupTitle =
+      p.ASSET || p.Asset || p.asset || p.NAME || p.OBJECTID || "";
     //feature.bindPopup(popupContent)
 
     let popupTableContent = "<table>";
@@ -262,19 +268,21 @@ class MapAdmin extends React.Component {
     return output;
   }
 
-  fileToJSON(file) {
-    console.log("file:", file);
+  fileToJSON(file, relDataMapHash) {
+    console.log("file:", file, "mapHashfromChild:", relDataMapHash);
     shp(file)
       .then(geojson => {
         geojson = this.mergeNormalizeGeojson(Object.values(geojson));
         delete geojson.fileName;
-        console.log("MyGeoL:", geojson);
+        geojson = this.removeNaNPropertyValues(geojson);
+        //console.log("MyGeoL:", geojson)
 
         //do something with your geojson
 
         this.setState({
           geoJson: geojson,
-          jsonInfo: this.stripOutCoords(geojson)
+          jsonInfo: this.stripOutCoords(geojson),
+          relDataMapHash: relDataMapHash
         });
         this.mapUpdateToggle();
       })
@@ -290,6 +298,19 @@ class MapAdmin extends React.Component {
     Object.keys(jsonCopy.features).forEach(i => {
       delete jsonCopy.features[i].geometry.coordinates;
       delete jsonCopy.features[i].geometry.bbox;
+    });
+    return jsonCopy;
+  }
+
+  removeNaNPropertyValues(inJson) {
+    const jsonCopy = JSON.parse(JSON.stringify(inJson)); // todo - fudge?
+    Object.keys(jsonCopy.features).forEach(i => {
+      if (jsonCopy.features[i].properties.CONDITION == NaN) {
+        jsonCopy.features[i].properties.CONDITION = 0;
+      }
+      if (jsonCopy.features[i].properties.HEIGHT == NaN) {
+        jsonCopy.features[i].properties.HEIGHT = 0;
+      }
     });
     return jsonCopy;
   }
@@ -732,4 +753,9 @@ class MapAdmin extends React.Component {
 }
 
 const authCondition = authUser => !!authUser;
-export default withAuthorization(authCondition)(MapAdmin);
+const MapAdminComponent = withAuthorization(authCondition)(MapAdmin);
+const MapAdminTest = MapAdmin;
+export { MapAdminComponent, MapAdminTest };
+// originally:
+//export default withAuthorization(authCondition)(MapAdmin);
+// remember to change App/index.js import back to import MapAdmin ...

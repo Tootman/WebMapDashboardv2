@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-
 import Navigation from "../Navigation";
 import LandingPage from "../Landing";
 import SignUpPage from "../SignUp";
@@ -11,10 +10,9 @@ import AccountPage from "../Account";
 import withAuthentication from "../Session/withAuthentication";
 import * as routes from "../../constants/routes";
 import Djspage from "../Djspage";
-import MapAdmin from "../MapAdmin";
+import { MapAdminComponent as MapAdmin } from "../MapAdmin";
 import DemoMap from "../demomap";
 import "./index.css";
-
 
 const App = () => (
   <Router>
@@ -31,10 +29,9 @@ const App = () => (
       />
       <Route exact path={routes.HOME} component={() => <HomePage />} />
       <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
-      <Route exact path={routes.DJSPAGE} component={() => <Djspage/>} />
-      <Route exact path={routes.MAPADMIN} component={() => <MapAdmin/>} />
-      <Route exact path={routes.DEMOMAP} component={() => <DemoMap/>} />
-     
+      <Route exact path={routes.DJSPAGE} component={() => <Djspage />} />
+      <Route exact path={routes.MAPADMIN} component={() => <MapAdmin />} />
+      <Route exact path={routes.DEMOMAP} component={() => <DemoMap />} />
     </div>
   </Router>
 );
