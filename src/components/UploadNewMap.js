@@ -32,19 +32,18 @@ class UploadNewMap extends React.Component {
     //this.handleSubmit = this.handleSubmit.bind(this);
     this.uploadNewMap = this.uploadNewMap.bind(this);
     this.createNewProject = this.createNewProject.bind(this);
-    this.uploadNewBlankMapForRelData = this.uploadNewBlankMapForRelData.bind(
+    this.appendMapKeyandDescrToProjectMapSet = this.appendMapKeyandDescrToProjectMapSet.bind(
       this
     );
     this.state = {
       mapIndeces: [{ name: "Freddy", age: 27 }, { name: "Jimmy", age: 25 }],
       mapName: "",
       mapDescription: "",
-      relDataMapHash: "",
-      projectHash: "",
       projectName: "",
-      projectCompletedResetDate: "",
+      completedResetDate: "",
       projectDescription: "",
-      projectMapSet: []
+      mapSet: [],
+      projectId: ""
     };
   }
 
@@ -55,20 +54,17 @@ class UploadNewMap extends React.Component {
     //console.log("handled:", this.mapName.value)
   }
 
-  handleRelDataMapHashChange = event => {
-    this.setState({ relDataMapHash: event.target.value });
-  };
-
-  handleProjectHashChange = event => {
-    this.setState({ projectHash: event.target.value });
-  };
+  appendMapKeyandDescrToProjectMapSet(mapListItem) {
+    console.log("appendMapKeyandDescrToProjectMapSet called!", mapListItem);
+  }
 
   uploadNewMap(e) {
+    //console.log("uploadNewMap in MapAdmin called!", uploadNewMapState);
+    //debugger
     e.preventDefault();
-    console.log("relPathToPush:", this.state.relDataMapHash);
-    const config = { relDataMapHash: this.state.relDataMapHash };
+
     db.ref(this.props.mapPath)
-      .push({ Geo: this.props.geo, config: config })
+      .push({ Geo: this.props.geo })
       .then(snap => {
         //console.log("new key " + snap.key);
         return snap.key;
@@ -80,19 +76,20 @@ class UploadNewMap extends React.Component {
           description: this.state.mapDescription
         });
         console.log(
-          "Pushing to mapIndex:",
+          "Pushing:",
           key,
           this.state.mapName,
           this.state.mapDescription
         );
         return key;
       })
-      .then(key => {
-        const refPath = `App/Projects/${this.state.projectHash}/mapSet`;
-        const refChild = db.ref(refPath).child(key);
-        refChild.set(this.state.mapDescription);
-        //db.ref(`App/projects/${this.state.projectHash}/mapSet`).push(key);
-        console.log("Pushing to project:", this.state.projectHash);
+      .then(mapKey => {
+        console.log("mapkey:", mapKey);
+        const mapListItem = {
+          mapKey,
+          mapDescription: this.state.mapDescription
+        };
+        this.appendMapKeyandDescrToProjectMapSet(mapListItem);
       })
       .catch(e => {
         console.log("Errrror:", e);
@@ -105,7 +102,7 @@ class UploadNewMap extends React.Component {
     const projectOb = {
       name: this.state.projectName,
       description: this.state.projectDescription,
-      completedResetDate: this.state.projectCompletedResetDate // todo format ??!!
+      completedResetDate: this.state.completedResetDate // todo format ??!!
       // dont set mapSet here - instead create node onUploadNewMap if none exists
     };
     // push new project and retrive key
@@ -122,33 +119,13 @@ class UploadNewMap extends React.Component {
 
     const newRef = db.ref("App/Projects/").push(projectOb);
     console.log("newRefKey:", newRef.key);
-    this.setState({ projectHash: newRef.key });
-    this.uploadNewBlankMapForRelData(newRef.key);
-  }
-
-  uploadNewBlankMapForRelData(relDataMapHash) {
-    const myOb = {
-      config: {
-        relDataMapHash: ""
-      }
-    };
-    const newRef = db.ref("App/Maps/").push(myOb);
-    console.log("newRefKey:", newRef.key);
-
-    console.log("rel setting:", `App/Maps/${newRef.key}/config/relDataMapHash`);
-    db.ref(`App/Maps/${newRef.key}/config/relDataMapHash`).set(newRef.key);
-    this.setState ({relDataMapHash:newRef.key})
+    this.setState({ projectId: this.state.projectId });
   }
 
   render() {
     return (
       <div>
         <h4>Upload the current data as new map on database </h4>
-        <p>
-        Upload the map to an existing project (copy and paste map hash and relDataMap hash).</p>
-        <p>Or add to a new map - by creating a new project (below), which populates mapHash and relDataMap hass with
-        newly created entries.
-        </p>
         <Form>
           <FormGroup>
             <Label for="mapName">Map name</Label>
@@ -156,7 +133,7 @@ class UploadNewMap extends React.Component {
               type="text"
               name="mapName"
               id="mapName"
-              placeholder="eg Cranford"
+              placeholder="map name"
               value={this.state.mapName}
               onChange={e => {
                 this.setState({ mapName: e.target.value });
@@ -169,7 +146,7 @@ class UploadNewMap extends React.Component {
               type="text"
               name="mapDescription"
               id="mapDescription"
-              placeholder="eg Cranford ward"
+              placeholder="map description"
               ref="mapDescription"
               onChange={e => {
                 this.setState({
@@ -178,42 +155,17 @@ class UploadNewMap extends React.Component {
               }}
             />
           </FormGroup>
-          <FormGroup>
-            <Label for="relDataMapHash">
-              Related Data Map Hash (firebase ID)
-            </Label>
-            <Input
-              placeholder="eg -KTSvfg56tE8"
-              id="relDataMapHash"
-              value={this.state.relDataMapHash}
-              onChange={this.handleRelDataMapHashChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="projectHash">Project hash (firebase ID)</Label>
-            <Input
-              placeholder="eg -L3TSvfrg6754e"
-              id="projectHash"
-              value={this.state.projectHash}
-              onChange={this.handleProjectHashChange}
-            />
-          </FormGroup>
-
           <Button
             type="submit"
             value="submit"
             color="success"
             onClick={this.uploadNewMap}
           >
-            Upload
+            Upload map
           </Button>
         </Form>
         <hr />
         <h3>Create new project</h3>
-        <p>
-        Create a project name, description and set a reset Date (for any related data)
-        then upload maps against that project
-        </p>
         <Form>
           <FormGroup>
             <Label>Project name</Label>
@@ -248,9 +200,9 @@ class UploadNewMap extends React.Component {
               name="completedResetDate"
               id="completedResetDateEl"
               placeholder="10 July 2018"
-              value={this.state.projectCompletedResetDate}
+              value={this.state.completedResetDate}
               onChange={e => {
-                this.setState({ projectCompletedResetDate: e.target.value });
+                this.setState({ completedResetDate: e.target.value });
               }}
             />
           </FormGroup>
