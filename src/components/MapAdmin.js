@@ -90,7 +90,7 @@ class MapAdmin extends React.Component {
       /*showWorkingSpinnerClassName : 'spinner-not-visible',*/
       statusMessage: "",
       selectedLayers: {}, // indexKey : layer
-      relDataMapHash:"" // mapID for map contining related data and markers etc
+      relDataMapHash: "" // mapID for map contining related data and markers etc
     };
   }
 
@@ -528,7 +528,7 @@ class MapAdmin extends React.Component {
           {this.state.statusMessage}
         </div>{" "}
         <Row>
-          <Col md="5">
+          <Col md="6">
             <p>
               {" "}
               <b>{this.state.mapName} </b>{" "}
@@ -723,7 +723,7 @@ class MapAdmin extends React.Component {
               </TabPane>{" "}
             </TabContent>{" "}
           </Col>{" "}
-          <Col md="7">
+          <Col md="6">
             <Map
               className="map"
               ref="map"

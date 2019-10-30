@@ -29,16 +29,10 @@ const Photo = props => {
 class TableView extends React.Component {
   constructor(props) {
     super(props);
-    //this.handleRowClick = this.handleRowClick.bind(this);
     this.handleRowClick2 = this.handleRowClick2.bind(this);
     this.selectAllRows = this.selectAllRows.bind(this);
     this.selectNoRows = this.selectNoRows.bind(this);
     this.locateFeatureOnMap = this.locateFeatureOnMap.bind(this);
-    //this.cancelled = false
-    //this.handleFilterUpdate = this.handleFilterUpdate.bind(this)
-    //this.reactFilteredTable = this.reactFilteredTable.bind(this);
-    //const p = this.props.data[0].properties;
-
     this.state = {
       col1: "default",
       col2: "default",
@@ -53,42 +47,9 @@ class TableView extends React.Component {
     };
   }
 
-  //var keys = {};
-  //window.onkeyup = function(e) { keys[e.keyCode] = false; }
-
   componentWillMount() {
-    //console.log("hello from cwm")
-    //document.addEventListener("keydown", this._handleKeyDown.bind(this));
-    //this.assignRelatedDataToTableData();
-
-    this.setState({
-      //newpropertiesList
-      //myProps
-    });
+    this.setState({});
   }
-
-  /*
-    _handleKeyDown = (event) => {
-       this.cancelled=true
-       console.log("keyDown!")
-    }
-    */
-
-  /*
-	assignRelatedDataToTableData() {
-		// fetch latest relatedDataSet for map
-		getRelatedData("myKey");
-		const myProps = this.state.tableData;
-		myProps[0].properties.newPropKey = "myNewPropVal-1";
-		myProps[1].properties.newPropKey = "myNewPropVal-2";
-	}
-	*/
-
-  /*
-	componentDidUpdate(){
-		console.log("tableInstance (from cdUpdate):", this.tableInstance.getWrappedInstance().getResolvedState().sortedData);
-	}
-	*/
 
   componentWillReceiveProps() {
     console.log("receive Props!", Date());
@@ -103,43 +64,34 @@ class TableView extends React.Component {
         e === "ASSET" ||
         e === "OBJECTID"
     );
+
     const col2 = Object.keys(p).find(
-      e => e === "description" || e === "DESCRIPTIO"
+      e => e === "description" || e === "Descriptio" || e === "DESCRIPTIO"
+      //e => e === "comments"
     );
 
+    const col4 = Object.keys(p).find(
+      e => e === "comments"
+      //e => e === "comments"
+    );
+
+    // how does this work ?
     const newPropKey = this.state.tableData[0].myNewProp;
     this.setState({
       col1: col1,
       col2: col2,
+      col4: col4,
       tableData: this.props.data
     });
   }
 
-  /*
-	handleRowClick(e, handleOriginal, rowInfo, state, instance) {
-		//console.log("instance (RowClick):", instance.getResolvedState().sortedData);
-		this.props.rowCallback(rowInfo, handleOriginal);
-	}
-	*/
-
   testMethod(x) {
-    return x* 2;
+    return x * 2;
   }
-
 
   handleRowClick2(row) {
-    //console.log("instance (RowClick):", instance.getResolvedState().sortedData);
     this.props.rowCallback2(row);
   }
-
-  /*
-	myCallback (){
-		console.log("callback called!")
-		this.cancelled = true
-		this.handleFilterUpdate()
-		console.log("CallbackDone!")
-	}
-	*/
 
   handleFilterUpdate() {
     console.log(
@@ -150,73 +102,21 @@ class TableView extends React.Component {
       selectedRows: this.tableInstance.getWrappedInstance().getResolvedState()
         .sortedData
     });
-
-    //console.log("start")
-    //this.cancelled= false
-    //console.log("cancelled:" , this.cancelled)
-    /*
-	for (let i = 0; i<100000000; i++){
-			//console.log(this.cancelled)
-			if (this.cancelled == true) {
-				console.log("interupted and break!")
-				break}
-			}
-	*/
-    //this.cancelled = false
-    //console.log("finish", "cancelled:", this.cancelled)
   }
-
-  /*
-	handleRowExpanded(newExpanded, index, event) {
-
-		this.setState({
-			// we override newExpanded, keeping only current selected row expanded
-			expanded: { [index]: !this.state.expanded[index] }
-		});
-		this.props.activeFeatureLocationCallback(
-			index,
-			!this.state.expanded[index]
-		);
-	}
-	*/
 
   showRelated(value) {
     console.log("showRelated clicked!", value);
   }
 
   selectAllRows() {
-    /*
-		const selectedRows = this.state.selectedRows
-		selectedRows.map(row => {
-			//this.state.tableData[row._index].properties.highlightOnMap = true
-			const key = this.state.tableData[row._index].properties
-			key.highlightOnMap = true
-			this.setState({key})
-			//row.properties.highlightOnMap = true
-		})
-		console.log("select AllRows!",)
-
-		  //this.setState({ state: this.state });
-		*/
-    //console.log("selectAllRows Button!")
-
     this.props.selectAllRowsCallback(this.state.selectedRows);
   }
 
   selectNoRows() {
-    //const selectedRows = this.state.selectedRows
-    /*
-		this.state.tableData.map(row => {
-			row.properties.highlightOnMap = false
-			//row.properties.highlightOnMap = true
-		})
-		*/
     this.props.selectNoRowsCallback();
-    //console.log("select AllRows!",)
   }
 
   locateFeatureOnMap(featureIndex) {
-    //console.log("locateONMap!",e)
     this.props.zoomToFeatureCallback(featureIndex);
   }
 
@@ -231,20 +131,8 @@ class TableView extends React.Component {
           showPaginationTop={true}
           showPaginationBottom={false}
           ref={instance => (this.tableInstance = instance)}
-          /*
-				onExpandedChange={
-					(newExpanded, index, event) =>{
-						console.log("expandedChanged!")
-						console.log("event:",event )
-					}
-				} */
-
           onFilteredChange={() => {
-            //const { page } = this.tableInstance.getResolvedState()
-            // page is the current pageIndex
-            //console.log("filteredChanged!", this.tableInstance.getWrappedInstance().getResolvedState().sortedData)
             this.handleFilterUpdate();
-            //this.myCallback()
           }}
           getTdProps={(state, rowInfo, column, instance) => {
             return {
@@ -326,9 +214,9 @@ class TableView extends React.Component {
               maxWidth: 100
             },
             {
-              Header: "Condition",
+              Header: "Original Condition",
               id: "condition",
-              accessor: "properties.condition",
+              accessor: "properties.Condition",
               maxWidth: 100
             },
             {
@@ -336,6 +224,18 @@ class TableView extends React.Component {
               id: "highlightOnMap",
               accessor: "properties.highlightOnMap",
               show: false
+            },
+            {
+              Header: "Latest condition",
+              id: "updatedCondition",
+              accessor: "properties.condition",
+              show: true
+            },
+            {
+              Header: "Latest comment",
+              id: "latestComment",
+              accessor: "properties.comments",
+              show: true
             }
           ]}
           defaultPageSize="5"
