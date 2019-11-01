@@ -61,8 +61,7 @@ class TableView extends React.Component {
         e === "Name" ||
         e === "NAME" ||
         e === "Asset" ||
-        e === "ASSET" ||
-        e === "OBJECTID"
+        e === "ASSET"
     );
 
     const col2 = Object.keys(p).find(
@@ -123,8 +122,8 @@ class TableView extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={this.selectAllRows}>Select All</Button>
-        <Button onClick={this.selectNoRows}>Clear all</Button>
+        <Button onClick={this.selectAllRows}>Update map</Button>
+        <Button onClick={this.selectNoRows}>Clear map</Button>
         <TreeTable
           data={this.state.tableData}
           minRows={1}
