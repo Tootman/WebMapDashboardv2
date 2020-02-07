@@ -7,6 +7,7 @@ import ImportShp from "./ImportShp";
 import OpenMap from "./OpenMap";
 import SaveShp from "./SaveShp";
 import SaveCSV from "./SaveCSV";
+import ExportMarkers from "./ExportMarkers";
 import MetaData from "./MetaData";
 // import RelatedData from "./RelatedData";
 import UploadNewMap from "./UploadNewMap";
@@ -74,6 +75,7 @@ class MapAdmin extends React.Component {
       mapName: "",
       mapDescription: "",
       metaData: { "no meta data": "" },
+      markers: {},
       relatedData: { "No related data": "" },
       selectedFeatureStyle: {
         // not used
@@ -318,7 +320,8 @@ class MapAdmin extends React.Component {
           geoJson: geoJson,
           jsonInfo: parent.stripOutCoords(geoJson),
           metaData: snap.Meta || { "no meta data": "" },
-          relatedData: snap.Related || { "no related data": "" }
+          relatedData: snap.Related || { "no related data": "" },
+          markers: snap.Markers
         });
         parent.mapUpdateToggle();
 
@@ -643,6 +646,7 @@ class MapAdmin extends React.Component {
                   <Col sm="12">
                     <SaveShp geoJson={this.state.geoJson} />{" "}
                     <SaveCSV geoJson={this.state.geoJson} />{" "}
+                    <ExportMarkers geoJson={this.state.markers} />
                   </Col>{" "}
                 </Row>{" "}
               </TabPane>{" "}
